@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.login_register_container.*
 
 class LoginRegisterActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setContentView(R.layout.login_register_container)
         super.onCreate(savedInstanceState)
         frag_container.adapter= ViewpageLoginSigupAdapter(supportFragmentManager)
         tab_login_sigup.setupWithViewPager(frag_container)
