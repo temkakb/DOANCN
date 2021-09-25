@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DOANCN</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="previous">&lt;-</string>
+    <string name="next">-&gt;</string>
 </resources>
