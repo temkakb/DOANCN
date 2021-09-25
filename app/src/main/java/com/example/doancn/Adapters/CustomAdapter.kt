@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.doancn.DataObject
+import com.example.doancn.R
 import kotlinx.android.synthetic.main.card_view.view.*
 
 class CustomAdapter(private val data: List<DataObject>):

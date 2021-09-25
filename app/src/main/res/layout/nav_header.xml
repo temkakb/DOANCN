@@ -14,7 +14,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:paddingTop="8dp"
-        android:src="@drawable/lo"/>
+        android:src="@drawable/ic_launcher_foreground"/>
 
     <TextView
         android:layout_width="match_parent"
