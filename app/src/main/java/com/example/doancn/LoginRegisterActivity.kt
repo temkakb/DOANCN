@@ -18,3 +18,4 @@ class LoginRegisterActivity : AppCompatActivity()  {
 }
 //comment gi do
 //giii gii do
+// gi gi do
