@@ -35,7 +35,7 @@ class LoginRegisterActivity : AppCompatActivity()  {
             setheighpercent()
         }
     }
-    inline fun setheighpercent (){
+    fun setheighpercent (){
         val constrainlayout = findViewById(R.id.container) as ConstraintLayout
         val set = ConstraintSet()
         set.clone(constrainlayout)
