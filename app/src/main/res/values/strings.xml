@@ -4,4 +4,10 @@
     <string name="close">Close</string>
     <string name="previous">&lt;-</string>
     <string name="next">-&gt;</string>
+    <string name="quenmatkhau" >Quên mật khẩu?</string>
+    <string name="tkoremail" >Tài khoản hoặc Email</string>
+    <string name="password" >Mật khẩu</string>
+    <string name="login">Đăng nhập</string>
+    <string name="remember">Lưu mật khẩu</string>
+    <string name="containheader">Chào mừng bạn trở lại</string>
 </resources>

@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doancn.R
@@ -15,7 +14,6 @@ import kotlinx.android.synthetic.main.custom_calendar_day.view.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CalendarAdapter(private val context: Context,
                       private val data: java.util.ArrayList<Date>,

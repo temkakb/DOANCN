@@ -17,4 +17,7 @@
         <item name="boxStrokeColor">#056ffa</item>
         <item name="boxStrokeWidth">1dp</item>
     </style>
+    <style name="ColorSwitchStyle">
+        <item name="colorControlActivated">@color/blue</item>
+    </style>
 </resources>

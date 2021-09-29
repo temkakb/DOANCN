@@ -11,9 +11,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent=".8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/login_textinputlayout2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:helperText="tài khoản trên 8 ký tự*"
         app:counterEnabled="true"
+        app:layout_constraintVertical_bias="0.1"
         app:counterMaxLength="24"
         app:helperTextTextColor="@color/red"
         app:endIconMode="clear_text"
@@ -24,7 +25,7 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tài khoản hoặc Email"
+            android:hint="@string/tkoremail"
          />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -35,7 +36,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent=".8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnlogin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias=".1"
         app:helperText="Mật khẩu trên 8 ký tự*"
         app:counterEnabled="true"
         app:helperTextTextColor="@color/red"
@@ -49,34 +51,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:hint="Mật khẩu"
+        android:hint="@string/password"
         />
     </com.google.android.material.textfield.TextInputLayout>
     <Button
         android:id="@+id/btnlogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập"
+        android:text="@string/login"
         app:layout_constraintWidth_percent=".8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_textinputlayout2"
-        app:layout_constraintVertical_bias=".5"
+        app:layout_constraintTop_toBottomOf="@id/sw_savepassword"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:backgroundTint="@null"
+        app:layout_constraintVertical_bias=".4"
         android:background="@drawable/bg_button"
         app:layout_constraintBottom_toBottomOf="parent" />
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/password"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/password"-->
-<!--        app:layout_constraintVertical_bias="0"-->
-<!--        app:layout_constraintHorizontal_bias="1"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:text="Quên mật khẩu?" />-->
+    <TextView
+        android:id="@+id/txt_quenmk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_textinputlayout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/login_textinputlayout2"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintHorizontal_bias="1"
+        android:layout_marginTop="5dp"
+        android:text="@string/quenmatkhau" />
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_savepassword"
+        android:theme="@style/ColorSwitchStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_textinputlayout2"
+        app:layout_constraintStart_toStartOf="@id/login_textinputlayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintHorizontal_bias="0"
+        android:text="@string/remember"
+        android:textStyle="normal"
+        android:textColor="@color/blue"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
