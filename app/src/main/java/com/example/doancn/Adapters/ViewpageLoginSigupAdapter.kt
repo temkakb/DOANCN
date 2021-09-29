@@ -19,8 +19,8 @@ class ViewpageLoginSigupAdapter(support : FragmentManager) : FragmentPagerAdapte
     }
 }
  object BlockDataForThisAdapter {
-     lateinit var listname : Array<String>
-     lateinit var listframent : Array<Fragment>
+      var listname : Array<String>
+      var listframent : Array<Fragment>
      init {
             listname = arrayOf("Đăng Nhập", "Đăng Ký")
          listframent = arrayOf(LoginFragment(),SigupFragment())

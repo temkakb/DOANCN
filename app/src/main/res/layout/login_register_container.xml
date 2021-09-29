@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
+
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:src="@drawable/background_login"
@@ -21,7 +22,7 @@
         android:id="@+id/constraintlayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent=".78"
+        app:layout_constraintHeight_percent=".8"
         app:layout_constraintVertical_bias="1"
         android:background="@drawable/bg_container_loginrg"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +36,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent=".8"
+            app:layout_constraintHeight_percent=".9"
             app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toBottomOf="@id/tab_login_sigup"
             app:layout_constraintVertical_bias="1" />
@@ -58,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:text="Chào mừng bạn trở lại"
+        android:text="@string/containheader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

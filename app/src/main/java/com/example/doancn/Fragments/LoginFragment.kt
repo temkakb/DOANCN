@@ -12,7 +12,6 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = layoutInflater.inflate(R.layout.login_fragment,container,false)
-        return view
+        return layoutInflater.inflate(R.layout.login_fragment,container,false)
     }
 }
