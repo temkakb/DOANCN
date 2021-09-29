@@ -43,10 +43,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-    /*startActivity(Intent(this,LoginRegisterActivity::class.java))
-        finish()*/
-
-        // Custom Action Bar
         val actionBar : ActionBar? = getSupportActionBar()
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setLogo(R.drawable.ic_baseline_home_24)
