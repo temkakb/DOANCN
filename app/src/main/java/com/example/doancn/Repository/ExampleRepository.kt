@@ -1,10 +1,11 @@
 package com.example.doancn.Repository
 
-import com.example.doancn.Retrofit.RetrofitIntance
+
+import com.example.doancn.Retrofit.RetrofitManager
 
 class ExampleRepository {
     suspend fun example () : String{
-        return RetrofitIntance.example.example()
+        return RetrofitManager.example.example()
     }
 
 }
