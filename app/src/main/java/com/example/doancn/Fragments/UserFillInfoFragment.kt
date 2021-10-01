@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.doancn.R
 
-open class FillinfoFragment :Fragment() {
+open class UserFillInfoFragment :Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return layoutInflater.inflate(R.layout.fill_infomation_fragment,container,false)
+        return layoutInflater.inflate(R.layout.user_fill_infomation_fragment,container,false)
     }
 }

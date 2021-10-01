@@ -5,7 +5,7 @@
     <string name="previous">&lt;-</string>
     <string name="next">-&gt;</string>
     <string name="quenmatkhau" >Quên mật khẩu?</string>
-    <string name="tkoremail" >Tài khoản hoặc Email</string>
+    <string name="tkoremail" >Email</string>
     <string name="password" >Mật khẩu</string>
     <string name="login">Đăng nhập</string>
     <string name="remember">Lưu mật khẩu</string>
@@ -16,4 +16,6 @@
     <string name="student">Học sinh</string>
     <string name="next2">tiếp theo</string>
     <string name="back">quay lại</string>
+    <string name="yourname">Tên của bạn</string>
+    <string name="phonenumber">Số điện thoại</string>
 </resources>
