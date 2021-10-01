@@ -1,13 +1,15 @@
 package com.example.doancn
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import com.example.navigationdrawer.CalendarAdapter
+import com.example.doancn.Adapters.CalendarAdapter
 import com.example.navigationdrawer.CustomAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
@@ -16,39 +18,41 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    //Calendar
+    private val lastDayInCalendar = Calendar.getInstance()
+    private val sdf = SimpleDateFormat("MM - yyyy")
+    private val cal = Calendar.getInstance()
 
-    private val lastDayInCalendar = Calendar.getInstance(Locale.ENGLISH)
-    private val sdf = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
-    private val cal = Calendar.getInstance(Locale.ENGLISH)
-
-    private val currentDate = Calendar.getInstance(Locale.ENGLISH)
+    // current date
+    private val currentDate = Calendar.getInstance()
     private val currentDay = currentDate[Calendar.DAY_OF_MONTH]
     private val currentMonth = currentDate[Calendar.MONTH]
     private val currentYear = currentDate[Calendar.YEAR]
 
+    // selected date
     private var selectedDay: Int = currentDay
     private var selectedMonth: Int = currentMonth
     private var selectedYear: Int = currentYear
 
-    private val dates = ArrayList<Date>()
+    // all days in month
+    private val dates = java.util.ArrayList<Date>()
 
-    //Navigation drawwer
+    //Navigation drawer
     lateinit var toggle : ActionBarDrawerToggle
 
 
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val actionBar : ActionBar? = getSupportActionBar()
+        val actionBar : ActionBar? = supportActionBar
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setLogo(R.drawable.ic_baseline_home_24)
         actionBar?.setDisplayUseLogoEnabled(true)
 
-        //Calendar
+        //Calendar week
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(calendar_recycler_view)
 
@@ -65,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                     setUpCalendar(changeMonth = cal)
             }
         }
+
         calendar_next_button!!.setOnClickListener {
             if (cal.before(lastDayInCalendar)) {
                 cal.add(Calendar.MONTH, 1)
@@ -94,6 +99,8 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.mymenu, menu)
         return true
@@ -109,7 +116,7 @@ class MainActivity : AppCompatActivity() {
             else -> {
             }
         }
-        //OnOption navigation drawwer
+        //OnOption navigation drawer
         if(toggle.onOptionsItemSelected(item))
         {
             return true
@@ -144,7 +151,6 @@ class MainActivity : AppCompatActivity() {
         dates.clear()
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
 
-
         while (dates.size < maxDaysInMonth) {
             // get position of selected day
             if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDay)
@@ -159,14 +165,11 @@ class MainActivity : AppCompatActivity() {
         val calendarAdapter = CalendarAdapter(this, dates, currentDate, changeMonth)
         calendar_recycler_view!!.adapter = calendarAdapter
 
-
         when {
             currentPosition > 2 -> calendar_recycler_view!!.scrollToPosition(currentPosition - 3)
             maxDaysInMonth - currentPosition < 2 -> calendar_recycler_view!!.scrollToPosition(currentPosition)
             else -> calendar_recycler_view!!.scrollToPosition(currentPosition)
         }
-
-
 
         calendarAdapter.setOnItemClickListener(object : CalendarAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
