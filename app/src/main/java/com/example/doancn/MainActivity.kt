@@ -1,6 +1,9 @@
 package com.example.doancn
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
@@ -10,11 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.doancn.Adapters.CalendarAdapter
+import com.example.doancn.Repository.AuthRepository
 import com.example.navigationdrawer.CustomAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +53,32 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        val sharedprefernces = getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
+        val token : String? = sharedprefernces.getString("token",null)
+        val intent = Intent(this,LoginRegisterActivity::class.java)
+        if (token==null){ // CODE CHAY CHO MAU, co gi chu improve nha
+            startActivity(intent)
+            finish()
+        }
+        else {
+            GlobalScope.launch {
+                try {
+                    val auth = AuthRepository()
+                    val map = HashMap<String,String>()
+                    map.put("token",token)
+                    auth.validate(map)
+                }
+                // token ko hop le
+                catch (e: retrofit2.HttpException)
+                {
+                    Log.d("gigido","tokenkohople")
+                    sharedprefernces.edit().clear().apply()
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
+        /***-----------------xem co token duoi sharedpre pho` ran ko. neu co thi validate thu-------------------- ***/
         val actionBar : ActionBar? = supportActionBar
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setLogo(R.drawable.ic_baseline_home_24)
