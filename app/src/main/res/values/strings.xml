@@ -18,4 +18,8 @@
     <string name="back">quay lại</string>
     <string name="yourname">Tên của bạn</string>
     <string name="phonenumber">Số điện thoại</string>
+    <string name="address">Địa chỉ</string>
+    <string name="educationLevel">Trình độ học vấn</string>
+    <string name="currentWorkPlace">Nơi làm việc hiện tại</string>
+    <string name="dateborn">Ngày sinh</string>
 </resources>

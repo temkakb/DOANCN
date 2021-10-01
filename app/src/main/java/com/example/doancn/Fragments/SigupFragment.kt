@@ -22,7 +22,7 @@ class SigupFragment : Fragment() {
         dotranscation(youaresingleton)
         btnnext.setOnClickListener {
             val fragment : Fragment?=childFragmentManager.findFragmentById(R.id.sigup_container)
-            if(fragment!!::class!=UserFillInfoFragment2::class){ // check fragment end then do stuff
+            if(fragment!!::class!=UserFillInfoFragment3::class){ // check fragment end then do stuff
                 dotranscation(managersingleton.listfragment[position])
                 position++
             }
@@ -43,7 +43,7 @@ class SigupFragment : Fragment() {
     object managersingleton {
        var listfragment :List<Fragment>
         init {
-            listfragment=listOf<Fragment>(UserFillInfoFragment(),UserFillInfoFragment2())
+            listfragment=listOf<Fragment>(UserFillInfoFragment(),UserFillInfoFragment2(),UserFillInfoFragment3())
         }
     }
     object  youaresingleton : YouAreFragment()
