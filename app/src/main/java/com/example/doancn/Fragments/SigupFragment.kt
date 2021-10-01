@@ -42,7 +42,10 @@ class SigupFragment : Fragment() {
         return  view
     }
     object managersingleton {
-        val listfragment = listOf<Fragment>(UserFillInfoFragment(),UserFillInfoFragment2())
+       lateinit var listfragment :List<Fragment>
+        init {
+            listfragment=listOf<Fragment>(UserFillInfoFragment(),UserFillInfoFragment2())
+        }
     }
     object  youaresingleton : YouAreFragment()
     fun dotranscation(fragment: Fragment){
