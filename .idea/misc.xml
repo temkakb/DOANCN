@@ -4,8 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_button.xml" value="0.12291666666666666" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_button_previous_back.xml" value="0.13229166666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_container_loginrg.xml" value="0.12291666666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_edittext_login.xml" value="0.12291666666666666" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_previous_back_tab.xml" value="0.13229166666666667" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.13229166666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.24537037037037038" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.24537037037037038" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.24537037037037038" />
@@ -13,10 +16,13 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/activity_main.xml" value="0.136" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/card_view.xml" value="0.11927083333333334" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/custom_calendar_day.xml" value="0.2517948717948718" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fill_infomation_fragment.xml" value="0.2903645833333333" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/firstfragment.xml" value="0.1" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_fragment.xml" value="0.22351797862001943" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_register_container.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/nav_header.xml" value="0.13385416666666666" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/signup_fragment.xml" value="0.11145833333333334" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/signup_fragment.xml" value="0.2" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/youare_fragment.xml" value="0.11614583333333334" />
       </map>
     </option>
   </component>
