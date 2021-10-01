@@ -1,5 +1,4 @@
-package com.example.navigationdrawer
-
+package com.example.doancn.Adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
@@ -16,11 +15,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarAdapter(private val context: Context,
-                      private val data: java.util.ArrayList<Date>,
-                      private val currentDate: Calendar,
-                      private val changeMonth: Calendar?): RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
+                      private val data: ArrayList<Date>,
+                      currentDate: Calendar,
+                      changeMonth: Calendar?): RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
     private var mListener: OnItemClickListener? = null
     private var index = -1
+
     private var selectCurrentDate = true
     private val currentMonth = currentDate[Calendar.MONTH]
     private val currentYear = currentDate[Calendar.YEAR]
@@ -48,8 +48,9 @@ class CalendarAdapter(private val context: Context,
 
     override fun getItemCount(): Int = data.size
 
+    @SuppressLint("SimpleDateFormat", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss", Locale.ENGLISH)
+        val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss")
         val cal = Calendar.getInstance()
         cal.time = data[position]
 
@@ -57,6 +58,7 @@ class CalendarAdapter(private val context: Context,
         val displayMonth = cal[Calendar.MONTH]
         val displayYear= cal[Calendar.YEAR]
         val displayDay = cal[Calendar.DAY_OF_MONTH]
+
 
         try {
             val dayInWeek = sdf.parse(cal.time.toString())!!
@@ -100,7 +102,6 @@ class CalendarAdapter(private val context: Context,
         var txtDayInWeek = itemView.txt_day
         var linearLayout = itemView.calendar_linear_layout
     }
-
 
     interface OnItemClickListener {
         fun onItemClick(position: Int)
