@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.doancn.R
 
-class FillinfoFragment :Fragment() {
+open class FillinfoFragment :Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
