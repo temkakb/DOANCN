@@ -10,4 +10,10 @@
     <string name="login">Đăng nhập</string>
     <string name="remember">Lưu mật khẩu</string>
     <string name="containheader">Chào mừng bạn trở lại</string>
+    <string name="sigup">Đăng ký</string>
+    <string name="youare">Bạn là ?</string>
+    <string name="teacher">Giáo viên</string>
+    <string name="student">Học sinh</string>
+    <string name="next2">tiếp theo</string>
+    <string name="back">quay lại</string>
 </resources>
