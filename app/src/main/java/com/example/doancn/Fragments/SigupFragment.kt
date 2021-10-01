@@ -1,7 +1,6 @@
 package com.example.doancn.Fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +41,7 @@ class SigupFragment : Fragment() {
         return  view
     }
     object managersingleton {
-       lateinit var listfragment :List<Fragment>
+       var listfragment :List<Fragment>
         init {
             listfragment=listOf<Fragment>(UserFillInfoFragment(),UserFillInfoFragment2())
         }
