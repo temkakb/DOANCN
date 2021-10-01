@@ -25,3 +25,7 @@ p
 @app/src/main/java/com/example/doancn/Adapters/CalendarAdapter.kt,7\9\791d58e601cf84bd1f6a980c1b6986c7af8e64ab
 p
 @app/src/main/java/com/example/doancn/Retrofit/RetrofitManager.kt,7\b\7bbd79a3af6fd3911c1d2b47739ac719c95ec72f
+m
+=app/src/main/java/com/example/doancn/LoginRegisterActivity.kt,f\2\f254434378460a5c91f3cd70204581467dab12fa
+z
+Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
