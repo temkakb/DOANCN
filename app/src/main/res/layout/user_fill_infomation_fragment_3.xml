@@ -68,7 +68,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias=".1"
-            app:helperText="ngày sinh *"
+            app:helperText="Ngày sinh *"
             app:counterEnabled="true"
             app:helperTextTextColor="@color/red"
             app:startIconDrawable="@drawable/ic_baseline_date_range_24"

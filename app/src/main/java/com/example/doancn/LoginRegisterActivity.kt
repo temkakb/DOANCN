@@ -12,6 +12,9 @@ import androidx.constraintlayout.widget.ConstraintSet
 import com.example.doancn.Adapters.ViewpageLoginSigupAdapter
 import kotlinx.android.synthetic.main.login_register_container.*
 import kotlinx.android.synthetic.main.signup_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class LoginRegisterActivity : AppCompatActivity()  {
@@ -21,8 +24,10 @@ class LoginRegisterActivity : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         frag_container.adapter= ViewpageLoginSigupAdapter(supportFragmentManager)
         tab_login_sigup.setupWithViewPager(frag_container)
-        container.setOnClickListener {view ->
-          touchhidekeyboard(this@LoginRegisterActivity,view)
+        GlobalScope.launch (Dispatchers.Default){
+            container.setOnClickListener {view ->
+                touchhidekeyboard(this@LoginRegisterActivity,view)
+            }
         }
     }
     override fun onConfigurationChanged(newConfig: Configuration) {

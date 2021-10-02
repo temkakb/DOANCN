@@ -12,10 +12,10 @@
     <string name="containheader">Chào mừng bạn trở lại</string>
     <string name="sigup">Đăng ký</string>
     <string name="youare">Bạn là ?</string>
-    <string name="teacher">Giáo viên</string>
+    <string name="teacher" >Giáo viên</string>
     <string name="student">Học sinh</string>
-    <string name="next2">tiếp theo</string>
-    <string name="back">quay lại</string>
+    <string name="next2">Tiếp theo</string>
+    <string name="back">Quay lại</string>
     <string name="yourname">Tên của bạn</string>
     <string name="phonenumber">Số điện thoại</string>
     <string name="address">Địa chỉ</string>
@@ -27,5 +27,10 @@
         <item>Nam</item>
         <item>Nữ</item>
         <item>Khác</item>
+    </string-array>
+    <string-array name="gender_json">
+        <item>MALE</item>
+        <item>FEMALE</item>
+        <item>OTHER</item>
     </string-array>
 </resources>
