@@ -17,8 +17,6 @@ q
 Aapp/src/main/java/com/example/doancn/Repository/AuthRepository.kt,2\9\293173f5abb1e93bd33a7878e3a5fbf0a1f9eaf6
 k
 ;app/src/main/java/com/example/doancn/Models/ExampleModel.kt,6\0\60a77b9d127b9c1f563402c3b0854794b91b6761
-p
-@app/src/main/java/com/example/doancn/Retrofit/RetrofitManager.kt,7\b\7bbd79a3af6fd3911c1d2b47739ac719c95ec72f
 t
 Dapp/src/main/java/com/example/doancn/Repository/ExampleRepository.kt,e\d\ed82bb24d8977d67470b7937d19b0a13e311030f
 f
@@ -37,3 +35,7 @@ w
 Gapp/src/main/java/com/example/doancn/Fragments/UserFillInfoFragment2.kt,0\5\05ecb7ae5f0994d20ffeb8f85c2462768437687d
 z
 Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
+o
+?app/src/main/java/com/example/doancn/Fragments/LoginFragment.kt,9\e\9ec3943a9ae53a02cfc693f2563a96176a0123d5
+m
+=app/src/main/java/com/example/doancn/LoginRegisterActivity.kt,f\2\f254434378460a5c91f3cd70204581467dab12fa

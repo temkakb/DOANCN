@@ -1,8 +1,8 @@
 package com.example.doancn.Retrofit
 
-import com.example.doancn.API.APIexample
-import com.example.doancn.API.AuthApi
-import com.example.doancn.API.ValidateTokenApi
+import com.example.doancn.API.Iapiexample
+import com.example.doancn.API.IauthApi
+import com.example.doancn.API.IvalidateTokenApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -10,14 +10,14 @@ object RetrofitManager {
     private val retrofit by lazy {
         Retrofit.Builder().baseUrl(Urls.url1).addConverterFactory(GsonConverterFactory.create()).build() // later
     }
-    val example : APIexample by lazy {
-        retrofit.create(APIexample::class.java)
+    val example : Iapiexample by lazy {
+        retrofit.create(Iapiexample::class.java)
     }
-    val authapi : AuthApi by lazy {
-        retrofit.create(AuthApi::class.java)
+    val authapi : IauthApi by lazy {
+        retrofit.create(IauthApi::class.java)
     }
-    val validateTokenApi : ValidateTokenApi by lazy {
-        retrofit.create(ValidateTokenApi::class.java)
+    val validateTokenApi : IvalidateTokenApi by lazy {
+        retrofit.create(IvalidateTokenApi::class.java)
     }
 }
 class Urls {

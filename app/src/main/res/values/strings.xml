@@ -23,4 +23,9 @@
     <string name="currentWorkPlace">Nơi làm việc hiện tại</string>
     <string name="dateborn">Ngày sinh</string>
     <string name="gender">Giới tính</string>
+    <string-array name="gender_select">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+    </string-array>
 </resources>

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/TextInputLayoutStyle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:id="@+id/login_textinputlayout"
             android:layout_width="0dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -19,11 +19,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:counterEnabled="true"
             app:layout_constraintVertical_bias="0.1"
-            app:helperTextTextColor="@color/red"
-            app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_baseline_people_24"
             android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
+                android:inputType="none"
                 android:id="@+id/displayuser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
