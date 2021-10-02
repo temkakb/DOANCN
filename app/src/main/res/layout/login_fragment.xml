@@ -83,7 +83,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias=".1"
             app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/sw_savepassword"
+          app:layout_constraintTop_toBottomOf="@id/txt_quenmk"
             android:layout_width="0dp"
            app:layout_constraintWidth_percent=".8"
             android:layout_height="wrap_content" />
@@ -99,21 +99,7 @@
             app:layout_constraintHorizontal_bias="1"
             android:layout_marginTop="5dp"
             android:text="@string/quenmatkhau" />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/sw_savepassword"
-            android:theme="@style/ColorSwitchStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_textinputlayout2"
-            app:layout_constraintStart_toStartOf="@id/login_textinputlayout2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintHorizontal_bias="0"
-            android:text="@string/remember"
-            android:textStyle="normal"
-            android:textColor="@color/blue"
-            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

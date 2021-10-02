@@ -2,8 +2,6 @@ package com.example.doancn.Fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,12 +31,10 @@ fun  datepicker (context: Context?,view : View){
     val month = c.get(Calendar.MONTH)
     val day = c.get(Calendar.DAY_OF_MONTH)
     val input = view.findViewById(R.id.dateborn) as TextInputEditText
-
-   val datepickerdialog=DatePickerDialog(context!!,android.R.style.Theme_Holo_Light_Dialog_MinWidth, { mview, myear, mmonth, mday ->
-       val settext ="$mday"+"/"+"$mmonth"+"/"+"$myear"
-       input.setText(settext)
-   },year,month,day)
-    datepickerdialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    datepickerdialog.show()
+    DatePickerDialog(context!!,android.R.style.Theme_DeviceDefault_Dialog_Alert, {
+            mview, myear, mmonth, mday ->
+            val settext ="$mday"+"/"+"$mmonth"+"/"+"$myear"
+            input.setText(settext)
+   },year,month,day).show()
 
 }

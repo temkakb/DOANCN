@@ -17,20 +17,17 @@
             app:layout_constraintWidth_percent=".8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:helperText="tên dưới 26 ký tự*"
             app:counterEnabled="true"
             app:layout_constraintVertical_bias="0.1"
-            app:counterMaxLength="26"
             app:helperTextTextColor="@color/red"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_baseline_people_24"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
-                android:maxLength="26"
                 android:id="@+id/displayuser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/yourname"
+                android:hint="@string/gender"
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout

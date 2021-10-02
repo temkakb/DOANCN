@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.doancn.R
 
 class SigupFragment : Fragment() {
-    var position=0
+    private var position=0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,6 +21,7 @@ class SigupFragment : Fragment() {
         btnprevious.visibility=View.GONE
         dotranscation(youaresingleton)
         btnnext.setOnClickListener {
+            btnprevious.visibility=View.VISIBLE // hien thi nut back
             val fragment : Fragment?=childFragmentManager.findFragmentById(R.id.sigup_container)
             if(fragment!!::class!=UserFillInfoFragment3::class){ // check fragment end then do stuff
                 dotranscation(managersingleton.listfragment[position])
@@ -29,7 +30,6 @@ class SigupFragment : Fragment() {
             else {
                 // do stuff in fragment end
             }
-            btnprevious.visibility=View.VISIBLE
         }
         btnprevious.setOnClickListener {
             position--

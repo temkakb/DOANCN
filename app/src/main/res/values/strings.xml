@@ -22,4 +22,5 @@
     <string name="educationLevel">Trình độ học vấn</string>
     <string name="currentWorkPlace">Nơi làm việc hiện tại</string>
     <string name="dateborn">Ngày sinh</string>
+    <string name="gender">Giới tính</string>
 </resources>
