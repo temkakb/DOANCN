@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.doancn.Adapters.CalendarAdapter
 import com.example.doancn.Repository.AuthRepository
 import com.example.navigationdrawer.CustomAdapter
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     private val lastDayInCalendar = Calendar.getInstance()
     private val sdf = SimpleDateFormat("MM - yyyy")
@@ -79,6 +80,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         /***-----------------xem co token duoi sharedpre pho` ran ko. neu co thi validate thu-------------------- ***/
+
+
+
         val actionBar : ActionBar? = supportActionBar
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setLogo(R.drawable.ic_baseline_home_24)
@@ -129,6 +133,22 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        nav_view.setNavigationItemSelectedListener {
+
+            when(it.itemId){
+                R.id.nav_logout ->
+                {
+                    val sharedprefernces = getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
+                    val edit = sharedprefernces.edit()
+                    edit.apply { remove("token") }.apply()
+                    val intent = Intent(this,LoginRegisterActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+
+            true
+        }
 
     }
 
