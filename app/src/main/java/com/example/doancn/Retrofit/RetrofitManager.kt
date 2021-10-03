@@ -1,5 +1,6 @@
 package com.example.doancn.Retrofit
 
+import com.example.doancn.API.ISignUpApi
 import com.example.doancn.API.Iapiexample
 import com.example.doancn.API.IauthApi
 import com.example.doancn.API.IvalidateTokenApi
@@ -18,6 +19,9 @@ object RetrofitManager {
     }
     val validateTokenApi : IvalidateTokenApi by lazy {
         retrofit.create(IvalidateTokenApi::class.java)
+    }
+    val signupapi : ISignUpApi by lazy {
+        retrofit.create(ISignUpApi::class.java)
     }
 }
 class Urls {

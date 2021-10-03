@@ -20,6 +20,8 @@
             app:counterEnabled="true"
             app:layout_constraintVertical_bias="0.1"
             app:startIconDrawable="@drawable/ic_baseline_wc_24"
+            app:helperText="mặc định là giới tính 'khác' *"
+            app:helperTextTextColor="@color/red"
             android:layout_height="wrap_content">
             <AutoCompleteTextView
                 android:inputType="none"
@@ -41,7 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias=".1"
-            app:helperText="Số điện thoại của bạn từ 9 đến 11 số*"
+            app:helperText="từ 9 - 11 số  (Không bắt buộc) *"
             app:counterEnabled="true"
             app:helperTextTextColor="@color/red"
             app:counterMaxLength="11"
@@ -66,7 +68,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias=".1"
-            app:helperText="Địa chỉ thường trú*"
+            app:helperText="Địa chỉ thường trú (Không bắt buộc) *"
             app:counterEnabled="true"
             app:helperTextTextColor="@color/red"
             app:counterMaxLength="50"

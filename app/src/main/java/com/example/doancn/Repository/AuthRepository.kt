@@ -1,6 +1,7 @@
 package com.example.doancn.Repository
 
 import com.example.doancn.Models.Account
+import com.example.doancn.Models.AccountSignUp
 import com.example.doancn.Retrofit.RetrofitManager
 
 class AuthRepository {
@@ -9,5 +10,8 @@ class AuthRepository {
     }
     suspend fun validate (map: Map<String,String>) {
         RetrofitManager.validateTokenApi.validate(map)
+    }
+    suspend fun signup (account: AccountSignUp) {
+        RetrofitManager.signupapi.signup(account)
     }
 }

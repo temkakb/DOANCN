@@ -22,6 +22,7 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/activity_main.xml" value="0.136" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/card_view.xml" value="0.11927083333333334" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/custom_calendar_day.xml" value="0.2517948717948718" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/dropdown_gender.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fill_infomation_fragment.xml" value="0.2903645833333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/firstfragment.xml" value="0.1" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_fragment.xml" value="0.22351797862001943" />
@@ -33,7 +34,7 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment.xml" value="0.2903645833333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment_2.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment_3.xml" value="0.264" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/youare_fragment.xml" value="0.11614583333333334" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/youare_fragment.xml" value="0.176" />
       </map>
     </option>
   </component>

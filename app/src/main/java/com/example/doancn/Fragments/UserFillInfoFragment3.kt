@@ -42,9 +42,8 @@ fun datepicker(context: Context?, view: View) {
         context!!,
         android.R.style.Theme_DeviceDefault_Dialog_Alert,
         { mview, myear, mmonth, mday ->
-            val settext = "$mday" + "/" + "$mmonth" + "/" + "$myear"
+            val settext = "${if (mday<10) {"0"+mday}else{mday} }" + "/" + "${if (mmonth<10) {"0"+mmonth}else{mmonth} }" + "/" + "$myear"
             input.setText(settext)
         },year, month, day
     ).show()
-
 }

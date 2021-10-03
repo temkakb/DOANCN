@@ -29,7 +29,7 @@ open class YouAreFragment : Fragment() {
             val rg = view.findViewById(R.id.RG_sigup) as RadioGroup
             rg.setOnCheckedChangeListener { radioGroup, i ->
                 val checkedradio = view.findViewById(i) as RadioButton
-                viewmodel.account.role= viewmodel.rolepick.get(checkedradio.text)!! // not null pls
+                viewmodel.account.mrole= viewmodel.rolepick.get(checkedradio.text)!! // not null pls
             }
         }
         return view
