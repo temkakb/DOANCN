@@ -144,6 +144,7 @@ class MainActivity : AppCompatActivity(){
                     edit.apply { remove("token") }.apply()
                     val intent = Intent(this,LoginRegisterActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
             }
 
