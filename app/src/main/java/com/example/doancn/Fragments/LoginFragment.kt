@@ -35,13 +35,13 @@ class LoginFragment : Fragment() {
     ): View? {
         val view = layoutInflater.inflate(R.layout.login_fragment,container,false)
         val btnlogin = view.findViewById(R.id.btnlogin) as Button
-        val email = view.findViewById(R.id.email_login) as TextInputEditText
-        val password = view.findViewById(R.id.password_login) as TextInputEditText
         btnlogin.setOnClickListener {
-            val repository = AuthRepository()
-            val account = Account(email.text.toString(),password.text.toString())
-            GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.IO) {
                 try {
+                    val email = view.findViewById(R.id.email_login) as TextInputEditText
+                    val password = view.findViewById(R.id.password_login) as TextInputEditText
+                    val repository = AuthRepository()
+                    val account = Account(email.text.toString(),password.text.toString())
                     val map = repository.login(account)
                     val sharedPreferences = requireContext().getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
                     val edit = sharedPreferences.edit()
