@@ -31,7 +31,6 @@ class UserFillInfoFragment3 : Fragment() {
         return view
     }
 }
-
 fun datepicker(context: Context?, view: View) {
     val c = Calendar.getInstance()
     val year = c.get(Calendar.YEAR)

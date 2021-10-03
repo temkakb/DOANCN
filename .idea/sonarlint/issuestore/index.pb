@@ -27,8 +27,6 @@ p
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
-|
-Lapp/src/main/java/com/example/doancn/ViewModels/MviewmodelProviderFactory.kt,9\0\90e11aa6c7d6e20549f9f35a063d33cf33b4114a
 m
 =app/src/main/java/com/example/doancn/LoginRegisterActivity.kt,f\2\f254434378460a5c91f3cd70204581467dab12fa
 m
@@ -37,7 +35,9 @@ d
 4app/src/main/java/com/example/doancn/API/IauthApi.kt,8\4\84157d5863f270213ad9344ce4a14674c50401f5
 f
 6app/src/main/java/com/example/doancn/API/ISignUpApi.kt,d\e\de30bfabbab99bdd61a5c96356805a4c07ecff56
-v
-Fapp/src/main/java/com/example/doancn/Fragments/UserFillInfoFragment.kt,5\7\579998777a791b49984385071a60a92f4cc3be4a
-w
-Gapp/src/main/java/com/example/doancn/Fragments/UserFillInfoFragment2.kt,0\5\05ecb7ae5f0994d20ffeb8f85c2462768437687d
+f
+6app/src/main/java/com/example/doancn/Models/Account.kt,4\2\42844efdb7fa130ff3b2424b568c40dc62714ef1
+c
+3app/src/main/java/com/example/doancn/Models/User.kt,4\7\47ed6fbb4a813ff519fb57c68d6a1519e80859b9
+l
+<app/src/main/java/com/example/doancn/Models/AccountSignUp.kt,6\d\6d23dc8612cc0b62d15bba9cb66ba20d30889021

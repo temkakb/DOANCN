@@ -23,6 +23,7 @@
     <string name="currentWorkPlace">Nơi làm việc hiện tại</string>
     <string name="dateborn">Ngày sinh</string>
     <string name="gender">Giới tính</string>
+    <string name="finishsigup">Đăng ký hoàn tất. Xin hãy click vào đường link đã được gửi đến email của bạn (bạn có 15 phút để xác thực tài khoản đăng ký)</string>
     <string-array name="gender_select">
         <item>Nam</item>
         <item>Nữ</item>
