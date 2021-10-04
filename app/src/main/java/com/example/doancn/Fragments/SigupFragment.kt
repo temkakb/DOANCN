@@ -122,11 +122,10 @@ class SigupFragment : Fragment() {
                 Toast.makeText(requireContext(),"Email sai định dạng",Toast.LENGTH_SHORT).show()
                 return false
             }
-            else{
                 viewModel.account.password = password.text.toString()
                 viewModel.account.user.name = name.text.toString()
                 viewModel.account.email = email.text.toString()
-            }
+
         }
         if (fragment::class == UserFillInfoFragment2::class) {
             val gender = fragment.requireView().findViewById(R.id.gender) as AutoCompleteTextView
@@ -142,15 +141,11 @@ class SigupFragment : Fragment() {
             viewModel.account.user.address = address.text.toString()
         }
         if (fragment::class == UserFillInfoFragment3::class) {
-            val currentWorkPlace =
-                fragment.requireView().findViewById(R.id.currentWorkPlace) as TextInputEditText
-            val educationLevel =
-                fragment.requireView().findViewById(R.id.educationLevel) as TextInputEditText
+            val currentWorkPlace = fragment.requireView().findViewById(R.id.currentWorkPlace) as TextInputEditText
+            val educationLevel = fragment.requireView().findViewById(R.id.educationLevel) as TextInputEditText
             val dateborn = fragment.requireView().findViewById(R.id.dateborn) as TextInputEditText
-            if (isEmptyET(dateborn))
-            {
-                return false
-            }
+            if (isEmptyET(dateborn)) return false
+
             viewModel.account.user.currentWorkPlace = currentWorkPlace.text.toString()
             viewModel.account.user.educationLevel = educationLevel.text.toString()
             viewModel.account.user.dob = dateborn.text.toString()
