@@ -53,31 +53,31 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         replaceFragment(HomeFragment())
         nav_view.menu.findItem(R.id.nav_home).setChecked(true)
 
-        val sharedprefernces = getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-        val token : String? = sharedprefernces.getString("token",null)
-        val intent = Intent(this,LoginRegisterActivity::class.java)
-        if (token==null){ // CODE CHAY CHO MAU, co gi chu improve nha
-            startActivity(intent)
-            finish()
-        }
-        else {
-            GlobalScope.launch {
-                try {
-                    val auth = AuthRepository()
-                    val map = HashMap<String,String>()
-                    map.put("token",token)
-                    auth.validate(map)
-                }
-                // token ko hop le
-                catch (e: retrofit2.HttpException)
-                {
-                    Log.d("gigido","tokenkohople")
-                    sharedprefernces.edit().clear().apply()
-                    startActivity(intent)
-                    finish()
-                }
-            }
-        }
+//        val sharedprefernces = getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
+//        val token : String? = sharedprefernces.getString("token",null)
+//        val intent = Intent(this,LoginRegisterActivity::class.java)
+//        if (token==null){ // CODE CHAY CHO MAU, co gi chu improve nha
+//            startActivity(intent)
+//            finish()
+//        }
+//        else {
+//            GlobalScope.launch {
+//                try {
+//                    val auth = AuthRepository()
+//                    val map = HashMap<String,String>()
+//                    map.put("token",token)
+//                    auth.validate(map)
+//                }
+//                // token ko hop le
+//                catch (e: retrofit2.HttpException)
+//                {
+//                    Log.d("gigido","tokenkohople")
+//                    sharedprefernces.edit().clear().apply()
+//                    startActivity(intent)
+//                    finish()
+//                }
+//            }
+//        }
         /***-----------------xem co token duoi sharedpre pho` ran ko. neu co thi validate thu-------------------- ***/
 
         var actionBar : ActionBar? = supportActionBar

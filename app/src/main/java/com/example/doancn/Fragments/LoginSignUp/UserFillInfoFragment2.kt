@@ -1,4 +1,4 @@
-package com.example.doancn.Fragments
+package com.example.doancn.Fragments.LoginSignUp
 
 import android.os.Bundle
 import android.view.LayoutInflater

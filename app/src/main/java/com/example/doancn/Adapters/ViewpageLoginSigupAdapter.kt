@@ -3,8 +3,8 @@ package com.example.doancn.Adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.doancn.Fragments.LoginFragment
-import com.example.doancn.Fragments.SigupFragment
+import com.example.doancn.Fragments.LoginSignUp.LoginFragment
+import com.example.doancn.Fragments.LoginSignUp.SigupFragment
 
 class ViewpageLoginSigupAdapter(support : FragmentManager) : FragmentPagerAdapter(support,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -23,6 +23,6 @@ class ViewpageLoginSigupAdapter(support : FragmentManager) : FragmentPagerAdapte
       var listframent : Array<Fragment>
      init {
             listname = arrayOf("Đăng Nhập", "Đăng Ký")
-         listframent = arrayOf(LoginFragment(),SigupFragment())
+         listframent = arrayOf(LoginFragment(), SigupFragment())
      }
 }
