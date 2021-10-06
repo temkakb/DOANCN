@@ -1,4 +1,4 @@
-package com.example.doancn.Fragments
+package com.example.doancn.Fragments.LoginSignUp
 
 import android.app.DatePickerDialog
 import android.content.Context

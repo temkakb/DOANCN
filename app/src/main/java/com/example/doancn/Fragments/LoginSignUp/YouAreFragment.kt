@@ -1,13 +1,11 @@
-package com.example.doancn.Fragments
+package com.example.doancn.Fragments.LoginSignUp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.doancn.R
@@ -15,7 +13,6 @@ import com.example.doancn.ViewModels.SignUpManagerViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 open class YouAreFragment : Fragment() {
     override fun onCreateView(
