@@ -41,14 +41,11 @@ class SigupFragment : Fragment() {
         // get view model
         btnprevious.visibility = View.GONE
         dotranscation(youaresingleton) // transcation a child fragment
-        GlobalScope.launch {
-            setevent(btnprevious, btnnext, viewmodel) // set event cho 2 nut
-
-        }
+        setEvent(btnprevious, btnnext, viewmodel) // set event cho 2 nut
         // set event
         return view
     }
-    private fun setevent(btnprevious: Button, btnnext: Button, viewmodel: SignUpManagerViewModel) {
+    private fun setEvent(btnprevious: Button, btnnext: Button, viewmodel: SignUpManagerViewModel) {
         GlobalScope.launch(Dispatchers.Default) {
             btnnext.setOnClickListener {
                 btnprevious.visibility = View.VISIBLE // hien thi nut back

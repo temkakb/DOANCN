@@ -21,12 +21,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
-
-
-
-
-
-
 class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +29,11 @@ class LoginFragment : Fragment() {
     ): View? {
         val view = layoutInflater.inflate(R.layout.login_fragment,container,false)
         val btnlogin = view.findViewById(R.id.btnlogin) as Button
+        setEventButtonLogin(btnlogin,view)
+        return view
+    }
+    private fun setEventButtonLogin (btnlogin :Button,view: View )
+    {
         btnlogin.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
                 try {
@@ -44,8 +43,7 @@ class LoginFragment : Fragment() {
                     val account = Account(email.text.toString(),password.text.toString())
                     val map = repository.login(account)
                     val sharedPreferences = requireContext().getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-                    val edit = sharedPreferences.edit()
-                    edit.apply{
+                    sharedPreferences.edit().apply{
                         putString("token",map.get("token"))
                     }.apply()
                     val intent = Intent(context,MainActivity::class.java)
@@ -57,11 +55,10 @@ class LoginFragment : Fragment() {
                     val jObjError = JSONObject(e.response()?.errorBody()?.string())
                     val mssg=jObjError.get("message")
                     withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "$mssg", Toast.LENGTH_SHORT).show()
-                }
+                        Toast.makeText(context, "$mssg", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
-        return view
     }
 }
