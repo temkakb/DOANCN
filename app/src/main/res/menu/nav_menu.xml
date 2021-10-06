@@ -2,57 +2,63 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="Trang chính"/>
 
-    <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:title="Trang chính"/>
+        <item
+            android:id="@+id/nav_myClass"
+            android:icon="@drawable/ic_baseline_class_24"
+            android:title="Lớp học của tôi"/>
 
-    <item
-        android:id="@+id/nav_myClass"
-        android:icon="@drawable/ic_baseline_class_24"
-        android:title="Lớp học của tôi"/>
+        <item
+            android:id="@+id/nav_joinclass"
+            android:icon="@drawable/ic_baseline_add_24"
+            android:title="Tham gia lớp học"/>
 
-    <item
-        android:id="@+id/nav_joinclass"
-        android:icon="@drawable/ic_baseline_add_24"
-        android:title="Tham gia lớp học"/>
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="Cài đặt"/>
 
-    <item
-        android:id="@+id/nav_setting"
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:title="Cài đặt"/>
+        <item android:title="Hồ sơ cá nhân">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_profile"
+                        android:icon="@drawable/ic_baseline_profile_ind_24"
+                        android:title="Thông tin người dùng"/>
 
-    <item android:title="Hồ sơ cá nhân">
-        <menu>
+                    <item
+                        android:id="@+id/nav_logout"
+                        android:icon="@drawable/ic_baseline_logout_24"
+                        android:title="Đăng xuất"/>
 
-            <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_baseline_logout_24"
-                android:title="Đăng xuất"/>
+                </group>
 
-        </menu>
+            </menu>
 
-    </item>
+        </item>
 
-    <item android:title="Cộng đồng">
+        <item android:title="Cộng đồng">
 
-        <menu>
+            <menu>
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/ic_baseline_share_24"
+                    android:title="Chia sẻ"/>
 
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_baseline_share_24"
-                android:title="Chia sẻ"/>
+                <item
+                    android:id="@+id/nav_rate_us"
+                    android:icon="@drawable/ic_baseline_rate_review_24"
+                    android:title="Đánh giá"/>
 
-            <item
-                android:id="@+id/nav_rate_us"
-                android:icon="@drawable/ic_baseline_rate_review_24"
-                android:title="Đánh giá"/>
+            </menu>
 
-        </menu>
+        </item>
 
-    </item>
-
-
+    </group>
 
 </menu>
