@@ -28,30 +28,34 @@ import java.net.SocketTimeoutException
 
 
 class SigupFragment : Fragment() {
+    lateinit private var viewModel: SignUpManagerViewModel
+    lateinit private var btnnext: Button
+    lateinit private var btnprevious: Button
     private var position = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewmodel = generateviewmodel() // when create fragement dong thoi create viewmodel
+        viewModel = generateviewmodel() // when create fragement dong thoi create viewmodel
         val view = layoutInflater.inflate(R.layout.signup_fragment, container, false)
-        val btnnext = view.findViewById(R.id.btn_next) as Button
-        val btnprevious = view.findViewById(R.id.btn_previous) as Button
+        btnnext = view.findViewById(R.id.btn_next) as Button
+        btnprevious = view.findViewById(R.id.btn_previous) as Button
         // get view model
         btnprevious.visibility = View.GONE
         dotranscation(youaresingleton) // transcation a child fragment
-        setEvent(btnprevious, btnnext, viewmodel) // set event cho 2 nut
+        setEvent2Button() // set event cho 2 nut
         // set event
         return view
     }
-    private fun setEvent(btnprevious: Button, btnnext: Button, viewmodel: SignUpManagerViewModel) {
+
+    private fun setEvent2Button() {
         GlobalScope.launch(Dispatchers.Default) {
             btnnext.setOnClickListener {
                 btnprevious.visibility = View.VISIBLE // hien thi nut back
                 val fragment: Fragment? =
                     childFragmentManager.findFragmentById(R.id.sigup_container)
-                if(setdata(fragment!!, viewmodel)) {
+                if (setdata(fragment!!)) {
                     if (fragment::class != UserFillInfoFragment3::class) { // check fragment end then do stuff
                         dotranscation(managersingleton.listfragment[position])
                         // set event khi fragment change
@@ -60,7 +64,7 @@ class SigupFragment : Fragment() {
                         GlobalScope.launch {
                             try {
                                 val authapi = AuthRepository()
-                                authapi.signup(viewmodel.account) // post dang ky
+                                authapi.signup(viewModel.account) // post dang ky
                                 dotranscation(managersingleton.listfragment[3]) // fragment hoan tat
                                 withContext(Dispatchers.Main)
                                 {
@@ -71,11 +75,19 @@ class SigupFragment : Fragment() {
                                 withContext(Dispatchers.Main) {
                                     val jObjError = JSONObject(e.response()?.errorBody()!!.string())
                                     val msg = jObjError.get("message")
-                                    Toast.makeText(requireContext(), msg.toString(), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        requireContext(),
+                                        msg.toString(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             } catch (Eof: EOFException) {
                                 withContext(Dispatchers.Main) {
-                                    Toast.makeText(requireContext(), "Thao tác quá nhanh, từ từ thôi", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Thao tác quá nhanh, từ từ thôi",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             } catch (e: SocketTimeoutException) {
                                 withContext(Dispatchers.Main) {
@@ -99,29 +111,31 @@ class SigupFragment : Fragment() {
             }
         }
     }
-    private fun setdata(fragment: Fragment, viewModel: SignUpManagerViewModel):Boolean {
+
+    private fun setdata(fragment: Fragment): Boolean {
         if (fragment::class == UserFillInfoFragment::class) { // in fragment 1
             val email = fragment.requireView().findViewById(R.id.email) as TextInputEditText
             val password = fragment.requireView().findViewById(R.id.password) as TextInputEditText
             val name = fragment.requireView().findViewById(R.id.yourname) as TextInputEditText
-            if(isEmptyET(email) || isEmptyET(password)|| isEmptyET(name))
-            {
-                Toast.makeText(requireContext(),"Các ô Bắt buộc* không được trống",Toast.LENGTH_SHORT).show()
+            if (isEmptyET(email) || isEmptyET(password) || isEmptyET(name)) {
+                Toast.makeText(
+                    requireContext(),
+                    "Các ô Bắt buộc* không được trống",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return false
             }
-            if(password.text!!.length<8)
-            {
-                Toast.makeText(requireContext(),"Mật khẩu dưới 8 ký tự",Toast.LENGTH_SHORT).show()
+            if (password.text!!.length < 8) {
+                Toast.makeText(requireContext(), "Mật khẩu dưới 8 ký tự", Toast.LENGTH_SHORT).show()
                 return false
             }
-            if(!validateemailaddress(email))
-            {
-                Toast.makeText(requireContext(),"Email sai định dạng",Toast.LENGTH_SHORT).show()
+            if (!validateemailaddress(email)) {
+                Toast.makeText(requireContext(), "Email sai định dạng", Toast.LENGTH_SHORT).show()
                 return false
             }
-                viewModel.account.password = password.text.toString()
-                viewModel.account.user.name = name.text.toString()
-                viewModel.account.email = email.text.toString()
+            viewModel.account.password = password.text.toString()
+            viewModel.account.user.name = name.text.toString()
+            viewModel.account.email = email.text.toString()
 
         }
         if (fragment::class == UserFillInfoFragment2::class) {
@@ -130,16 +144,17 @@ class SigupFragment : Fragment() {
             val address = fragment.requireView().findViewById(R.id.address) as TextInputEditText
             try {
                 viewModel.account.mgender = viewModel.genderpick.get(gender.text.toString())!!
-            }catch (e: NullPointerException)
-            {
+            } catch (e: NullPointerException) {
                 viewModel.account.mgender = viewModel.genderpick.get("Khác")!!
             }
             viewModel.account.user.phoneNumber = phone.text.toString()
             viewModel.account.user.address = address.text.toString()
         }
         if (fragment::class == UserFillInfoFragment3::class) {
-            val currentWorkPlace = fragment.requireView().findViewById(R.id.currentWorkPlace) as TextInputEditText
-            val educationLevel = fragment.requireView().findViewById(R.id.educationLevel) as TextInputEditText
+            val currentWorkPlace =
+                fragment.requireView().findViewById(R.id.currentWorkPlace) as TextInputEditText
+            val educationLevel =
+                fragment.requireView().findViewById(R.id.educationLevel) as TextInputEditText
             val dateborn = fragment.requireView().findViewById(R.id.dateborn) as TextInputEditText
             if (isEmptyET(dateborn)) return false
 
@@ -165,16 +180,20 @@ class SigupFragment : Fragment() {
         transcation.addToBackStack(null)
         transcation.commit()
     }
+
     private fun isEmptyET(etText: TextInputEditText): Boolean {
         return if (etText.text.toString().trim { it <= ' ' }.length > 0) false else true
     }
-    private fun validateemailaddress (et : TextInputEditText) : Boolean {
+
+    private fun validateemailaddress(et: TextInputEditText): Boolean {
         val etstring = et.text.toString()
         return Patterns.EMAIL_ADDRESS.matcher(etstring).matches()
 
     }
+
     object managersingleton { // tuan tu fragment
         var listfragment: List<Fragment>
+
         init {
             listfragment = listOf<Fragment>(
                 UserFillInfoFragment(),
@@ -184,5 +203,6 @@ class SigupFragment : Fragment() {
             )
         }
     }
+
     object youaresingleton : YouAreFragment() // hang dat biet =)) con ghe ko cho vao hang
 }
