@@ -19,6 +19,7 @@ import com.example.doancn.Fragments.MyClass.MyClassFragment
 import com.example.doancn.Fragments.Profile.ProfileFragment
 import com.example.doancn.Fragments.Setting.SettingFragment
 import com.example.doancn.Repository.AuthRepository
+import com.example.doancn.Utilities.JwtManager
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
@@ -67,11 +68,14 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                     val map = HashMap<String,String>()
                     map.put("token",token)
                     auth.validate(map)
+                    JwtManager.apply {
+                        getpublickey(token)
+                        readrolefromtokenJws()
+                    }
                 }
                 // token ko hop le
                 catch (e: retrofit2.HttpException)
                 {
-                    Log.d("gigido","tokenkohople")
                     sharedprefernces.edit().clear().apply()
                     startActivity(intent)
                     finish()

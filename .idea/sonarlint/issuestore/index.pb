@@ -27,8 +27,6 @@ y
 Iapp/src/main/java/com/example/doancn/ViewModels/SignUpManagerViewModel.kt,9\a\9ad2851b18e15b70992f86f10c1bc95febb1712a
 b
 2app/src/main/java/com/example/doancn/DataObject.kt,3\b\3b6ff676b5740c7db39ff57b90abdabc9cb9f3ec
-<
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 p
@@ -43,5 +41,3 @@ Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/ValidateEmailFragmen
 Lapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/YouAreFragment.kt,0\e\0e9ac11b2597e89d9254a738945d8bc276fd2898
 z
 Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
-d
-4app/src/main/java/com/example/doancn/MainActivity.kt,b\3\b3409f0586a886b28c74fad5b4c4c2cb33e9f430
