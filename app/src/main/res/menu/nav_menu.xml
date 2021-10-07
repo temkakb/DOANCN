@@ -14,6 +14,11 @@
             android:title="Lớp học của tôi"/>
 
         <item
+            android:id="@+id/nav_createclass"
+            android:icon="@drawable/ic_baseline_add_24"
+            android:title="Tạo lớp học"/>
+
+        <item
             android:id="@+id/nav_joinclass"
             android:icon="@drawable/ic_baseline_add_24"
             android:title="Tham gia lớp học"/>

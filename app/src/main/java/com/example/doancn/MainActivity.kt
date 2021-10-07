@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.doancn.Fragments.CreateClass.CreateClassFragment
 import com.example.doancn.Fragments.Home.HomeFragment
 import com.example.doancn.Fragments.JoinClass.JoinClassFragment
 import com.example.doancn.Fragments.MyClass.MyClassFragment
@@ -30,10 +31,11 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private val FRAGMENT_HOME:Int = 0
     private val FRAGMENT_MYCLASS:Int = 1
     private val FRAGMENT_JOINCLASS:Int = 2
-    private val FRAGMENT_SETTING:Int = 3
-    private val FRAGMENT_PROFILE:Int = 4
-    private val FRAGMENT_SHARE:Int = 5
-    private val FRAGMENT_RATEUS:Int = 6
+    private val FRAGMENT_CREATECLASS:Int = 3
+    private val FRAGMENT_SETTING:Int = 4
+    private val FRAGMENT_PROFILE:Int = 5
+    private val FRAGMENT_SHARE:Int = 6
+    private val FRAGMENT_RATEUS:Int = 7
 
     private var mCurrentFragment:Int = FRAGMENT_HOME
 
@@ -71,6 +73,18 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                     JwtManager.apply {
                         getpublickey(token)
                         readrolefromtokenJws()
+                        if (JwtManager.role == "STUDENT"){
+                            runOnUiThread {
+                                val nav_Menu: Menu = nav_view.getMenu()
+                                nav_Menu.findItem(R.id.nav_createclass).setVisible(false)
+                            }
+                        }
+                        else if(JwtManager.role == "TEACHER") {
+                            runOnUiThread {
+                                val nav_Menu: Menu = nav_view.getMenu()
+                                nav_Menu.findItem(R.id.nav_joinclass).setVisible(false)
+                            }
+                        }
                     }
                 }
                 // token ko hop le
@@ -91,12 +105,11 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         actionBar?.setTitle("Home");
 
     }
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.mymenu, menu)
         return true
     }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var actionBar : ActionBar? = supportActionBar
@@ -116,6 +129,13 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 actionBar?.title = "Lớp học của tôi";
                 replaceFragment( MyClassFragment())
                 mCurrentFragment = FRAGMENT_MYCLASS
+            }
+        }else if (id == R.id.nav_createclass ){
+            if(mCurrentFragment != FRAGMENT_CREATECLASS){
+                actionBar?.setLogo(R.drawable.ic_baseline_add_24)
+                actionBar?.title = "Tạo lớp học";
+                replaceFragment( CreateClassFragment())
+                mCurrentFragment = FRAGMENT_CREATECLASS
             }
         }else if (id == R.id.nav_joinclass ){
             if(mCurrentFragment != FRAGMENT_JOINCLASS){
