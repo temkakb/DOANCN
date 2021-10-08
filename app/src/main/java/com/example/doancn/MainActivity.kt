@@ -1,4 +1,5 @@
 package com.example.doancn
+
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -7,7 +8,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -19,12 +19,15 @@ import com.example.doancn.Fragments.JoinClass.JoinClassFragment
 import com.example.doancn.Fragments.MyClass.MyClassFragment
 import com.example.doancn.Fragments.Profile.ProfileFragment
 import com.example.doancn.Fragments.Setting.SettingFragment
+import com.example.doancn.Models.User
+import com.example.doancn.R.id.nav_home
 import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.Utilities.JwtManager
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener{
 
@@ -37,8 +40,9 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private val FRAGMENT_SHARE:Int = 6
     private val FRAGMENT_RATEUS:Int = 7
 
-    private var mCurrentFragment:Int = FRAGMENT_HOME
+    private var mCurrentFragment: Int = -1
 
+    private lateinit var user : User
 
 
 
@@ -47,14 +51,17 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if(savedInstanceState==null){
+            mCurrentFragment = FRAGMENT_HOME
+            replaceFragment(HomeFragment())
+        }
+
         setSupportActionBar(mToolbar)
         val toogle = ActionBarDrawerToggle(this,drawerLayout,mToolbar,R.string.open,R.string.close)
         drawerLayout.addDrawerListener(toogle)
         toogle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-
-        replaceFragment(HomeFragment())
-        nav_view.menu.findItem(R.id.nav_home).setChecked(true)
+        nav_view.menu.findItem(nav_home).setChecked(true)
 
         val sharedprefernces = getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
         val token : String? = sharedprefernces.getString("token",null)
@@ -98,63 +105,46 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         }
         /***-----------------xem co token duoi sharedpre pho` ran ko. neu co thi validate thu-------------------- ***/
 
-        var actionBar : ActionBar? = supportActionBar
-        actionBar?.setDisplayShowHomeEnabled(true)
-        actionBar?.setDisplayUseLogoEnabled(true)
-        actionBar?.setLogo(R.drawable.ic_baseline_home_24)
-        actionBar?.setTitle("Home");
+
 
     }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.mymenu, menu)
-        return true
-    }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (mCurrentFragment != -1) {
+            outState.putInt("mCurrentFragment", mCurrentFragment)}
+        super.onSaveInstanceState(outState)
+    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        var actionBar : ActionBar? = supportActionBar
-        actionBar?.setDisplayShowHomeEnabled(true)
-        actionBar?.setDisplayUseLogoEnabled(true)
         val id : Int = item.itemId
-        if( id == R.id.nav_home){
+        if( id == nav_home){
             if(mCurrentFragment != FRAGMENT_HOME){
                 replaceFragment( HomeFragment())
-                actionBar?.setLogo(R.drawable.ic_baseline_home_24)
-                actionBar?.title = "Home";
                 mCurrentFragment = FRAGMENT_HOME
             }
         }else if (id == R.id.nav_myClass ){
             if(mCurrentFragment != FRAGMENT_MYCLASS){
-                actionBar?.setLogo(R.drawable.ic_baseline_class_24)
-                actionBar?.title = "Lớp học của tôi";
                 replaceFragment( MyClassFragment())
                 mCurrentFragment = FRAGMENT_MYCLASS
             }
         }else if (id == R.id.nav_createclass ){
             if(mCurrentFragment != FRAGMENT_CREATECLASS){
-                actionBar?.setLogo(R.drawable.ic_baseline_add_24)
-                actionBar?.title = "Tạo lớp học";
                 replaceFragment( CreateClassFragment())
                 mCurrentFragment = FRAGMENT_CREATECLASS
             }
         }else if (id == R.id.nav_joinclass ){
             if(mCurrentFragment != FRAGMENT_JOINCLASS){
-                actionBar?.setLogo(R.drawable.ic_baseline_add_24)
-                actionBar?.title = "Tham gia lớp học";
                 replaceFragment( JoinClassFragment())
                 mCurrentFragment = FRAGMENT_JOINCLASS
             }
         }else if (id == R.id.nav_setting ){
             if(mCurrentFragment != FRAGMENT_SETTING){
-                actionBar?.setLogo(R.drawable.ic_baseline_settings_24)
-                actionBar?.setTitle("Cài đặt");
                 replaceFragment( SettingFragment())
                 mCurrentFragment = FRAGMENT_SETTING
             }
         }else if (id == R.id.nav_profile ){
             if(mCurrentFragment != FRAGMENT_PROFILE){
-                actionBar?.setLogo(R.drawable.ic_baseline_profile_ind_24)
-                actionBar?.setTitle("Thông tin cá nhân");
                 replaceFragment( ProfileFragment())
                 mCurrentFragment = FRAGMENT_PROFILE
             }
@@ -190,3 +180,4 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
 
 }
+
