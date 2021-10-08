@@ -3,13 +3,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -107,6 +107,23 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.mymenu, menu)
+        val menusearch = menu!!.findItem(R.id.menu_search).actionView as androidx.appcompat.widget.SearchView
+        menusearch.queryHint= resources.getString(R.string.search)
+        menusearch.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // later
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val bunlde = Bundle()
+                bunlde.putString("query",query)
+                val joinClassFragment = JoinClassFragment()
+                JoinClassFragment().arguments=bunlde
+                replaceFragment(joinClassFragment)
+                return false
+            }
+        })
         return true
     }
 
