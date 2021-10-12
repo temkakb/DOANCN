@@ -72,9 +72,7 @@ class SigupFragment : Fragment() {
                         GlobalScope.launch {
                             try {
                                 val authapi = AuthRepository()
-
                                 authapi.signup(viewModel.account) // post dang ky
-
                                 dotranscation(managersingleton.listfragment[3]) // fragment hoan tat
                                 withContext(Dispatchers.Main)
                                 {
