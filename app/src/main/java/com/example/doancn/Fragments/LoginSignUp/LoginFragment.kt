@@ -15,6 +15,7 @@ import com.example.doancn.Models.Account
 import com.example.doancn.R
 import com.example.doancn.Repository.AuthRepository
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.login_fragment.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -37,8 +38,8 @@ class LoginFragment : Fragment() {
         btnlogin.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
                 try {
-                    val email = view.findViewById(R.id.email_login) as TextInputEditText
-                    val password = view.findViewById(R.id.password_login) as TextInputEditText
+                    val email = view.email_login
+                    val password = view.password_login
                     val repository = AuthRepository()
                     val account = Account(email.text.toString(),password.text.toString())
                     val map = repository.login(account)

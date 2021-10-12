@@ -119,8 +119,11 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 val bunlde = Bundle()
                 bunlde.putString("query",query)
                 val joinClassFragment = JoinClassFragment()
-                JoinClassFragment().arguments=bunlde
+                joinClassFragment.arguments=bunlde
+                actionBar?.setLogo(R.drawable.ic_baseline_add_24)
+                actionBar?.title = "Tham gia lớp học";
                 replaceFragment(joinClassFragment)
+                mCurrentFragment = FRAGMENT_JOINCLASS
                 return false
             }
         })

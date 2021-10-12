@@ -17,6 +17,7 @@ import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.ViewModels.MviewmodelProviderFactory
 import com.example.doancn.ViewModels.SignUpManagerViewModel
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.signup_fragment.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,8 +40,8 @@ class SigupFragment : Fragment() {
     ): View? {
         viewModel = generateviewmodel() // when create fragement dong thoi create viewmodel
         val view = layoutInflater.inflate(R.layout.signup_fragment, container, false)
-        btnnext = view.findViewById(R.id.btn_next) as Button
-        btnprevious = view.findViewById(R.id.btn_previous) as Button
+        btnnext = view.btn_next
+        btnprevious = view.btn_previous
         // get view model
         btnprevious.visibility = View.GONE
         dotranscation(youaresingleton) // transcation a child fragment
