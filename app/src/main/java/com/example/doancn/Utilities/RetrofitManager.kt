@@ -1,4 +1,6 @@
 package com.example.doancn.Retrofit
+import com.example.doancn.API.IEnrollmentApi
+import com.example.doancn.API.ISubjectApi
 import com.example.doancn.API.Iapiexample
 import com.example.doancn.API.IauthApi
 import retrofit2.Retrofit
@@ -13,6 +15,12 @@ object RetrofitManager {
     }
     val authapi : IauthApi by lazy {
         retrofit.create(IauthApi::class.java)
+    }
+    val enrollmentapi : IEnrollmentApi by lazy {
+        retrofit.create(IEnrollmentApi::class.java)
+    }
+    val subjectapi : ISubjectApi by lazy {
+        retrofit.create(ISubjectApi::class.java)
     }
 }
 class Urls {
