@@ -1,6 +1,7 @@
 package com.example.doancn.Fragments.LoginSignUp
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.doancn.LoginRegisterActivity
 import com.example.doancn.Models.AccountSignUp
 import com.example.doancn.Models.User
 import com.example.doancn.R
@@ -62,10 +64,17 @@ class SigupFragment : Fragment() {
                         // set event khi fragment change
                         position++
                     } else {
+                        Log.d("gigidone",viewModel.account.user.name)
+                        Log.d("gigidone",viewModel.account.user.address)
+                        Log.d("gigidone",viewModel.account.mgender)
+                        Log.d("gigidone",viewModel.account.password)
+                        Log.d("gigidone",viewModel.account.user.currentWorkPlace)
                         GlobalScope.launch {
                             try {
                                 val authapi = AuthRepository()
+
                                 authapi.signup(viewModel.account) // post dang ky
+
                                 dotranscation(managersingleton.listfragment[3]) // fragment hoan tat
                                 withContext(Dispatchers.Main)
                                 {
@@ -170,7 +179,7 @@ class SigupFragment : Fragment() {
         // remember view model tồn tại chung với activity . loginsignup activity
         val viewmodelfactory = MviewmodelProviderFactory(AccountSignUp(User()), requireContext())
         return ViewModelProvider(
-            requireActivity(),
+            requireActivity() as LoginRegisterActivity,
             viewmodelfactory
         ).get(SignUpManagerViewModel::class.java)  // provide viewmodel cho toi!!
     }

@@ -23,6 +23,7 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/animation_select_textview.xml" value="0.12760416666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/background_behind.xml" value="0.12760416666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_button.xml" value="0.12291666666666666" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_button_enroll.xml" value="0.13541666666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_button_previous_back.xml" value="0.13229166666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_container_loginrg.xml" value="0.12291666666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_edittext_login.xml" value="0.12291666666666666" />
@@ -41,14 +42,15 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/underline_textview.xml" value="0.2203125" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/underline_textview_press.xml" value="0.12760416666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/card_view.xml" value="0.11927083333333334" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/card_view.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_item.xml" value="0.4" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_items.xml" value="0.6" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_itemt.xml" value="0.11145833333333334" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/custom_calendar_day.xml" value="0.2517948717948718" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/dropdown_gender.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fill_infomation_fragment.xml" value="0.2903645833333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/firstfragment.xml" value="0.1" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_joinclass.xml" value="0.264" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_joinclass.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.11510416666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_fragment.xml" value="0.22351797862001943" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_register_container.xml" value="0.2" />

@@ -77,8 +77,10 @@
                android:text="phí: 300.000/1 tháng"
                android:textStyle="italic" />
        </LinearLayout>
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/bg_button_enroll"
         android:id="@+id/btn_enroll"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:text="đăng ký"
        android:layout_centerVertical="true"

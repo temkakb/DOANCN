@@ -9,9 +9,9 @@ class AuthRepository {
         return RetrofitManager.authapi.login(account)
     }
     suspend fun validate (map: Map<String,String>) {
-        RetrofitManager.validateTokenApi.validate(map)
+        RetrofitManager.authapi.validate(map)
     }
     suspend fun signup (account: AccountSignUp) {
-        RetrofitManager.signupapi.signup(account)
+        RetrofitManager.authapi.signup(account)
     }
 }
