@@ -25,6 +25,8 @@
     <string name="gender">Giới tính</string>
     <string name="search">Tìm kiếm khóa học</string>
     <string name="finishsigup">Đăng ký hoàn tất. Xin hãy click vào đường link đã được gửi đến email của bạn (bạn có 15 phút để xác thực tài khoản đăng ký)</string>
+    <string name="baseoncity">Dựa trên nơi bạn sống:</string>
+    <string name="noclassroom">Không có có lớp học nào quanh khu vực của bạn</string>
     <string-array name="gender_select">
         <item>Nam</item>
         <item>Nữ</item>

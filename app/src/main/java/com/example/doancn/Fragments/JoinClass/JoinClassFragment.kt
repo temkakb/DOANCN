@@ -1,6 +1,8 @@
 package com.example.doancn.Fragments.JoinClass
 
 import android.Manifest
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -10,14 +12,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.doancn.Adapters.EnrolmentArrayAdapter
 import com.example.doancn.Adapters.SubjectsAdapter
 import com.example.doancn.Models.Classroom
 import com.example.doancn.Models.Subject
 import com.example.doancn.R
+import com.example.doancn.Repository.EnrollmentRepository
 import com.example.doancn.Repository.SubjectRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -36,12 +41,15 @@ class JoinClassFragment : Fragment() {
     private lateinit var subject : RecyclerView
     private lateinit var layoutmanager : LinearLayoutManager
     private lateinit var  fusedLocation : FusedLocationProviderClient
+    private lateinit var noclassroom : TextView
     private var classrooms :List<Classroom>? = null
+    private lateinit var sharedPreferences : SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedPreferences=requireContext().getSharedPreferences("tokenstorage",Context.MODE_PRIVATE)
         repository= SubjectRepository()
         val view = inflater.inflate(R.layout.fragment_joinclass, container, false)
         layoutmanager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
@@ -49,9 +57,10 @@ class JoinClassFragment : Fragment() {
         getClassrooms()
         getSubjects()
 
-//        view.joinclass_listview.adapter=EnrolmentArrayAdapter(requireContext(),listfakedata2)
         return view
     }
+
+
 
 
 
@@ -77,16 +86,35 @@ class JoinClassFragment : Fragment() {
            fusedLocation.lastLocation.addOnCompleteListener {
                task->
                val location : Location = task.getResult()
-               if (location!=null){
-                   val geocoder = Geocoder(requireContext(),Locale.getDefault())
-                    val listaddress : List<Address> =geocoder.getFromLocation(location.latitude,location.longitude,1)
-                   Log.d("gigido",listaddress[0].locality)
-
+               val geocoder = Geocoder(requireContext(),Locale.getDefault())
+               val listaddress : List<Address> =geocoder.getFromLocation(location.latitude,location.longitude,1)
+               requireView().city.text=listaddress[0].locality
+               try {
+                   GlobalScope.launch {
+                       val enrollmentRepository = EnrollmentRepository()
+                       classrooms= enrollmentRepository.getclassenrollment(listaddress[0].locality,
+                           "Bearer "+sharedPreferences.getString("token",null)!!
+                       )
+                       if (classrooms==null){
+                           noclassroom= requireView().noclassroom
+                           noclassroom.visibility= requireView().visibility
+                       }else{
+                           withContext(Dispatchers.Main) {
+                               requireView().joinclass_listview.adapter = EnrolmentArrayAdapter(
+                                   requireContext(),
+                                   classrooms!!
+                               )
+                           }
+                       }
+                   }
+               }catch (e : HttpException){
                }
+
+
            }
         }else{
             ActivityCompat.requestPermissions(requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION),44)
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),44)
         }
     }
 
