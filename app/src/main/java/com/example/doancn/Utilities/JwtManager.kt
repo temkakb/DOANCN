@@ -1,7 +1,6 @@
 package com.example.doancn.Utilities
 
 import android.util.Base64
-import android.util.Log
 import io.jsonwebtoken.Jwts
 import java.security.KeyFactory
 import java.security.PublicKey
@@ -14,8 +13,8 @@ object JwtManager {
     lateinit var role: String
 
     fun getpublickey(token: String) {
-        val i: Int? = token.lastIndexOf('.')
-        val withoutSignature: String? = token.substring(0, i!! + 1)
+        val i: Int = token.lastIndexOf('.')
+        val withoutSignature: String = token.substring(0, i + 1)
         val publickeyencoded =
             Jwts.parserBuilder().build().parseClaimsJwt(withoutSignature).header.get("publicKey")
         val bytekey = Base64.decode(publickeyencoded.toString(), Base64.DEFAULT)
