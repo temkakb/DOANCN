@@ -99,10 +99,12 @@ class JoinClassFragment : Fragment() {
                            noclassroom= requireView().noclassroom
                            noclassroom.visibility= requireView().visibility
                        }else{
+                           Log.d("gigidonemay1",classrooms.toString())
                            withContext(Dispatchers.Main) {
                                requireView().joinclass_listview.adapter = EnrolmentArrayAdapter(
                                    requireContext(),
-                                   classrooms!!
+                                   classrooms!!,
+                                   "Bearer "+sharedPreferences.getString("token",null)!!
                                )
                            }
                        }

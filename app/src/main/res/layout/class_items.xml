@@ -54,7 +54,7 @@
                android:layout_marginBottom="10dp"
                android:maxWidth="180dp"
                android:maxHeight="65dp"
-               android:text="lớp chuyên trần hưncccccccccccccđcc"
+               android:text=""
                android:textColor="@color/blue"
                android:textSize="18sp"
                android:textStyle="bold" />
@@ -64,7 +64,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:maxWidth="200dp"
-               android:text="thầy:Dương nguyễn minh tân" />
+               android:text="" />
            <TextView
                android:id="@+id/subject"
                android:layout_width="wrap_content"
@@ -77,7 +77,15 @@
                android:layout_height="wrap_content"
                android:layout_marginBottom="5dp"
                android:maxWidth="180dp"
-               android:text="phí: 300.000/1 tháng"
+               android:text=""
+               android:textStyle="italic" />
+           <TextView
+               android:id="@+id/startday"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="5dp"
+               android:maxWidth="180dp"
+               android:text=""
                android:textStyle="italic" />
        </LinearLayout>
 

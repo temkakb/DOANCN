@@ -26,8 +26,6 @@ object RetrofitManager {
 class Urls {
     companion object {
         const val url1 ="http://10.0.2.2:8081/"
-        const val url2="http://10.0.2.2:6969/"
-        const val url3=""
     }
 }
 

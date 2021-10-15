@@ -15,5 +15,5 @@ data class Classroom (
     val subject: Subject,
     val location : Location,
     val option: PaymentOption,
-    val enrolled: Boolean
+    var enrolled: Boolean
 )

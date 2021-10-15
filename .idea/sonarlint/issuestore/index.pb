@@ -40,11 +40,7 @@ Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment
 g
 7app/src/main/java/com/example/doancn/API/ISubjectApi.kt,8\0\80e95dac09b7fc02a78e165338a9c03845ac4a0b
 q
-Aapp/src/main/java/com/example/doancn/Utilities/RetrofitManager.kt,e\9\e90a0b28dbbf8be63bfe1e928621b1afea77f1a0
-q
 Aapp/src/main/java/com/example/doancn/Repository/AuthRepository.kt,2\9\293173f5abb1e93bd33a7878e3a5fbf0a1f9eaf6
-w
-Gapp/src/main/java/com/example/doancn/Repository/EnrollmentRepository.kt,a\7\a78fc7c6175dfb78dedbd48f3d2f4c5c1fe4faae
 f
 6app/src/main/java/com/example/doancn/Models/Subject.kt,e\3\e39c33f7af5dd6b7acaef1c3627cf153fb422ccc
 l
@@ -75,5 +71,3 @@ b
 Kapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/SigupFragment.kt,4\a\4af0b88a6e928979739a1d65e1ed077d8a3f7dfd
 z
 Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
-h
-8app/src/main/java/com/example/doancn/Models/Classroom.kt,6\5\65b8e7fcf4d2dd153f3c31bb72f3bd2ce3575d4c

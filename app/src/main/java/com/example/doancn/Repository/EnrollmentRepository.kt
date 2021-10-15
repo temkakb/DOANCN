@@ -5,6 +5,12 @@ import com.example.doancn.Retrofit.RetrofitManager
 
 class EnrollmentRepository {
     suspend fun getclassenrollment (city: String, token: String): List<Classroom>{
-        return  RetrofitManager.enrollmentapi.getclassenrollment(city,token);
+        return  RetrofitManager.enrollmentapi.getclassenrollment(city,token)
+    }
+    suspend fun doEnroll (id: Long, token: String) {
+        RetrofitManager.enrollmentapi.doEnroll(id,token)
+    }
+    suspend fun doDeleteEnrollment(id: Long,token: String){
+        RetrofitManager.enrollmentapi.doDeleteEnrollment(id,token)
     }
 }
