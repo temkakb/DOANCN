@@ -42,7 +42,7 @@ class JoinClassFragment : Fragment() {
     private lateinit var layoutmanager : LinearLayoutManager
     private lateinit var  fusedLocation : FusedLocationProviderClient
     private lateinit var noclassroom : TextView
-    private var classrooms :List<Classroom>? = null
+     var classrooms :List<Classroom>? = null
     private lateinit var sharedPreferences : SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +54,7 @@ class JoinClassFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_joinclass, container, false)
         layoutmanager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         subject = view.RC_subjects
-        getClassrooms()
+        getClassrooms(null)
         getSubjects()
 
         return view
@@ -72,14 +72,15 @@ class JoinClassFragment : Fragment() {
             listsubjects= repository.getSubjects()
             Log.d("gigidonemay", listsubjects!![0].name)
             withContext(Dispatchers.Main) {
-                subject.adapter = SubjectsAdapter(listsubjects!!)
+                subject.adapter = SubjectsAdapter(listsubjects!!,this@JoinClassFragment)
                 subject.layoutManager = layoutmanager
             }
             }catch (e:HttpException){ // dolater when it have
             }
         }
     }
-    private fun getClassrooms (){
+
+         fun getClassrooms (subject : String?){
         fusedLocation=LocationServices.getFusedLocationProviderClient(requireActivity())
         // check permission
         if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
@@ -92,14 +93,13 @@ class JoinClassFragment : Fragment() {
                try {
                    GlobalScope.launch {
                        val enrollmentRepository = EnrollmentRepository()
-                       classrooms= enrollmentRepository.getclassenrollment(listaddress[0].locality,
+                       classrooms= enrollmentRepository.getclassenrollment(listaddress[0].locality,subject,
                            "Bearer "+sharedPreferences.getString("token",null)!!
                        )
                        if (classrooms==null){
                            noclassroom= requireView().noclassroom
                            noclassroom.visibility= requireView().visibility
                        }else{
-                           Log.d("gigidonemay1",classrooms.toString())
                            withContext(Dispatchers.Main) {
                                requireView().joinclass_listview.adapter = EnrolmentArrayAdapter(
                                    requireContext(),
