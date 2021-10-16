@@ -42,6 +42,8 @@
        </androidx.cardview.widget.CardView>
 
        <LinearLayout
+           android:id="@+id/content"
+           android:layout_marginStart="10dp"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_toEndOf="@id/cardview"
@@ -52,50 +54,53 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_marginBottom="10dp"
-               android:maxWidth="180dp"
-               android:maxHeight="65dp"
+
                android:text=""
                android:textColor="@color/blue"
                android:textSize="18sp"
                android:textStyle="bold" />
 
            <TextView
+               android:textSize="12dp"
                android:id="@+id/teacher"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:maxWidth="200dp"
+               android:maxWidth="180dp"
                android:text="" />
+
            <TextView
+               android:textSize="12dp"
                android:id="@+id/subject"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:maxWidth="180dp"
                android:text="Môn : toán" />
+
            <TextView
+               android:textSize="12dp"
                android:id="@+id/fee"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_marginBottom="5dp"
-               android:maxWidth="180dp"
-               android:text=""
+               android:text="wwwwwwwwwwwwww"
                android:textStyle="italic" />
+
            <TextView
+               android:textSize="12dp"
                android:id="@+id/startday"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_marginBottom="5dp"
-               android:maxWidth="180dp"
                android:text=""
                android:textStyle="italic" />
        </LinearLayout>
 
        <androidx.appcompat.widget.AppCompatButton
            android:id="@+id/btn_enroll"
+
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:layout_alignParentEnd="true"
-           android:layout_centerVertical="true"
-           android:layout_marginEnd="10dp"
+           android:layout_below="@id/cardview"
+           android:layout_alignParentStart="true"
+           android:layout_marginStart="10dp"
            android:background="@drawable/bg_button_enroll"
            android:text="đăng ký"
            android:textColor="@color/white"

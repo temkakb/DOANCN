@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         toogle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
         mCurrentFragment = FRAGMENT_HOME
+
         replaceFragment(HomeFragment())
         nav_view.menu.findItem(R.id.nav_home).setChecked(true)
 
@@ -147,7 +148,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayUseLogoEnabled(true)
         actionBar?.setLogo(R.drawable.ic_baseline_home_24)
-        actionBar?.title = "Home";
+        actionBar?.title = "Home"
 
     }
 
@@ -217,7 +218,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         }else if (id == R.id.nav_myClass ){
             if(mCurrentFragment != FRAGMENT_MYCLASS){
                 actionBar?.setLogo(R.drawable.ic_baseline_class_24)
-                actionBar?.title = "Lớp học của tôi";
+                actionBar?.title = "Lớp học của tôi"
                 replaceFragment( MyClassFragment())
                 mCurrentFragment = FRAGMENT_MYCLASS
             }
