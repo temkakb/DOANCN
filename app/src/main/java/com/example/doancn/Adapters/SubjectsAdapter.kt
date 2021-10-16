@@ -1,7 +1,6 @@
 package com.example.doancn.Adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.doancn.Fragments.JoinClass.JoinClassFragment
 import com.example.doancn.Models.Subject
 import com.example.doancn.R
-import kotlinx.android.synthetic.main.class_items.*
 import kotlinx.android.synthetic.main.subject_items.view.*
 
 class SubjectsAdapter (var listsubject : List<Subject>,val fragment: JoinClassFragment): RecyclerView.Adapter<SubjectsAdapter.Sviewholder>() {
@@ -22,9 +20,22 @@ class SubjectsAdapter (var listsubject : List<Subject>,val fragment: JoinClassFr
     }
     override fun onBindViewHolder(holder: Sviewholder, position: Int) {
         holder.txt.text=listsubject[position].name
+        if(position==0){
+            holder.txt.setOnClickListener {
+                holder.txt.startAnimation(AnimationUtils.loadAnimation(holder.context,R.anim.animation_textview_pressed)) // setevent
+                fragment.getClassrooms(null) // thuc thi ham get danh sach
+            }
+        }
+        else{
         holder.txt.setOnClickListener {
-            holder.txt.startAnimation(AnimationUtils.loadAnimation(holder.context,R.anim.animation_textview_pressed)) // setevent
+            holder.txt.startAnimation(
+                AnimationUtils.loadAnimation(
+                    holder.context,
+                    R.anim.animation_textview_pressed
+                )
+            ) // setevent
             fragment.getClassrooms(holder.txt.text.toString()) // thuc thi ham get danh sach
+        }
         }
     }
     override fun getItemCount(): Int {

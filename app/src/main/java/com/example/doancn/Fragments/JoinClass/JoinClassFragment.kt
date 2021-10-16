@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -42,6 +43,7 @@ class JoinClassFragment : Fragment() {
     private lateinit var layoutmanager : LinearLayoutManager
     private lateinit var  fusedLocation : FusedLocationProviderClient
     private lateinit var noclassroom : TextView
+    private lateinit var noclassroomimageview : ImageView
      var classrooms :List<Classroom>? = null
     private lateinit var sharedPreferences : SharedPreferences
     override fun onCreateView(
@@ -53,10 +55,11 @@ class JoinClassFragment : Fragment() {
         repository= SubjectRepository()
         val view = inflater.inflate(R.layout.fragment_joinclass, container, false)
         layoutmanager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        noclassroom= view.noclassroom
+        noclassroomimageview=view.noclassroom_image
         subject = view.RC_subjects
         getClassrooms(null)
         getSubjects()
-
         return view
     }
 
@@ -96,11 +99,17 @@ class JoinClassFragment : Fragment() {
                        classrooms= enrollmentRepository.getclassenrollment(listaddress[0].locality,subject,
                            "Bearer "+sharedPreferences.getString("token",null)!!
                        )
-                       if (classrooms==null){
-                           noclassroom= requireView().noclassroom
-                           noclassroom.visibility= requireView().visibility
+                       if (classrooms==null|| classrooms!!.isEmpty()){
+                           withContext(Dispatchers.Main){
+
+                               noclassroom.visibility= View.VISIBLE
+                               noclassroomimageview.visibility=View.VISIBLE
+                               requireView().joinclass_listview.adapter=null
+                           }
                        }else{
                            withContext(Dispatchers.Main) {
+                               noclassroom.visibility= View.GONE
+                               noclassroomimageview.visibility=View.GONE
                                requireView().joinclass_listview.adapter = EnrolmentArrayAdapter(
                                    requireContext(),
                                    classrooms!!,

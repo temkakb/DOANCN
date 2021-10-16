@@ -27,7 +27,7 @@
     <string name="enrolled">Đã đăng ký</string>
     <string name="finishsigup">Đăng ký hoàn tất. Xin hãy click vào đường link đã được gửi đến email của bạn (bạn có 15 phút để xác thực tài khoản đăng ký)</string>
     <string name="baseoncity">Dựa trên nơi bạn sống:</string>
-    <string name="noclassroom">Không có có lớp học nào quanh khu vực của bạn</string>
+    <string name="noclassroom">Opps!! Không tìm thấy khóa học nào</string>
     <string name="imageteacher">imageteacher</string>
     <string name="numberattendance">Số người đăng ký</string>
     <string name="startday">Ngày bắt đầu</string>
