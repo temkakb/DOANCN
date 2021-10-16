@@ -11,6 +11,7 @@
     android:background="@drawable/side_nav_bar">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:paddingTop="8dp"
@@ -27,6 +28,7 @@
         android:textStyle="bold"/>
     
     <TextView
+        android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16dp"
