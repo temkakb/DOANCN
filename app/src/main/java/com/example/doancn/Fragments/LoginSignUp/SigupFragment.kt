@@ -1,6 +1,7 @@
 package com.example.doancn.Fragments.LoginSignUp
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.doancn.LoginRegisterActivity
 import com.example.doancn.Models.AccountSignUp
 import com.example.doancn.Models.User
 import com.example.doancn.R
@@ -17,6 +19,7 @@ import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.ViewModels.MviewmodelProviderFactory
 import com.example.doancn.ViewModels.SignUpManagerViewModel
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.signup_fragment.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,8 +42,8 @@ class SigupFragment : Fragment() {
     ): View? {
         viewModel = generateviewmodel() // when create fragement dong thoi create viewmodel
         val view = layoutInflater.inflate(R.layout.signup_fragment, container, false)
-        btnnext = view.findViewById(R.id.btn_next) as Button
-        btnprevious = view.findViewById(R.id.btn_previous) as Button
+        btnnext = view.btn_next
+        btnprevious = view.btn_previous
         // get view model
         btnprevious.visibility = View.GONE
         dotranscation(youaresingleton) // transcation a child fragment
@@ -61,6 +64,11 @@ class SigupFragment : Fragment() {
                         // set event khi fragment change
                         position++
                     } else {
+                        Log.d("gigidone",viewModel.account.user.name)
+                        Log.d("gigidone",viewModel.account.user.address)
+                        Log.d("gigidone",viewModel.account.mgender)
+                        Log.d("gigidone",viewModel.account.password)
+                        Log.d("gigidone",viewModel.account.user.currentWorkPlace)
                         GlobalScope.launch {
                             try {
                                 val authapi = AuthRepository()
@@ -169,7 +177,7 @@ class SigupFragment : Fragment() {
         // remember view model tồn tại chung với activity . loginsignup activity
         val viewmodelfactory = MviewmodelProviderFactory(AccountSignUp(User()), requireContext())
         return ViewModelProvider(
-            requireActivity(),
+            requireActivity() as LoginRegisterActivity,
             viewmodelfactory
         ).get(SignUpManagerViewModel::class.java)  // provide viewmodel cho toi!!
     }

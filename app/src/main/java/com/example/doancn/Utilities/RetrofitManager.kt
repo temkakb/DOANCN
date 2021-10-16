@@ -1,5 +1,9 @@
 package com.example.doancn.Retrofit
 
+import com.example.doancn.API.IEnrollmentApi
+import com.example.doancn.API.ISubjectApi
+import com.example.doancn.API.Iapiexample
+import com.example.doancn.API.IauthApi
 import com.example.doancn.API.*
 import com.example.doancn.API.ProfileApi.IUpdateUser
 import retrofit2.Retrofit
@@ -15,11 +19,11 @@ object RetrofitManager {
     val authapi : IauthApi by lazy {
         retrofit.create(IauthApi::class.java)
     }
-    val validateTokenApi : IvalidateTokenApi by lazy {
-        retrofit.create(IvalidateTokenApi::class.java)
+    val enrollmentapi : IEnrollmentApi by lazy {
+        retrofit.create(IEnrollmentApi::class.java)
     }
-    val signupapi : ISignUpApi by lazy {
-        retrofit.create(ISignUpApi::class.java)
+    val subjectapi : ISubjectApi by lazy {
+        retrofit.create(ISubjectApi::class.java)
     }
     val getmeapi : IGetmeApi by lazy {
         retrofit.create(IGetmeApi::class.java)
@@ -31,8 +35,6 @@ object RetrofitManager {
 class Urls {
     companion object {
         const val url1 ="http://10.0.2.2:8081/"
-        const val url2="http://10.0.2.2:6969/"
-        const val url3=""
     }
 }
 

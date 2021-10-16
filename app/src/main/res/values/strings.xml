@@ -18,12 +18,24 @@
     <string name="back">Quay lại</string>
     <string name="yourname">Tên của bạn</string>
     <string name="phonenumber">Số điện thoại</string>
-    <string name="address">Địa chỉ</string>
+
     <string name="educationLevel">Trình độ học vấn</string>
     <string name="currentWorkPlace">Nơi làm việc hiện tại</string>
     <string name="dateborn">Ngày sinh</string>
     <string name="gender">Giới tính</string>
+    <string name="search">Tìm kiếm khóa học</string>
+    <string name="enrolled">Đã đăng ký</string>
     <string name="finishsigup">Đăng ký hoàn tất. Xin hãy click vào đường link đã được gửi đến email của bạn (bạn có 15 phút để xác thực tài khoản đăng ký)</string>
+    <string name="baseoncity">Dựa trên nơi bạn sống:</string>
+    <string name="noclassroom">Opps!! Không tìm thấy khóa học nào</string>
+    <string name="imageteacher">imageteacher</string>
+    <string name="numberattendance">Số người đăng ký</string>
+    <string name="startday">Ngày bắt đầu</string>
+    <string name="fee">Phí</string>
+    <string name="address">Địa chỉ</string>
+    <string name="about">Giới thiệu</string>
+    <string name="about2">Mô tả lớp học</string>
+    <string name="enrollmentnow">Đăng ký Ngay</string>
     <string-array name="gender_select">
         <item>Nam</item>
         <item>Nữ</item>
