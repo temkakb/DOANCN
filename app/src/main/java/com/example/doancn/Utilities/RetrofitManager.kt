@@ -1,9 +1,7 @@
 package com.example.doancn.Retrofit
 
-import com.example.doancn.API.ISignUpApi
-import com.example.doancn.API.Iapiexample
-import com.example.doancn.API.IauthApi
-import com.example.doancn.API.IvalidateTokenApi
+import com.example.doancn.API.*
+import com.example.doancn.API.ProfileApi.IUpdateUser
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -22,6 +20,12 @@ object RetrofitManager {
     }
     val signupapi : ISignUpApi by lazy {
         retrofit.create(ISignUpApi::class.java)
+    }
+    val getmeapi : IGetmeApi by lazy {
+        retrofit.create(IGetmeApi::class.java)
+    }
+    val updateuserapi : IUpdateUser by lazy {
+        retrofit.create(IUpdateUser::class.java)
     }
 }
 class Urls {
