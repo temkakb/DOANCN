@@ -89,7 +89,8 @@ class JoinClassFragment : Fragment() {
         if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
            fusedLocation.lastLocation.addOnCompleteListener {
                task->
-               val location : Location = task.getResult()
+               val location : Location = task.result
+
                val geocoder = Geocoder(requireContext(),Locale.getDefault())
                val listaddress : List<Address> =geocoder.getFromLocation(location.latitude,location.longitude,1)
                requireView().city.text=listaddress[0].locality
