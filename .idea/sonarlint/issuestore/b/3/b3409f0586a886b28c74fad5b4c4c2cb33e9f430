@@ -1,6 +1,7 @@
 
-Fkotlin:S108¼")Either remove or fill this block of code.(Õó³÷úÿÿÿÿ
-Akotlin:S108¾")Either remove or fill this block of code.(óÚèÙ
-pkotlin:S3776†"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(ªï¬øÿÿÿÿ
-mkotlin:S117N"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(ÍÊÖ
-mkotlin:S117T"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(ÍÊÖ
+Fkotlin:S108ı")Either remove or fill this block of code.(Õó³÷úÿÿÿÿ
+Akotlin:S108ÿ")Either remove or fill this block of code.(óÚèÙ
+vkotlin:S3776B"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(¶Á»¬şÿÿÿÿ8ûÛ—ÅÈ/
+pkotlin:S3776Î"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ªï¬øÿÿÿÿ
+ykotlin:S117|"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(“¤Ç¦øÿÿÿÿ8„Ü—ÅÈ/
+zkotlin:S117‚"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(“¤Ç¦øÿÿÿÿ8…Ü—ÅÈ/

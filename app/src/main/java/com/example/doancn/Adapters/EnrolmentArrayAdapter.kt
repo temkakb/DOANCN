@@ -2,7 +2,6 @@ package com.example.doancn.Adapters
 
 import android.app.Dialog
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,14 +20,21 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
-class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val token: String): ArrayAdapter<Classroom>(context,
+class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val token: String,val listsubject : Array<String>,val optionarraystring : Array<String>): ArrayAdapter<Classroom>(context,
     R.layout.class_items,listclass) {
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
        val  view =  LayoutInflater.from(context).inflate(R.layout.class_items,null)
-        val fee = "Phí: "+listclass[position].fee.toString()+"VND"+"/"+listclass[position].option.name
+        val fee : String
+        if(listclass[position].option.paymentOptionId.toInt()==6){
+           fee = "Miễn phí"
+        }
+        else{
+         fee = "Phí: "+listclass[position].fee.toString()+"VND"+"/"+optionarraystring[listclass[position].option.paymentOptionId.toInt()]
+        }
+       val subject ="Môn: "+listsubject[listclass[position].subject.subjectId.toInt()]
         val teacher = "Thầy: "+listclass[position].teacher.name
-        val subject ="Môn: "+listclass[position].subject.name
         val startday ="Ngày bắt đầu: "+listclass[position].startDate
         view.teacher.text= teacher
         view.subject.text=subject
@@ -115,13 +121,20 @@ class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val
             dialog.classname.text=c.name
             dialog.startday.text=c.startDate
             dialog.numberattendance.text=c.currentAttendanceNumber.toString()
-            val fee =c.fee.toString() +"/"+ c.option.name
+            val fee : String
+            if(c.option.paymentOptionId.toInt()==6){
+                fee = "Miễn phí"
+            }
+            else{
+                fee = c.fee.toString()+"VND"+"\n"+optionarraystring[c.option.paymentOptionId.toInt()]
+            }
             dialog.fee.text=fee
+            dialog.cancel_button.setOnClickListener {
+                dialog.dismiss()
+            }
             if(c.enrolled){
                 switchtoenrolled(dialog.btn_enroll)
                 setEventButtonDialog(dialog.btn_enroll,view.btn_enroll,c)
-
-
             }
             else{
                 switchtoenroll(dialog.btn_enroll)
