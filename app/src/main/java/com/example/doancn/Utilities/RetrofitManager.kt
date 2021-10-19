@@ -5,7 +5,7 @@ import com.example.doancn.API.ISubjectApi
 import com.example.doancn.API.Iapiexample
 import com.example.doancn.API.IauthApi
 import com.example.doancn.API.*
-import com.example.doancn.API.ProfileApi.IUpdateUser
+import com.example.doancn.API.ProfileApi.IUserApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -25,11 +25,8 @@ object RetrofitManager {
     val subjectapi : ISubjectApi by lazy {
         retrofit.create(ISubjectApi::class.java)
     }
-    val getmeapi : IGetmeApi by lazy {
-        retrofit.create(IGetmeApi::class.java)
-    }
-    val updateuserapi : IUpdateUser by lazy {
-        retrofit.create(IUpdateUser::class.java)
+    val userapi : IUserApi by lazy {
+        retrofit.create(IUserApi::class.java)
     }
 }
 class Urls {

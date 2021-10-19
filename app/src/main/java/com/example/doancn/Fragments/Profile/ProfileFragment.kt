@@ -1,48 +1,53 @@
 package com.example.doancn.Fragments.Profile
 
 import android.Manifest
-import android.app.ProgressDialog
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
+import com.example.doancn.LoginRegisterActivity
 import com.example.doancn.MainActivity
 import com.example.doancn.Models.UserMe
 import com.example.doancn.R
-import com.example.doancn.R.id.*
 import com.example.doancn.Retrofit.RetrofitManager
 import com.example.doancn.Utilities.JwtManager
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import gun0912.tedbottompicker.TedBottomPicker
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.change_pasword.view.*
 import kotlinx.android.synthetic.main.edit_profile.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.regex.Pattern
+import kotlin.collections.HashMap
+import android.graphics.ImageDecoder
+import android.os.Build
+import androidx.annotation.RequiresApi
 
 
 class ProfileFragment : Fragment() {
 
     private var userme:UserMe? = null
-    var progressDialog: ProgressDialog? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +61,7 @@ class ProfileFragment : Fragment() {
 
 
 
+    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -68,32 +74,33 @@ class ProfileFragment : Fragment() {
             profile_phone.text = userme!!.phoneNumber
             profile_adress.text = userme!!.address
             when (userme!!.gender.genderID) {
-                1 -> {
-                    profile_gender.text = "Khác"
+                3 -> {
+                    profile_gender.text = getString(R.string.Orther)
                     if (userme!!.image == null)
                         profile_img.setImageResource(R.drawable.orther)
                 }
                 2 -> {
-                    profile_gender.text = "Nữ"
+                    profile_gender.text = getString(R.string.Female)
                     if (userme!!.image == null)
                         profile_img.setImageResource(R.drawable.femal)
                 }
-                3 -> {
-                    profile_gender.text = "Nam"
+                1 -> {
+                    profile_gender.text = getString(R.string.Male)
                     if (userme!!.image == null)
                         profile_img.setImageResource(R.drawable.man)
                 }
             }
             JwtManager.apply {
                 if (role == "TEACHER") {
-                    tv_nlht.setText("Nơi làm việc hiện tại")
-                    profile_role.text = "Giáo viên"
+                    tv_nlht.text = getString(R.string.currentWorkPlace)
+                    profile_role.text = getString(R.string.teacher)
+                    p_parent.visibility = View.GONE
                 } else if (role == "STUDENT") {
-                    profile_role.text = "Học viên"
+                    profile_role.text = getString(R.string.student)
                 }
             }
             if (userme!!.image != null) {
-                val imgDecode: ByteArray = java.util.Base64.getDecoder().decode(userme!!.image)
+                val imgDecode: ByteArray = Base64.getDecoder().decode(userme!!.image)
                 val bmp = BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
                 profile_img.setImageBitmap(bmp)
             }
@@ -102,9 +109,7 @@ class ProfileFragment : Fragment() {
                 requestPermission()
             }
 
-            progressDialog = ProgressDialog(context)
-            progressDialog!!.setMessage("Loading...")
-            progressDialog!!.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+
 
             //Onclick Đổi mật khẩu
             cPass.setOnClickListener {
@@ -114,28 +119,166 @@ class ProfileFragment : Fragment() {
                     AlertDialog.Builder(requireContext())
                 builder.setView(resetpasswordLayout)
                 builder.setPositiveButton("Thay đổi")
-                { dialogInterface: DialogInterface?, i1: Int -> progressDialog!!.show() }
+                { _: DialogInterface?, _: Int ->
+                    val oldpass : String = resetpasswordLayout.cp_oldpass.text.toString().trim()
+                    val newpass : String = resetpasswordLayout.cp_newpass.text.toString().trim()
+                    val confirmpass : String = resetpasswordLayout.cp_confirmpass.text.toString()
+                    val sharedprefernces = this.context?.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
+                    val token : String? = sharedprefernces?.getString("token",null)
+                    val mapPass = HashMap<String,String>()
+                    mapPass["oldpass"] = oldpass
+                    mapPass["newpass"] = newpass
+                    if(oldpass.isEmpty() || newpass.isEmpty() || confirmpass.isEmpty()){
+                        message("Cập nhật thất bại do bỏ trống thông tin")
+                    }else if(newpass.length<8){
+                        message("Mật khẩu mới không được nhỏ hơn 8 ký tự")
+                    }else if(newpass != confirmpass){
+                        message("Mật khẩu không khớp")
+                    }else{
+                        val call: Call<ResponseBody> = RetrofitManager.userapi.updatePassUser("Bearer "+token,userme!!.userId,mapPass)
+                        call.enqueue(object : Callback<ResponseBody?> {
+                            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                                    val mesage : String = response.body()!!.string()
+                                if(mesage == "success"){
+                                    Toast.makeText(context, "Đổi mật khẩu thành công\nXin mời đăng nhập lại", Toast.LENGTH_LONG).show()
+                                    val main : MainActivity = activity as MainActivity
+                                    val intent = Intent(context, LoginRegisterActivity::class.java)
+                                    startActivity(intent)
+                                    main.finish()
+                                } else{
+                                    Toast.makeText(context, mesage, Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                                Log.e("ERROR: ", t.message!!)
+                            }
+                        })
+                    }
+                }
                 builder.setNegativeButton("cancel")
-                { dialogInterface: DialogInterface, i1: Int -> dialogInterface.dismiss() }
+                { dialogInterface: DialogInterface, _: Int -> dialogInterface.dismiss() }
                 val dialog = builder.create()
                 dialog.show()
             }
 
+
             //Onclick sửa thông tin cá nhân
             p_update.setOnClickListener {
+
                 val editProfileLayout: View = LayoutInflater.from(context)
                     .inflate(R.layout.edit_profile, null)
-                editProfileLayout.update_email.setText(userme!!!!.account.email)
-                editProfileLayout.update_education_level.setText(userme!!!!.educationLevel)
-                editProfileLayout.update_phone.setText(userme!!!!.phoneNumber)
-                editProfileLayout.update_adress.setText(userme!!!!.address)
-                editProfileLayout.update_curent_work_place.setText(userme!!!!.currentWorkPlace)
+                val myAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                    editProfileLayout.context,
+                    android.R.layout.simple_list_item_1
+                    ,resources.getStringArray(R.array.update_gender)
+                )
+                myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                editProfileLayout.update_gender.adapter = myAdapter
+                editProfileLayout.update_gender.setSelection(
+                    (editProfileLayout.update_gender.adapter as ArrayAdapter<String>).getPosition(
+                        when(userme!!.gender.genderID){
+                            1 -> "Nam"
+                            2 -> "Nữ"
+                            else -> "Khác"
+                        }
+                    ))
+                editProfileLayout.update_name.setText(userme!!.name)
+                editProfileLayout.update_dob.text = userme!!.dob
+                editProfileLayout.update_education_level.setText(userme!!.educationLevel)
+                editProfileLayout.update_phone.setText(userme!!.phoneNumber)
+                editProfileLayout.update_adress.setText(userme!!.address)
+                editProfileLayout.update_curent_work_place.setText(userme!!.currentWorkPlace)
+
+                editProfileLayout.pickdob.setOnClickListener {
+                    val c = Calendar.getInstance()
+                    val year = c.get(Calendar.YEAR)
+                    val month = c.get(Calendar.MONTH)
+                    val day = c.get(Calendar.DAY_OF_MONTH)
+                    val dpd = DatePickerDialog(
+                        editProfileLayout.context,
+                        { _, myear, monthOfYear, dayOfMonth ->
+                            c.set(Calendar.YEAR,myear)
+                            c.set(Calendar.MONTH,monthOfYear)
+                            c.set(Calendar.DAY_OF_MONTH,dayOfMonth)
+                            val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
+                            val date : String = dateFormatter.format(c.time)
+                            editProfileLayout.update_dob.text = date
+                        }, year, month, day
+                    )
+                    dpd.show()
+                }
+
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setView(editProfileLayout)
+
                 builder.setPositiveButton("Thay đổi")
-                { dialogInterface: DialogInterface?, i1: Int -> progressDialog!!.show() }
+                { dialogInterface: DialogInterface?, i1: Int ->
+                    val sharedprefernces = this.context?.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
+                    val token : String? = sharedprefernces?.getString("token",null)
+                    val u_name : String = editProfileLayout.update_name.text.toString()
+                    val u_dob : String = editProfileLayout.update_dob.text.toString()
+                    val u_gender : String = editProfileLayout.update_gender.selectedItem.toString()
+                    val u_education_level : String = editProfileLayout.update_education_level.text.toString()
+                    val u_phone : String = editProfileLayout.update_phone.text.toString()
+                    val u_adress : String = editProfileLayout.update_adress.text.toString()
+                    val u_curent_work_place : String = editProfileLayout.update_curent_work_place.text.toString()
+                    val validatePhone  = "^[+]?[0-9]{9,11}$"
+                    val PATTERN: Pattern = Pattern.compile(validatePhone)
+                    if (u_name.isEmpty() || u_dob.isEmpty() || u_gender.isEmpty()
+                        ||u_education_level.isEmpty() || u_phone.isEmpty() || u_adress.isEmpty()
+                        || u_curent_work_place.isEmpty()) {
+                        message("Thay đổi thất bại do bỏ trống thông tin")
+                    } else if(u_name.length > 26 ){
+                        message("Thay đổi thất bại do tên quá 26 ký tự")
+                    } else if(!PATTERN.matcher(u_phone).find()){
+                        message("Thay đổi thất bại do không đúng định dạng số điện thoại")
+                    }else{
+                        userme!!.name = u_name
+                        userme!!.dob = u_dob
+                        userme!!.address = u_adress
+                        userme!!.currentWorkPlace = u_curent_work_place
+                        userme!!.phoneNumber = u_phone
+                        userme!!.educationLevel = u_education_level
+                        userme!!.address = u_adress
+                        Log.i("Gender",u_gender)
+                        when (u_gender){
+                            "Nam" -> {
+                                userme!!.gender.genderID = 1
+                                userme!!.gender.name = "MALE"
+                            }
+                            "Nữ" -> {
+                                userme!!.gender.genderID = 2
+                                userme!!.gender.name = "FEMALE"
+                            }
+                            "Khác" -> {
+                                userme!!.gender.genderID = 3
+                                userme!!.gender.name = "ORTHER"
+                            }
+                        }
+                        val call: Call<Unit> = RetrofitManager.userapi.updateUser("Bearer $token"
+                            ,userme!!.userId, userme!!)
+                        call.enqueue(object : Callback<Unit?> {
+                            override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(context, "Thay đổi thành công!", Toast.LENGTH_SHORT).show()
+                                    val intent1 = Intent(context, MainActivity::class.java)
+                                    startActivity(intent1)
+
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Unit?>, t: Throwable) {
+                                Log.e("ERROR: ", t.message!!)
+                            }
+                        })
+                    }
+                }
+
+
                 builder.setNegativeButton("cancel")
                 { dialogInterface: DialogInterface, i1: Int -> dialogInterface.dismiss() }
+
                 val dialog = builder.create()
                 dialog.show()
             }
@@ -149,6 +292,7 @@ class ProfileFragment : Fragment() {
     //Xin quyền truy cập máy ảnh và gallery
     private fun requestPermission() {
         val permissionlistener: PermissionListener = object : PermissionListener {
+            @RequiresApi(Build.VERSION_CODES.P)
             override fun onPermissionGranted() {
                 openImagePicker()
             }
@@ -170,6 +314,7 @@ class ProfileFragment : Fragment() {
     }
 
     //Chọn ảnh trong gallery
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun openImagePicker() {
 
         TedBottomPicker.with(context as FragmentActivity)
@@ -177,26 +322,25 @@ class ProfileFragment : Fragment() {
                 val sharedprefernces = this.context?.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
                 val token : String? = sharedprefernces?.getString("token",null)
 
-                var bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                    (context as FragmentActivity).contentResolver, it)
+                val source = ImageDecoder.createSource((context as FragmentActivity).contentResolver,it)
+                val bitmap = ImageDecoder.decodeBitmap(source)
+
                 profile_img.setImageBitmap(bitmap)
 
                 val stream = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                 val image = stream.toByteArray()
-                val imageBase64 : String = java.util.Base64.getEncoder().encodeToString(image)
+                val imageBase64 : String = Base64.getEncoder().encodeToString(image)
 
                 val map = HashMap<String,String>()
-                map.put("imgBase64",imageBase64)
+                map["imgBase64"] = imageBase64
                 Log.i("StringImg",imageBase64.length.toString())
-                val call: Call<Unit> = RetrofitManager.updateuserapi.updateImgUser("Bearer $token",userme!!.userId,map)
+                val call: Call<Unit> = RetrofitManager.userapi.updateImgUser("Bearer $token",userme!!.userId,map)
                 call.enqueue(object : Callback<Unit?> {
                     override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
-                        if (response.isSuccessful()) {
+                        if (response.isSuccessful) {
                             Toast.makeText(context, "Thay đổi ảnh thành công!", Toast.LENGTH_SHORT).show()
-                            Log.i("PutApi","ok con dê")
                             val intent1 = Intent(context, MainActivity::class.java)
-                            val intent = Intent(Intent.ACTION_PICK)
 
                             startActivity(intent1)
 
@@ -205,7 +349,6 @@ class ProfileFragment : Fragment() {
 
                     override fun onFailure(call: Call<Unit?>, t: Throwable) {
                         Log.e("ERROR: ", t.message!!)
-                        Log.i("PutApi","ok ăn lol")
                     }
                 })
             }

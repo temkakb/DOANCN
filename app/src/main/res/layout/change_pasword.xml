@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,14 +29,19 @@
             android:textColor="@color/headings"
             android:textSize="13sp" />
 
-        <EditText
-            android:id="@+id/cp_oldpass"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:text=""
-            android:textColor="#000000"
-            android:textSize="18sp" />
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cp_oldpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:background="@color/white"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <View
             android:layout_width="match_parent"
@@ -50,7 +56,8 @@
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <TextView
             android:id="@+id/tv_newpass"
@@ -60,14 +67,19 @@
             android:textColor="@color/headings"
             android:textSize="13sp" />
 
-        <EditText
-            android:id="@+id/cp_newpass"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:text=""
-            android:textColor="#000000"
-            android:textSize="18sp" />
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cp_newpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:background="@color/white"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <View
             android:layout_width="match_parent"
@@ -93,15 +105,19 @@
             android:textColor="@color/headings"
             android:textSize="13sp" />
 
-        <EditText
-            android:id="@+id/cp_confirmpass"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:text=""
-            android:textColor="#000000"
-            android:textSize="18sp" />
+            app:passwordToggleEnabled="true">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cp_confirmpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:background="@color/white"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -109,4 +125,5 @@
             android:background="@color/grey" />
 
     </LinearLayout>
+
 </LinearLayout>
