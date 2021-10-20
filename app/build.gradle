@@ -62,8 +62,7 @@ dependencies {
     implementation 'gun0912.ted:tedbottompicker:2.0.1'
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.2.3'
     implementation 'io.github.ParkSangGwon:tedpermission-coroutine:3.2.3'
-
-
+    implementation 'com.google.android.material:material:1.4.0'
 
 
 

@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">DOANCN</string>
+    <string name="Male">Nam</string>
+    <string name="Female">Nữ</string>
+    <string name="Orther">Khác</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="previous">&lt;-</string>
@@ -18,7 +21,6 @@
     <string name="back">Quay lại</string>
     <string name="yourname">Tên của bạn</string>
     <string name="phonenumber">Số điện thoại</string>
-
     <string name="educationLevel">Trình độ học vấn</string>
     <string name="currentWorkPlace">Nơi làm việc hiện tại</string>
     <string name="dateborn">Ngày sinh</string>
@@ -67,5 +69,11 @@
         <item>Miễn phí</item>
 
 
+    </string-array>
+
+    <string-array name="update_gender">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
     </string-array>
 </resources>
