@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayoutStyle"
-            android:id="@+id/login_textinputlayout"
+            android:id="@+id/signup_textinputlayout"
             android:layout_width="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,10 +35,10 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayoutStyle"
-            android:id="@+id/login_textinputlayout2"
+            android:id="@+id/signup_textinputlayout2"
             app:prefixTextColor="@color/black"
             android:layout_width="0dp"
-            app:layout_constraintTop_toBottomOf="@id/login_textinputlayout"
+            app:layout_constraintTop_toBottomOf="@id/signup_textinputlayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".8"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,9 +60,9 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayoutStyle"
-            android:id="@+id/login_textinputlayout3"
+            android:id="@+id/signup_textinputlayout3"
             android:layout_width="0dp"
-            app:layout_constraintTop_toBottomOf="@id/login_textinputlayout2"
+            app:layout_constraintTop_toBottomOf="@id/signup_textinputlayout2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".8"
             app:layout_constraintEnd_toEndOf="parent"

@@ -10,14 +10,13 @@
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:id="@+id/login_textinputlayout"
+            android:id="@+id/signup_textinputlayout"
             android:layout_width="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:counterEnabled="true"
             app:layout_constraintVertical_bias="0.1"
             app:startIconDrawable="@drawable/ic_baseline_wc_24"
             app:helperText="mặc định là giới tính 'khác' *"
@@ -33,17 +32,17 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayoutStyle"
-            android:id="@+id/login_textinputlayout2"
+            android:id="@+id/signup_textinputlayout2"
             app:prefixText="+84"
             app:prefixTextColor="@color/black"
             android:layout_width="0dp"
-            app:layout_constraintTop_toBottomOf="@id/login_textinputlayout"
+            app:layout_constraintTop_toBottomOf="@id/signup_textinputlayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias=".1"
-            app:helperText="từ 9 - 11 số  (Không bắt buộc) *"
+            app:helperText="Số điện thoại (Không bắt buộc) *"
             app:counterEnabled="true"
             app:helperTextTextColor="@color/red"
             app:counterMaxLength="11"
@@ -60,9 +59,9 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayoutStyle"
-            android:id="@+id/login_textinputlayout3"
+            android:id="@+id/signup_textinputlayout3"
             android:layout_width="0dp"
-            app:layout_constraintTop_toBottomOf="@id/login_textinputlayout2"
+            app:layout_constraintTop_toBottomOf="@id/signup_textinputlayout2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".8"
             app:layout_constraintEnd_toEndOf="parent"
