@@ -11,8 +11,6 @@ F
 app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9
 ?
 settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
-<
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 g
 7app/src/main/java/com/example/doancn/API/Iapiexample.kt,9\9\9940ad7e23c09c66e5f28416f5495ae9b76b5670
 y
@@ -83,3 +81,17 @@ f
 6app/src/main/java/com/example/doancn/Models/GenderX.kt,2\e\2ee1531581d0bef49ce7197890ca309432eee96a
 e
 5app/src/main/java/com/example/doancn/Models/Gender.kt,6\1\61bc2a4aa3b60e1c114729c9b8d2880cef7955bd
+ƒ
+Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/ValidateEmailFragment.kt,e\b\eb63cc3ebd71823a64320683f4a418bda0c0fdaa
+o
+?app/src/main/java/com/example/doancn/API/ProfileApi/IUserApi.kt,4\8\48ae375fd0bd148159182ded61e9abd502a1fe5c
+d
+4app/src/main/java/com/example/doancn/MainActivity.kt,b\3\b3409f0586a886b28c74fad5b4c4c2cb33e9f430
+{
+Kapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/LoginFragment.kt,e\4\e40053e125ff8eaf1519f6b1812fb1f8de6ffadc
+‚
+Rapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment.kt,9\a\9a8bf441594d0353033d61630c66b242771c2ac4
+ƒ
+Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment2.kt,8\7\87349b417b3504eb2772e2f55400a0f6dd740802
+{
+Kapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/SigupFragment.kt,4\a\4af0b88a6e928979739a1d65e1ed077d8a3f7dfd

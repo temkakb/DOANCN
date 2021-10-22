@@ -227,9 +227,5 @@ class SigupFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        Toast.makeText(requireContext(), "stop", Toast.LENGTH_SHORT).show()
-        super.onStop()
-    }
     object youaresingleton : YouAreFragment() // hang dat biet =)) con ghe ko cho vao hang
 }
