@@ -1,5 +1,6 @@
 package com.example.doancn.API.ProfileApi
 
+import com.example.doancn.Models.Parent
 import com.example.doancn.Models.UserMe
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -18,4 +19,5 @@ interface IUserApi {
 
     @PUT("/user/img/{id}")
     fun updateImgUser(@Header("Authorization") authorization : String,@Path("id") id : Int, @Body map: Map<String,String>):Call<Unit>
+
 }

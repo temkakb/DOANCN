@@ -42,12 +42,17 @@ import kotlin.collections.HashMap
 import android.graphics.ImageDecoder
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
+import com.example.doancn.ViewModels.UserViewModel
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 
 
 class ProfileFragment : Fragment() {
 
     private var userme:UserMe? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +60,8 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val main : MainActivity = activity as MainActivity
-        userme = main.getMe()
+        val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
+        userme = model.user
         return inflater.inflate(R.layout.fragment_profile,container,false)
     }
 
@@ -64,8 +70,27 @@ class ProfileFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val main : MainActivity = activity as MainActivity
         if(userme != null) {
+            main.runOnUiThread {
+                val header: View = main.nav_view.getHeaderView(0)
+                header.user_name.text = userme!!.name
+                header.user_email.text = userme!!.account.email
+                if(userme!!.image != null){
+                    val imgDecode: ByteArray = Base64.getDecoder().decode(userme!!.image)
+                    val bmp = BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
+                    header.user_image.setImageBitmap(bmp)
+                }
+                else
+                {
+                    when(userme!!.gender.genderID)
+                    {
+                        1 -> { header.user_image.setImageResource(R.drawable.man) }
+                        2 -> { header.user_image.setImageResource(R.drawable.femal) }
+                        3 -> { header.user_image.setImageResource(R.drawable.orther) }
+                    }
+                }
+            }
             profile_name.text = userme!!.name
             profile_email.text = userme!!.account.email
             profile_dob.text = userme!!.dob
@@ -104,12 +129,11 @@ class ProfileFragment : Fragment() {
                 val bmp = BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
                 profile_img.setImageBitmap(bmp)
             }
+
             //Chọn hình để đổi hình ảnh
             profile_img.setOnClickListener {
                 requestPermission()
             }
-
-
 
             //Onclick Đổi mật khẩu
             cPass.setOnClickListener {
@@ -156,7 +180,7 @@ class ProfileFragment : Fragment() {
                         })
                     }
                 }
-                builder.setNegativeButton("cancel")
+                builder.setNegativeButton("Hủy")
                 { dialogInterface: DialogInterface, _: Int -> dialogInterface.dismiss() }
                 val dialog = builder.create()
                 dialog.show()
@@ -241,7 +265,6 @@ class ProfileFragment : Fragment() {
                         userme!!.phoneNumber = u_phone
                         userme!!.educationLevel = u_education_level
                         userme!!.address = u_adress
-                        Log.i("Gender",u_gender)
                         when (u_gender){
                             "Nam" -> {
                                 userme!!.gender.genderID = 1
@@ -262,9 +285,12 @@ class ProfileFragment : Fragment() {
                             override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
                                 if (response.isSuccessful()) {
                                     Toast.makeText(context, "Thay đổi thành công!", Toast.LENGTH_SHORT).show()
-                                    val intent1 = Intent(context, MainActivity::class.java)
-                                    startActivity(intent1)
-
+                                    val main : MainActivity = activity as MainActivity
+                                    val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
+                                    model.user = userme
+                                    val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
+                                    transaction.replace(R.id.content_frame,ProfileFragment())
+                                    transaction.commit()
                                 }
                             }
 
@@ -275,7 +301,6 @@ class ProfileFragment : Fragment() {
                     }
                 }
 
-
                 builder.setNegativeButton("cancel")
                 { dialogInterface: DialogInterface, i1: Int -> dialogInterface.dismiss() }
 
@@ -283,7 +308,16 @@ class ProfileFragment : Fragment() {
                 dialog.show()
             }
 
-
+            p_parent.setOnClickListener {
+                val main: MainActivity = activity as MainActivity
+                main.mCurrentFragment = 6
+                val actionBar: ActionBar? = main.supportActionBar
+                actionBar?.setDisplayShowHomeEnabled(true)
+                actionBar?.setDisplayUseLogoEnabled(true)
+                actionBar?.setLogo(R.drawable.ic_baseline_profile_ind_24)
+                actionBar?.setTitle("Phụ huynh")
+                main.replaceFragment(ParentFragment())
+            }
         }
     }
 
@@ -334,16 +368,17 @@ class ProfileFragment : Fragment() {
 
                 val map = HashMap<String,String>()
                 map["imgBase64"] = imageBase64
-                Log.i("StringImg",imageBase64.length.toString())
                 val call: Call<Unit> = RetrofitManager.userapi.updateImgUser("Bearer $token",userme!!.userId,map)
                 call.enqueue(object : Callback<Unit?> {
                     override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
                         if (response.isSuccessful) {
                             Toast.makeText(context, "Thay đổi ảnh thành công!", Toast.LENGTH_SHORT).show()
-                            val intent1 = Intent(context, MainActivity::class.java)
-
-                            startActivity(intent1)
-
+                            val main : MainActivity = activity as MainActivity
+                            val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
+                            model.user!!.image = imageBase64
+                            val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
+                            transaction.replace(R.id.content_frame,ProfileFragment())
+                            transaction.commit()
                         }
                     }
 
@@ -359,4 +394,4 @@ class ProfileFragment : Fragment() {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    }
+}

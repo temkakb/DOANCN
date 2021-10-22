@@ -16,6 +16,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import com.example.doancn.Fragments.CreateClass.CreateClassFragment
 import com.example.doancn.Fragments.Home.HomeFragment
 import com.example.doancn.Fragments.JoinClass.JoinClassFragment
@@ -26,6 +27,7 @@ import com.example.doancn.Models.UserMe
 import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.Retrofit.RetrofitManager
 import com.example.doancn.Utilities.JwtManager
+import com.example.doancn.ViewModels.UserViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -46,24 +48,25 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private val FRAGMENT_PROFILE:Int = 4
     private val FRAGMENT_CREATECLASS:Int = 5
 
-    private var mCurrentFragment:Int = FRAGMENT_HOME
-
-    private var me : UserMe? = null
+    var mCurrentFragment:Int = FRAGMENT_HOME
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //Action bar
         setSupportActionBar(mToolbar)
         val toogle = ActionBarDrawerToggle(this,drawerLayout,mToolbar,R.string.open,R.string.close)
         drawerLayout.addDrawerListener(toogle)
         toogle.syncState()
+        // Navigation drawer
         nav_view.setNavigationItemSelectedListener(this)
         mCurrentFragment = FRAGMENT_HOME
-
         replaceFragment(HomeFragment())
         nav_view.menu.findItem(R.id.nav_home).setChecked(true)
+        // khai báo UserViewModel
+        var model : UserViewModel =  ViewModelProvider(this)[UserViewModel::class.java]
 
         val sharedprefernces = getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
         val token : String? = sharedprefernces.getString("token",null)
@@ -80,22 +83,22 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                     map.put("token",token)
                     Log.i("MyToken",token)
                     auth.validate(map)
-                    getMyUser(token)
-                    if(me != null)
+                    getMyUser(token,model)
+                    if(model.user != null)
                     {
-                        Log.i("Username",me!!.name)
+                        Log.i("Username",model.user!!.name)
                         runOnUiThread {
                             val header: View = nav_view.getHeaderView(0)
-                            header.user_name.text = me!!.name
-                            header.user_email.text = me!!.account.email
-                            if(me!!.image != null){
-                                val imgDecode: ByteArray = Base64.getDecoder().decode(me!!.image)
+                            header.user_name.text = model.user!!.name
+                            header.user_email.text = model.user!!.account.email
+                            if(model.user!!.image != null){
+                                val imgDecode: ByteArray = Base64.getDecoder().decode(model.user!!.image)
                                 val bmp = BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
                                 header.user_image.setImageBitmap(bmp)
                             }
                             else
                             {
-                                when(me!!.gender.genderID)
+                                when(model.user!!.gender.genderID)
                                 {
                                     1 -> { header.user_image.setImageResource(R.drawable.man) }
                                     2 -> { header.user_image.setImageResource(R.drawable.femal) }
@@ -141,24 +144,13 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
     }
 
-    fun getMe():UserMe{
-        return me!!
-    }
 
-    private fun getMyUser (token : String){
-
+    private fun getMyUser (token: String, model: UserViewModel){
 
         val callSync : Call<UserMe> = RetrofitManager.userapi.getme("Bearer "+token)
         try {
             val response:Response<UserMe> = callSync.execute()
-            me = response.body()
-            if(me==null){
-                Log.i("CAlLAPI:","That cmn bai")
-            }
-            else{
-            Log.i("CAlLAPI:",me!!.name)
-
-            }
+            model.user = response.body()
         }catch ( ex : Exception)
         {
             ex.printStackTrace()
@@ -260,8 +252,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
 
 
-
-    private fun replaceFragment(fragment: Fragment){
+    fun replaceFragment(fragment: Fragment){
         val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.content_frame,fragment)
         transaction.commit()
