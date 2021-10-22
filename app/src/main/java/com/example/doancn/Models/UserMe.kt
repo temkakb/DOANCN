@@ -13,7 +13,7 @@ data class UserMe(
     var gender: GenderX,
     var image: String,
     var name: String,
-    val parents: List<Parent>,
+    var parents: ArrayList<Parent>,
     var phoneNumber: String,
     val userId: Int
 )

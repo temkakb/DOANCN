@@ -21,7 +21,7 @@
                 android:id="@+id/mToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@drawable/grad"
+                android:background="#448aff"
                 android:theme="@style/ThemeOverlay.AppCompat.Light">
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
