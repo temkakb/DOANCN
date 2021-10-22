@@ -96,9 +96,10 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
                                         ).show()
                                         val transaction: FragmentTransaction =
                                             main.supportFragmentManager.beginTransaction()
+                                        transaction.remove(this@ParentFragment)
                                         transaction.replace(R.id.content_frame, ParentFragment())
                                         transaction.commit()
-                                    }, 100)
+                                    }, 500)
                                 }
                             }
                         }
@@ -159,6 +160,7 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
                             model.user!!.parents[position] = userme!!.parents[position]
                             getParents(token!!,model.user!!.userId,model)
                             val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
+                            transaction.remove(this@ParentFragment)
                             transaction.replace(R.id.content_frame,ParentFragment())
                             transaction.commit()
                         }
@@ -190,6 +192,7 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
                     val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
                     model.user!!.parents.removeAt(position)
                     val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
+                    transaction.remove(this@ParentFragment)
                     transaction.replace(R.id.content_frame,ParentFragment())
                     transaction.commit()
                 }
