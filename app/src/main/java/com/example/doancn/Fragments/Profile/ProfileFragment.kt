@@ -289,6 +289,7 @@ class ProfileFragment : Fragment() {
                                     val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
                                     model.user = userme
                                     val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
+                                    transaction.remove(this@ProfileFragment)
                                     transaction.replace(R.id.content_frame,ProfileFragment())
                                     transaction.commit()
                                 }
@@ -377,6 +378,7 @@ class ProfileFragment : Fragment() {
                             val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
                             model.user!!.image = imageBase64
                             val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
+                            transaction.remove(this@ProfileFragment)
                             transaction.replace(R.id.content_frame,ProfileFragment())
                             transaction.commit()
                         }
