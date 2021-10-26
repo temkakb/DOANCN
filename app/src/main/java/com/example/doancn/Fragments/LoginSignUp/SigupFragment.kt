@@ -86,7 +86,7 @@ class SigupFragment : Fragment() {
                             } catch (e: HttpException) {
                                 withContext(Dispatchers.Main) {
                                     process.visibility=View.INVISIBLE
-                                    btnnext.text=resources.getString(R.string.next)
+                                    btnnext.text=resources.getString(R.string.next2)
                                     val jObjError = JSONObject(e.response()?.errorBody()!!.string())
                                     val msg = jObjError.get("message")
                                     Toast.makeText(
@@ -97,7 +97,8 @@ class SigupFragment : Fragment() {
                                 }
                             } catch (Eof: EOFException) {
                                 withContext(Dispatchers.Main) {
-                                    btnnext.text=resources.getString(R.string.next)
+                                    process.visibility=View.INVISIBLE
+                                    btnnext.text=resources.getString(R.string.next2)
                                     Toast.makeText(
                                         requireContext(),
                                         "Thao tác quá nhanh, từ từ thôi",
@@ -106,7 +107,8 @@ class SigupFragment : Fragment() {
                                 }
                             } catch (e: SocketTimeoutException) {
                                 withContext(Dispatchers.Main) {
-                                    btnnext.text=resources.getString(R.string.next)
+                                    process.visibility=View.INVISIBLE
+                                    btnnext.text=resources.getString(R.string.next2)
                                     Toast.makeText(
                                         requireContext(),
                                         "Lỗi mạng",
