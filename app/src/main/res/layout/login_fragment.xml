@@ -80,6 +80,21 @@
             app:layout_constraintVertical_bias=".2"
             android:background="@drawable/bg_button"
             app:layout_constraintBottom_toBottomOf="parent" />
+        <ProgressBar
+            android:visibility="invisible"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/blue"
+            android:id="@+id/process"
+            style="?android:attr/progressBarStyleHorizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnlogin"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button_google"
             app:layout_constraintEnd_toEndOf="parent"

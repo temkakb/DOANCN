@@ -3,8 +3,6 @@ v
 Fapp/src/androidTest/java/com/example/doancn/ExampleInstrumentedTest.kt,0\4\04a55ff670deedad730ba0209052cb5be1824625
 s
 Capp/src/main/java/com/example/doancn/ViewModels/ExampleViewmodel.kt,3\4\34c0874afae6ea9563ae687c717a3ecfa5a75760
-|
-Lapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/YouAreFragment.kt,0\e\0e9ac11b2597e89d9254a738945d8bc276fd2898
 s
 Capp/src/main/java/com/example/doancn/Fragments/Home/HomeFragment.kt,a\f\af2e656780308c44f4bd0ef6a2eb2e34eebf8c19
 F
@@ -31,8 +29,6 @@ l
 <app/src/main/java/com/example/doancn/Models/AccountSignUp.kt,6\d\6d23dc8612cc0b62d15bba9cb66ba20d30889021
 ƒ
 Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment3.kt,d\d\dd8c403a8431ad9ecf85f46915ac7659c4514a81
-m
-=app/src/main/java/com/example/doancn/LoginRegisterActivity.kt,f\2\f254434378460a5c91f3cd70204581467dab12fa
 b
 2app/src/main/java/com/example/doancn/DataObject.kt,3\b\3b6ff676b5740c7db39ff57b90abdabc9cb9f3ec
 l
@@ -75,8 +71,6 @@ p
 @app/src/main/java/com/example/doancn/Adapters/SubjectsAdapter.kt,d\d\dd46baf00f946b8429fdba93d253bad67a690d82
 e
 5app/src/main/java/com/example/doancn/Models/UserMe.kt,a\d\adedf3a070c30259a8ae4f709980bf242223bf14
-z
-Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
 f
 6app/src/main/java/com/example/doancn/Models/GenderX.kt,2\e\2ee1531581d0bef49ce7197890ca309432eee96a
 e
@@ -85,13 +79,13 @@ e
 Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/ValidateEmailFragment.kt,e\b\eb63cc3ebd71823a64320683f4a418bda0c0fdaa
 o
 ?app/src/main/java/com/example/doancn/API/ProfileApi/IUserApi.kt,4\8\48ae375fd0bd148159182ded61e9abd502a1fe5c
-d
-4app/src/main/java/com/example/doancn/MainActivity.kt,b\3\b3409f0586a886b28c74fad5b4c4c2cb33e9f430
-{
-Kapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/LoginFragment.kt,e\4\e40053e125ff8eaf1519f6b1812fb1f8de6ffadc
 ‚
 Rapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment.kt,9\a\9a8bf441594d0353033d61630c66b242771c2ac4
 ƒ
 Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment2.kt,8\7\87349b417b3504eb2772e2f55400a0f6dd740802
-{
-Kapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/SigupFragment.kt,4\a\4af0b88a6e928979739a1d65e1ed077d8a3f7dfd
+x
+Happ/src/main/java/com/example/doancn/Fragments/Profile/ParentFragment.kt,8\b\8b74f0c6553eb0f95f7b9ce5292d134fb840a0bc
+y
+Iapp/src/main/java/com/example/doancn/Fragments/Profile/ProfileFragment.kt,4\5\457bd60bfc34276429a1f121082aec8610d364c5
+<
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35

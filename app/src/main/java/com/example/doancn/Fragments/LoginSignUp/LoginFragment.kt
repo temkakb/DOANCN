@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -25,19 +26,22 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 class LoginFragment : Fragment() {
+    private lateinit var process: ProgressBar
+    lateinit var btnlogin: Button
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = layoutInflater.inflate(R.layout.login_fragment, container, false)
-        val btnlogin = view.findViewById(R.id.btnlogin) as Button
-        setEventButtonLogin(btnlogin, view)
+         btnlogin = view.btnlogin
+        process=view.process
+        setEventButtonLogin(view)
         seteventtextchange(view)
         return view
     }
 
-    private fun setEventButtonLogin(btnlogin: Button, view: View) {
+    private fun setEventButtonLogin( view: View) {
         btnlogin.setOnClickListener {
             val email = view.email_login
             val password = view.password_login
@@ -46,6 +50,8 @@ class LoginFragment : Fragment() {
                 1 -> Toast.makeText(context, "Email không hợp lệ", Toast.LENGTH_SHORT).show()
                 2 -> Toast.makeText(context, "Mật khẩu phải lớn hơn 8 ký tự", Toast.LENGTH_SHORT).show()
                 -1 -> {
+                    process.visibility=View.VISIBLE
+                    btnlogin.text="Đang đăng nhâp"
                     GlobalScope.launch(Dispatchers.IO) {
                         try {
                             val repository = AuthRepository()
@@ -65,6 +71,8 @@ class LoginFragment : Fragment() {
                             val jObjError = JSONObject(e.response()?.errorBody()?.string())
                             val mssg = jObjError.get("message")
                             withContext(Dispatchers.Main) {
+                                process.visibility=View.INVISIBLE
+                                btnlogin.text=resources.getString(R.string.login)
                                 Toast.makeText(context, "$mssg", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -79,7 +87,7 @@ class LoginFragment : Fragment() {
             return 0
         if (!validateemailaddress(email))
             return 1
-        if (password.length <= 8)
+        if (password.length < 8)
             return 2
         return -1
     }
