@@ -89,3 +89,7 @@ y
 Iapp/src/main/java/com/example/doancn/Fragments/Profile/ProfileFragment.kt,4\5\457bd60bfc34276429a1f121082aec8610d364c5
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
+z
+Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
+d
+4app/src/main/java/com/example/doancn/MainActivity.kt,b\3\b3409f0586a886b28c74fad5b4c4c2cb33e9f430
