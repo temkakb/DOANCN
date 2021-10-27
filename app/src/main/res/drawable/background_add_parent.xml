@@ -4,10 +4,7 @@
     android:shape="rectangle">
 
     <!-- Set màu nền-->
-    <gradient
-        android:angle="45"
-        android:startColor="#83b9ff"
-        android:endColor="#005ecb" />
+  <solid  android:color="@color/primaryLightColor" />
 
     <!-- đặt thuộc tính màu và độ rộng của đường viền -->
     <stroke

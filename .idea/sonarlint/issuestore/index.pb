@@ -83,13 +83,11 @@ o
 Rapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment.kt,9\a\9a8bf441594d0353033d61630c66b242771c2ac4
 ƒ
 Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment2.kt,8\7\87349b417b3504eb2772e2f55400a0f6dd740802
-x
-Happ/src/main/java/com/example/doancn/Fragments/Profile/ParentFragment.kt,8\b\8b74f0c6553eb0f95f7b9ce5292d134fb840a0bc
-y
-Iapp/src/main/java/com/example/doancn/Fragments/Profile/ProfileFragment.kt,4\5\457bd60bfc34276429a1f121082aec8610d364c5
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 z
 Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
-d
-4app/src/main/java/com/example/doancn/MainActivity.kt,b\3\b3409f0586a886b28c74fad5b4c4c2cb33e9f430
+{
+Kapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/LoginFragment.kt,e\4\e40053e125ff8eaf1519f6b1812fb1f8de6ffadc
+m
+=app/src/main/java/com/example/doancn/LoginRegisterActivity.kt,f\2\f254434378460a5c91f3cd70204581467dab12fa

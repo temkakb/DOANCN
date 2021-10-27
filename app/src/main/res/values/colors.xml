@@ -18,9 +18,9 @@
     <color name="green">#45bc62</color>
 
 
-    <color name="primaryColor">#00bcd4</color>
-    <color name="primaryLightColor">#62efff</color>
-    <color name="primaryDarkColor">#008ba3</color>
+    <color name="primaryColor">#448aff</color>
+    <color name="primaryLightColor">#83b9ff</color>
+    <color name="primaryDarkColor">#005ecb</color>
     <color name="primaryTextColor">#000000</color>
     <color name="address">#2F7092</color>
     <color name="followers">#0D5D98</color>

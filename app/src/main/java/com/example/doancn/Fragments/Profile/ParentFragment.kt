@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.navigateUp
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doancn.Adapters.ParentAdapter
@@ -34,6 +36,8 @@ import java.util.regex.Pattern
 class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
 
     private var userme : UserMe? = null
+    private lateinit var navController: NavController
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +48,7 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        navController= requireParentFragment().findNavController()
         super.onViewCreated(view, savedInstanceState)
         val main : MainActivity = activity as MainActivity
         val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
@@ -94,11 +99,8 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
                                             "Thêm phụ huynh thành công",
                                             Toast.LENGTH_LONG
                                         ).show()
-                                        val transaction: FragmentTransaction =
-                                            main.supportFragmentManager.beginTransaction()
-                                        transaction.remove(this@ParentFragment)
-                                        transaction.replace(R.id.content_frame, ParentFragment())
-                                        transaction.commit()
+                                        navController.popBackStack()
+                                        navController.navigate(R.id.nav_parentFragment)
                                     }, 500)
                                 }
                             }
@@ -159,10 +161,8 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
                             val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
                             model.user!!.parents[position] = userme!!.parents[position]
                             getParents(token!!,model.user!!.userId,model)
-                            val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
-                            transaction.remove(this@ParentFragment)
-                            transaction.replace(R.id.content_frame,ParentFragment())
-                            transaction.commit()
+                            navController.popBackStack()
+                            navController.navigate(R.id.nav_parentFragment)
                         }
                     }
                     override fun onFailure(call: Call<Unit?>, t: Throwable) {
@@ -191,10 +191,8 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
                     val main : MainActivity = activity as MainActivity
                     val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
                     model.user!!.parents.removeAt(position)
-                    val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
-                    transaction.remove(this@ParentFragment)
-                    transaction.replace(R.id.content_frame,ParentFragment())
-                    transaction.commit()
+                    navController.popBackStack()
+                    navController.navigate(R.id.nav_parentFragment)
                 }
             }
             override fun onFailure(call: Call<Unit?>, t: Throwable) {
