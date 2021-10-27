@@ -8,6 +8,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,21 +17,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.example.doancn.LoginRegisterActivity
 import com.example.doancn.MainActivity
 import com.example.doancn.Models.UserMe
 import com.example.doancn.R
 import com.example.doancn.Retrofit.RetrofitManager
 import com.example.doancn.Utilities.JwtManager
+import com.example.doancn.ViewModels.UserViewModel
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import gun0912.tedbottompicker.TedBottomPicker
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.change_pasword.view.*
 import kotlinx.android.synthetic.main.edit_profile.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,26 +49,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
-import android.graphics.ImageDecoder
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBar
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
-import com.example.doancn.ViewModels.UserViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header.view.*
 
 
 class ProfileFragment : Fragment() {
 
     private var userme:UserMe? = null
-
+    private lateinit var navController : NavController
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        navController= requireParentFragment().findNavController()
         val main : MainActivity = activity as MainActivity
         val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
         userme = model.user
@@ -288,10 +290,8 @@ class ProfileFragment : Fragment() {
                                     val main : MainActivity = activity as MainActivity
                                     val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
                                     model.user = userme
-                                    val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
-                                    transaction.remove(this@ProfileFragment)
-                                    transaction.replace(R.id.content_frame,ProfileFragment())
-                                    transaction.commit()
+                                    navController.popBackStack()
+                                    navController.navigate(R.id.nav_profile)
                                 }
                             }
 
@@ -311,13 +311,13 @@ class ProfileFragment : Fragment() {
 
             p_parent.setOnClickListener {
                 val main: MainActivity = activity as MainActivity
-                main.mCurrentFragment = 6
                 val actionBar: ActionBar? = main.supportActionBar
                 actionBar?.setDisplayShowHomeEnabled(true)
                 actionBar?.setDisplayUseLogoEnabled(true)
                 actionBar?.setLogo(R.drawable.ic_baseline_profile_ind_24)
                 actionBar?.setTitle("Phụ huynh")
-                main.replaceFragment(ParentFragment())
+                navController.popBackStack()
+                navController.navigate(R.id.nav_parentFragment)
             }
         }
     }
@@ -377,10 +377,8 @@ class ProfileFragment : Fragment() {
                             val main : MainActivity = activity as MainActivity
                             val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
                             model.user!!.image = imageBase64
-                            val transaction : FragmentTransaction = main.supportFragmentManager.beginTransaction()
-                            transaction.remove(this@ProfileFragment)
-                            transaction.replace(R.id.content_frame,ProfileFragment())
-                            transaction.commit()
+                            navController.popBackStack()
+                            navController.navigate(R.id.nav_profile)
                         }
                     }
 
