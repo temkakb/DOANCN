@@ -68,6 +68,7 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.24537037037037038" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.24537037037037038" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/ic_baseline_wc_24.xml" value="0.140625" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/kho_luu_tru_tam_thoi_cua_tan.xml" value="0.16197916666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/selector_textview_subjects.xml" value="0.1" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/side_nav_bar.xml" value="0.13333333333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/underline_textview.xml" value="0.2203125" />
@@ -89,11 +90,12 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_createclass.xml" value="0.10648148148148148" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_joinclass.xml" value="0.289272030651341" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.264" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_parent.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_setting.xml" value="0.10208333333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/item_parent.xml" value="0.536" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/kho_luu_tru.xml" value="0.39067055393586003" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_fragment.xml" value="0.22351797862001943" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_register_container.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/nav_header.xml" value="0.13385416666666666" />

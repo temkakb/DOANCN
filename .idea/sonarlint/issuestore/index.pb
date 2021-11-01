@@ -31,10 +31,6 @@ l
 Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment3.kt,d\d\dd8c403a8431ad9ecf85f46915ac7659c4514a81
 b
 2app/src/main/java/com/example/doancn/DataObject.kt,3\b\3b6ff676b5740c7db39ff57b90abdabc9cb9f3ec
-l
-<app/src/main/java/com/example/doancn/Utilities/JwtManager.kt,f\2\f2e732cceb94d1499d88c358188f4af5e02636d2
-q
-Aapp/src/main/java/com/example/doancn/Utilities/RetrofitManager.kt,e\9\e90a0b28dbbf8be63bfe1e928621b1afea77f1a0
 n
 >app/src/main/java/com/example/doancn/Adapters/CustomAdapter.kt,a\8\a84d0d356e12676886bf96514566ca44b011b363
 p
@@ -57,8 +53,6 @@ f
 Qapp/src/main/java/com/example/doancn/Fragments/CreateClass/CreateClassFragment.kt,0\0\00f849a26d681bbbdda8d270c5c0766d65a5978f
 g
 7app/src/main/java/com/example/doancn/API/ISubjectApi.kt,8\0\80e95dac09b7fc02a78e165338a9c03845ac4a0b
-j
-:app/src/main/java/com/example/doancn/API/IEnrollmentApi.kt,f\4\f49e1eed6d6184c9b211835f4e18a72187b3f658
 h
 8app/src/main/java/com/example/doancn/Models/Classroom.kt,6\5\65b8e7fcf4d2dd153f3c31bb72f3bd2ce3575d4c
 w
@@ -67,8 +61,6 @@ Gapp/src/main/java/com/example/doancn/Repository/EnrollmentRepository.kt,a\7\a7
 Mapp/src/main/java/com/example/doancn/Fragments/JoinClass/JoinClassFragment.kt,7\1\717ab194601e1608a891428a336d1926d6dae1d2
 v
 Fapp/src/main/java/com/example/doancn/Adapters/EnrolmentArrayAdapter.kt,1\e\1ed95af061ca397d56e90a6f816d14343c6f6d67
-p
-@app/src/main/java/com/example/doancn/Adapters/SubjectsAdapter.kt,d\d\dd46baf00f946b8429fdba93d253bad67a690d82
 e
 5app/src/main/java/com/example/doancn/Models/UserMe.kt,a\d\adedf3a070c30259a8ae4f709980bf242223bf14
 f
@@ -77,8 +69,6 @@ e
 5app/src/main/java/com/example/doancn/Models/Gender.kt,6\1\61bc2a4aa3b60e1c114729c9b8d2880cef7955bd
 ƒ
 Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/ValidateEmailFragment.kt,e\b\eb63cc3ebd71823a64320683f4a418bda0c0fdaa
-o
-?app/src/main/java/com/example/doancn/API/ProfileApi/IUserApi.kt,4\8\48ae375fd0bd148159182ded61e9abd502a1fe5c
 ‚
 Rapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment.kt,9\a\9a8bf441594d0353033d61630c66b242771c2ac4
 ƒ
@@ -105,5 +95,15 @@ y
 Iapp/src/main/java/com/example/doancn/Fragments/Profile/ProfileFragment.kt,4\5\457bd60bfc34276429a1f121082aec8610d364c5
 d
 4app/src/main/java/com/example/doancn/MainActivity.kt,b\3\b3409f0586a886b28c74fad5b4c4c2cb33e9f430
+q
+Aapp/src/main/java/com/example/doancn/API/ProfileApi/IParentApi.kt,4\8\48607487e18954af4ee0da385982d1bb7535dfd0
+o
+?app/src/main/java/com/example/doancn/API/ProfileApi/IUserApi.kt,4\8\48ae375fd0bd148159182ded61e9abd502a1fe5c
+l
+<app/src/main/java/com/example/doancn/Utilities/JwtManager.kt,f\2\f2e732cceb94d1499d88c358188f4af5e02636d2
+q
+Aapp/src/main/java/com/example/doancn/Utilities/RetrofitManager.kt,e\9\e90a0b28dbbf8be63bfe1e928621b1afea77f1a0
 g
 7app/src/main/java/com/example/doancn/Models/SectionX.kt,d\7\d7b8e8cddeedd710f5026f0ad622b9fd2ea44f4a
+p
+@app/src/main/java/com/example/doancn/Adapters/SubjectsAdapter.kt,d\d\dd46baf00f946b8429fdba93d253bad67a690d82
