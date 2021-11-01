@@ -78,4 +78,7 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="safe_section">An toàn ( tỉ lệ nghỉ học dưới 10% )</string>
+    <string name="warning_section">cảnh báo ( tỉ lệ nghỉ học từ 10%-30% )</string>
+    <string name="dangerous_section">Báo động! ( tỉ lệ nghỉ học từ 50%- 100% )</string>
 </resources>

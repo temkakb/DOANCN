@@ -22,4 +22,7 @@
     <style name="ColorSwitchStyle">
         <item name="colorControlActivated">@color/blue</item>
     </style>
+    <style name="rounded_corner">
+        <item name="cornerSize">20dp</item>
+    </style>
 </resources>

@@ -32,6 +32,9 @@ object RetrofitManager {
     val  parentapi : IParentApi by lazy {
         retrofit.create(IParentApi::class.java)
     }
+    val sectionapi: ISectionApi by lazy {
+        retrofit.create(ISectionApi::class.java)
+    }
 }
 class Urls {
     companion object {
