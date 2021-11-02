@@ -43,6 +43,7 @@ class JoinClassFragment : Fragment() {
     private lateinit var fusedLocation: FusedLocationProviderClient
     private lateinit var noclassroom: TextView
     private lateinit var noclassroomimageview: ImageView
+    private  var enrolmentArrayAdapter: EnrolmentArrayAdapter? =null
     var classrooms: List<Classroom>? = null
     private lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
@@ -50,8 +51,7 @@ class JoinClassFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sharedPreferences =
-            requireContext().getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
         repository = SubjectRepository()
         val view = inflater.inflate(R.layout.fragment_joinclass, container, false)
         layoutmanager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -59,6 +59,7 @@ class JoinClassFragment : Fragment() {
         noclassroomimageview = view.noclassroom_image
         listoptionname = resources.getStringArray(R.array.option)
         subject = view.RC_subjects
+
         getClassrooms(null)
         getSubjects()
         return view
@@ -97,21 +98,24 @@ class JoinClassFragment : Fragment() {
                         )
                         if (classrooms == null || classrooms!!.isEmpty()) {
                             withContext(Dispatchers.Main) {
-
                                 noclassroom.visibility = View.VISIBLE
-                                noclassroomimageview.visibility = View.VISIBLE
                                 requireView().joinclass_listview.adapter = null
                             }
                         } else {
                             withContext(Dispatchers.Main) {
                                 noclassroom.visibility = View.GONE
-                                noclassroomimageview.visibility = View.GONE
-                                requireView().joinclass_listview.adapter = EnrolmentArrayAdapter(
-                                    requireContext(),
-                                    classrooms!!,
-                                    "Bearer " + sharedPreferences.getString("token", null)!!,
-                                    listsubjectname,listoptionname
-                                )
+                                if(enrolmentArrayAdapter==null) {
+                                    enrolmentArrayAdapter = EnrolmentArrayAdapter(
+                                        requireContext(),
+                                        classrooms!!,
+                                        "Bearer " + sharedPreferences.getString("token", null)!!,
+                                        listsubjectname, listoptionname
+                                    )
+
+                                }
+                                else enrolmentArrayAdapter!!.swapDataSet(classrooms!!)
+
+                                requireView().joinclass_listview.adapter =enrolmentArrayAdapter
                             }
                         }
                     }
