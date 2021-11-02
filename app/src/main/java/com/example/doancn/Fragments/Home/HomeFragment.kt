@@ -145,11 +145,11 @@ class HomeFragment : Fragment() {
         if (dailyClass.count() == 0)
         {
             noclassroom.visibility = View.VISIBLE
-            noclassroom_image.visibility = View.VISIBLE
+
         }
         else{
             noclassroom.visibility = View.GONE
-            noclassroom_image.visibility = View.GONE
+
         }
 
         today_class_listview.setOnItemClickListener { parent, view, position, id ->
