@@ -1,6 +1,5 @@
 package com.example.doancn.Models
 
-import java.time.LocalDate
 
 data class Classroom (
     val classId: Long,
@@ -15,5 +14,6 @@ data class Classroom (
     val subject: Subject,
     val location : Location,
     val option: PaymentOption,
-    var enrolled: Boolean
+    var enrolled: Boolean,
+    val shifts: ArrayList<Shift>
 )
