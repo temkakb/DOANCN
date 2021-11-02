@@ -17,14 +17,18 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/add_parent.xml" value="0.265625" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/calendar_cell.xml" value="0.2" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/card_view.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/change_password.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/change_pasword.xml" value="0.22" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/class_items.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/custom_calendar_day.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/detail_classroom_dialog.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/detail_classroom_shift_dialog.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/edit_parent.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/edit_profile.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/edit_profile_fragment.xml" value="0.3112701252236136" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_createclass.xml" value="0.1" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_joinclass.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_parent.xml" value="0.16666666666666666" />
@@ -36,9 +40,13 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/login_register_container.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/nav_header.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/signup_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/subject_items.xml" value="0.1" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/today_class_items.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment_2.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment_3.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/weekcalendar_day.xml" value="0.1" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/weekcalendar_week.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/menu/mymenu.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/menu/nav_menu.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.11388888888888889" />

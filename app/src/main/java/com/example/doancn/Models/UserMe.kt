@@ -9,7 +9,7 @@ data class UserMe(
     val dateCreated: String,
     var dob: String,
     var educationLevel: String,
-    val enrollments: List<Enrollment>,
+    var enrollments: ArrayList<Enrollment>?,
     var gender: GenderX,
     var image: String,
     var name: String,

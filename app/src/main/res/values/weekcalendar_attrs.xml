@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="WeekCalendar">
+        <attr name="customFont" format="string"/>
+
+        <attr name="dayTextColor" format="color"/>
+        <attr name="weekDayTextColor" format="color"/>
+        <attr name="dayBackground" format="reference"/>
+
+        <attr name="selectedDayTextColor" format="color"/>
+        <attr name="selectedBackground" format="reference"/>
+
+    </declare-styleable>
+
+    <attr name="WeekCalendarStyleAttr" format="reference"/>
+
+</resources>
