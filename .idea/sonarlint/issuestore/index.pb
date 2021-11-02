@@ -55,10 +55,6 @@ h
 8app/src/main/java/com/example/doancn/Models/Classroom.kt,6\5\65b8e7fcf4d2dd153f3c31bb72f3bd2ce3575d4c
 w
 Gapp/src/main/java/com/example/doancn/Repository/EnrollmentRepository.kt,a\7\a78fc7c6175dfb78dedbd48f3d2f4c5c1fe4faae
-}
-Mapp/src/main/java/com/example/doancn/Fragments/JoinClass/JoinClassFragment.kt,7\1\717ab194601e1608a891428a336d1926d6dae1d2
-v
-Fapp/src/main/java/com/example/doancn/Adapters/EnrolmentArrayAdapter.kt,1\e\1ed95af061ca397d56e90a6f816d14343c6f6d67
 e
 5app/src/main/java/com/example/doancn/Models/UserMe.kt,a\d\adedf3a070c30259a8ae4f709980bf242223bf14
 f
