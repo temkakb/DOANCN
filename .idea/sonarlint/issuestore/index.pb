@@ -103,7 +103,9 @@ l
 <app/src/main/java/com/example/doancn/Utilities/JwtManager.kt,f\2\f2e732cceb94d1499d88c358188f4af5e02636d2
 q
 Aapp/src/main/java/com/example/doancn/Utilities/RetrofitManager.kt,e\9\e90a0b28dbbf8be63bfe1e928621b1afea77f1a0
-g
-7app/src/main/java/com/example/doancn/Models/SectionX.kt,d\7\d7b8e8cddeedd710f5026f0ad622b9fd2ea44f4a
 p
 @app/src/main/java/com/example/doancn/Adapters/SubjectsAdapter.kt,d\d\dd46baf00f946b8429fdba93d253bad67a690d82
+g
+7app/src/main/java/com/example/doancn/API/ISectionApi.kt,6\0\6061f4fd4653ff111a695453e494a4a9629a1a8d
+u
+Eapp/src/main/java/com/example/doancn/Repository/SectionsRepository.kt,9\f\9ff76ceca03ec977faaf0ecfcd5603742d4fb3ca
