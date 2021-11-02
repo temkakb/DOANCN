@@ -1,7 +1,6 @@
 package com.example.doancn.Adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.doancn.Models.SectionX
 import com.example.doancn.R
 import kotlinx.android.synthetic.main.section_item.view.*
-import java.lang.ArithmeticException
 
 class SectionRcAdapter (var listsection : List<SectionX>): RecyclerView.Adapter<SectionRcAdapter.Sectionholder>() {
     private lateinit var context : Context
@@ -34,11 +32,11 @@ class SectionRcAdapter (var listsection : List<SectionX>): RecyclerView.Adapter<
         val nonattendancednumbers = itemview.nonattendancednumbers
         fun setData(sectionX: SectionX){
             val numbersdiemdanh="Điểm danh: "+ sectionX.attendancednumbers
-            val numbersvang = "Vắng: "+sectionX.nonattendancednumbers
-            var percent: Float
-            if(sectionX.attendancednumbers + sectionX.nonattendancednumbers==0)
+            val numbersvang = "Vắng: "+(sectionX.numberStudent-sectionX.attendancednumbers)
+            val percent: Float
+            if(sectionX.numberStudent==0) // neu so luong student cua lop = 0 it mean ng dung test diem danh
             percent=0F
-            else percent = (sectionX.nonattendancednumbers.toFloat() / (sectionX.attendancednumbers + sectionX.nonattendancednumbers) * 100)
+            else percent = 100-(sectionX.attendancednumbers.toFloat() / sectionX.numberStudent * 100)
             monhth.text=sectionX.dateCreated.substring(5,7)
             day.text=sectionX.dateCreated.substring(8,10)
             attendancednumbers.text= numbersdiemdanh
