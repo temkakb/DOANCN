@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="Classroom_name_maxLength">100</integer>
+    <integer name="Classroom_shortDescription_maxLength">5000</integer>
+    <integer name="Classroom_address_maxLength">50</integer>
+
+</resources>

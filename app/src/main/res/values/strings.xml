@@ -4,15 +4,15 @@
     <string name="close">Close</string>
     <string name="previous">&lt;-</string>
     <string name="next">-&gt;</string>
-    <string name="quenmatkhau" >Quên mật khẩu?</string>
-    <string name="tkoremail" >Email</string>
-    <string name="password" >Mật khẩu</string>
+    <string name="quenmatkhau">Quên mật khẩu?</string>
+    <string name="tkoremail">Email</string>
+    <string name="password">Mật khẩu</string>
     <string name="login">Đăng nhập</string>
     <string name="remember">Lưu mật khẩu</string>
     <string name="containheader">Chào mừng bạn trở lại</string>
     <string name="sigup">Đăng ký</string>
     <string name="youare">Bạn là ?</string>
-    <string name="teacher" >Giáo viên</string>
+    <string name="teacher">Giáo viên</string>
     <string name="student">Học sinh</string>
     <string name="next2">Tiếp theo</string>
     <string name="back">Quay lại</string>
@@ -36,18 +36,30 @@
     <string name="about">Giới thiệu</string>
     <string name="about2">Mô tả lớp học</string>
     <string name="enrollmentnow">Đăng ký Ngay</string>
+    <string name="name">Tên lớp học</string>
+    <string name="short_description">Mô tả ngắn về lớp học</string>
+    <string name="subject_name">Môn học giảng dạy</string>
+    <string name="pick_date">Chọn ngày</string>
+    <string name="date_start">Ngày bắt đầu</string>
+    <string name="tv_pickDate">Chọn buổi trong tuần:(chọn ít nhất một buổi)</string>
+    <string name="pick_time">Chọn giờ</string>
+    <string name="time_start">Thời gian bắt đầu</string>
+    <string name="duration">Độ dài tiết học</string>
+    <string name="payment_option">Kiểu thanh toán</string>
+    <string name="hint_location">Ghim địa chỉ trên bản đồ:</string>
+    <string name="adđ_new">Tạo mới</string>
+    <string name="cancel">Hủy bỏ</string>
     <string-array name="gender_select">
         <item>Nam</item>
         <item>Nữ</item>
         <item>Khác</item>
     </string-array>
-<string-array name="gender_post">
-    <item>MALE</item>
-    <item>FEMALE</item>
-    <item>OTHER</item>
-</string-array>
+    <string-array name="gender_post">
+        <item>MALE</item>
+        <item>FEMALE</item>
+        <item>OTHER</item>
+    </string-array>
     <string-array name="Subjects">
-        <item>Tất Cả</item>
         <item>Toán</item>
         <item>Lý</item>
         <item>Văn</item>
@@ -58,14 +70,18 @@
         <item>Công Nghệ Thông Tin</item>
     </string-array>
     <string-array name="option">
-        <item>anchor</item>
         <item>Tuần</item>
         <item>Tháng</item>
         <item>Qúy</item>
         <item>Năm</item>
-        <item>Khóa học</item>
+        <item>Trả trước</item>
         <item>Miễn phí</item>
-
-
     </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="fab_content_desc">Vị trí của tôi</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="supporting_text">Vui lòng ghim vị trí lớp học trên bản đồ</string>
+    <string name="go_to_map">Tiến hành ngay</string>
+    <string name="supporting_text2">Vui lòng điền đủ thông tin ở các phần dưới đây:</string>
+    <string name="supporting_text3">Vui lòng kiểm tra lại thông tin phía trên</string>
 </resources>
