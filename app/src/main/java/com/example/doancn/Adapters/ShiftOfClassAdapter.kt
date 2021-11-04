@@ -11,8 +11,8 @@ import com.example.doancn.R
 
 class ShiftOfClassAdapter(context: Context,  objects: ArrayList<Classroom>,selected:String,listSubjectName:Array<String>,) :
     ArrayAdapter<Classroom?>(context, 0, objects as MutableList<Classroom?>) {
-    val listNameOfSubject = listSubjectName
-    val time : String = selected
+    private val listNameOfSubject = listSubjectName
+    private val time : String = selected
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val o = 0
@@ -36,9 +36,15 @@ class ShiftOfClassAdapter(context: Context,  objects: ArrayList<Classroom>,selec
             if(shift.dayOfWeek.dowName == time){
                 if (shift.startAt.minus((shift.startAt.div(3600000))
                         .times(3600000)) != olong)
-                            timestart = shift.startAt.div(3600000).toString() +
-                                    ":" + (shift.startAt.minus((shift.startAt.div(3600000))
-                                .times(3600000))).div(60000).toString()
+                    if((shift.startAt.minus((shift.startAt.div(3600000))
+                            .times(3600000))).div(60000).toInt() < 10){
+                        timestart = shift.startAt.div(3600000).toString() +
+                                ":0" + (shift.startAt.minus((shift.startAt.div(3600000))
+                            .times(3600000))).div(60000).toString()
+                    }else
+                        timestart = shift.startAt.div(3600000).toString() +
+                                ":" + (shift.startAt.minus((shift.startAt.div(3600000))
+                            .times(3600000))).div(60000).toString()
                 else
                     timestart = shift.startAt.div(3600000).toString() + ":00"
                 startTime.text = timestart

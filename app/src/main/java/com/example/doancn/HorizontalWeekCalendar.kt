@@ -1,4 +1,4 @@
-package com.example.demohomekotlin
+package com.example.doancn
 
 import android.app.Activity
 import android.content.Context
@@ -13,7 +13,8 @@ import com.example.demotranghome.Adapters.CalendarWeekAdapter
 import com.example.demotranghome.Interfaces.DateWatcher
 import com.example.demotranghome.Interfaces.OnDateClickListener
 import com.example.demotranghome.Interfaces.ResProvider
-import com.example.doancn.R
+import com.example.doancn.Fragments.Home.HomeFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HorizontalWeekCalendar : LinearLayoutCompat, ResProvider{
@@ -188,8 +189,8 @@ class HorizontalWeekCalendar : LinearLayoutCompat, ResProvider{
             return this
         }
 
-        fun init(frag: Activity): HorizontalWeekCalendar {
-            val calendar: HorizontalWeekCalendar = frag.findViewById(view)
+        fun init(frag: HomeFragment): HorizontalWeekCalendar {
+            val calendar: HorizontalWeekCalendar = frag.horizontalCalendar
             calendar.init()
             return calendar
         }
