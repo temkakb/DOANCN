@@ -7,4 +7,8 @@ class AttendanceRepository {
     suspend fun getQrcodeToken( classId : Long,token: String) : QrCodeX {
         return RetrofitManager.attendanceapi.getQrcodeToken(classId,token)
     }
+    suspend fun doAttendance(classId: Long,qrId:String,token:String)
+    {
+        RetrofitManager.attendanceapi.doAttendance(classId,qrId,token)
+    }
 }
