@@ -7,10 +7,11 @@ import java.security.PublicKey
 import java.security.spec.X509EncodedKeySpec
 
 
-object JwtManager {
+object TokenManager {
     private lateinit var publicKey: PublicKey
     private lateinit var token: String
     lateinit var role: String
+    lateinit var userToken : String
 
     fun getpublickey(token: String) {
         val i: Int = token.lastIndexOf('.')
@@ -29,5 +30,6 @@ object JwtManager {
             "role"
         ).toString()
     }
+
 }
 
