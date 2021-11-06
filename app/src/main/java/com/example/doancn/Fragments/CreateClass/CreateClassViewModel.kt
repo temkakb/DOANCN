@@ -34,24 +34,9 @@ constructor(
         mutableSelectedItem.value = item
     }
 
-    private val _dataState: MutableLiveData<DataState<List<ClassQuest.Subject>>> = MutableLiveData()
-
-    val dataState: LiveData<DataState<List<ClassQuest.Subject>>>
-        get() = _dataState
-    private val _createClassResponse: MutableLiveData<DataState<String>> = MutableLiveData()
-    val createClassResponse: LiveData<DataState<String>>
+    private val _createClassResponse: MutableLiveData<CreateClassEvent<String>> = MutableLiveData()
+    val createClassResponse: LiveData<CreateClassEvent<String>>
         get() = _createClassResponse
-
-//    fun getSubject() {
-//        viewModelScope.launch {
-//            subjectRepository.getSubject(token)
-//                .onEach { dataState ->
-//                    _dataState.value = dataState
-//                }
-//                .launchIn(viewModelScope)
-//            Log.d("TAG", _dataState.toString())
-//        }
-    //}
 
     fun createClassroom(classRoom: ClassQuest) {
         viewModelScope.launch {
@@ -62,17 +47,42 @@ constructor(
                 when (it) {
                     is DataState.Success -> {
                         Log.d("DataState.Success", it.toString())
-                        _createClassResponse.value = DataState.Success(it.data)
+                        _createClassResponse.value = CreateClassEvent.Success(it.data)
                     }
                     is DataState.Error -> {
                         Log.d("DataState.Error", it.toString())
-                        _createClassResponse.value = DataState.Error(it.data)
+                        _createClassResponse.value = CreateClassEvent.Error(it.data)
+                    }
+                    is DataState.Loading -> {
+                        _createClassResponse.value = CreateClassEvent.Loading
                     }
                     else -> Log.d("TAG", "No data")
                 }
             }.launchIn(viewModelScope)
-
         }
     }
 
 }
+
+sealed class CreateClassEvent<out R>() {
+    data class Success<out T>(val data: T) : CreateClassEvent<T>()
+    data class Error(val data: String) : CreateClassEvent<Nothing>()
+    object Loading : CreateClassEvent<Nothing>()
+}
+
+
+//    private val _dataState: MutableLiveData<DataState<List<ClassQuest.Subject>>> = MutableLiveData()
+//    val dataState: LiveData<DataState<List<ClassQuest.Subject>>>
+//        get() = _dataState
+
+
+//    fun getSubject() {
+//        viewModelScope.launch {
+//            subjectRepository.getSubject(token)
+//                .onEach { dataState ->
+//                    _dataState.value = dataState
+//                }
+//                .launchIn(viewModelScope)
+//            Log.d("TAG", _dataState.toString())
+//        }
+//}

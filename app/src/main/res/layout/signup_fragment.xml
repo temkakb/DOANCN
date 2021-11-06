@@ -45,6 +45,28 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         app:backgroundTint="@null"
         android:layout_height="wrap_content"/>
+    <ProgressBar
+        android:id="@+id/process"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/white"
+        android:layout_marginRight="55dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:progressDrawable="@color/white"
+        android:visibility="invisible"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/txt_finish"
+        android:layout_width="wrap_content"
+        android:text="Hoàn tất đăng ký"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
 

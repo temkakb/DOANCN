@@ -1,6 +1,6 @@
 package com.example.doancn.Models
 
 data class GenderX(
-    val genderID: Int,
-    val name: String
+    var genderID: Int,
+    var name: String
 )

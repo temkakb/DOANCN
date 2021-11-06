@@ -2,6 +2,7 @@ package com.example.doancn.Adapters
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
-class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val token: String,val listsubject : Array<String>,val optionarraystring : Array<String>): ArrayAdapter<Classroom>(context,
+class EnrolmentArrayAdapter (context: Context,var listclass: List<Classroom>,val token: String,val listsubject : Array<String>,val optionarraystring : Array<String>): ArrayAdapter<Classroom>(context,
     R.layout.class_items,listclass) {
 
 
@@ -54,7 +55,9 @@ class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val
     }
 
 
-
+    override fun getCount(): Int {
+        return listclass.size
+    }
 
     private fun switchtoenroll(btn : Button){
         btn.text=context.resources.getString(R.string.sigup)
@@ -180,9 +183,10 @@ class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val
         }
         return true
     }
-
-
-
+    fun swapDataSet(listclass: List<Classroom>){
+        this.listclass=listclass
+        notifyDataSetChanged()
+    }
     }
 
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_home">
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.doancn.Fragments.MyClass.home.ClassHomeFragment"
+        android:label="class_home_fragment"
+        tools:layout="@layout/class_home_fragment" />
+    <fragment
+        android:id="@+id/navigation_homework"
+        android:name="com.example.doancn.Fragments.MyClass.homework.HomeworkFragment"
+        android:label="homework_fragment"
+        tools:layout="@layout/homework_fragment" />
+    <fragment
+        android:id="@+id/navigation_people"
+        android:name="com.example.doancn.Fragments.MyClass.people.PeopleFragment"
+        android:label="people_fragment"
+        tools:layout="@layout/people_fragment" />
+</navigation>

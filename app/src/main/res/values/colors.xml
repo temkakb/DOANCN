@@ -11,16 +11,21 @@
     <color name="themeColor1">#946c82</color>
     <color name="themeColor2">#758b8b</color>
     <color name="blue">#4287f5</color>
-
+    <color name="yellow">#F4D03F</color>
     <color name="aeb7d6">#aeb7d6</color>
     <color name="orange">#eaad43</color>
     <color name="lightblue">#49acd5</color>
     <color name="green">#45bc62</color>
+    <color name="FOREIGNCRIMSON">#C91F37</color>
 
 
+    <color name="primaryColor">#448aff</color>
+    <color name="primaryLightColor">#83b9ff</color>
+    <color name="primaryDarkColor">#005ecb</color>
+    <color name="primaryTextColor">#000000</color>
     <color name="address">#2F7092</color>
     <color name="followers">#0D5D98</color>
-    <color name="headings">#3797CF</color>
+    <color name="headings">#448aff</color>
     <color name="solidCircle">#AAFFFFFF</color>
     <color name="circleBorder">#50FFFFFF</color>
     <color name="gradEnd">#67EFC8</color>

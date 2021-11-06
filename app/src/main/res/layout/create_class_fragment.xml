@@ -7,6 +7,7 @@
     tools:context=".Fragments.CreateClass.CreateClassFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -350,8 +351,7 @@
                     android:layout_alignParentEnd="true"
                     android:text="@string/adđ_new"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancel_button"
@@ -369,5 +369,27 @@
 
 
     </androidx.core.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/Create_class_progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Tiến hành tạo lớp"
+            android:textSize="24sp" />
+    </LinearLayout>
 
 </FrameLayout>
