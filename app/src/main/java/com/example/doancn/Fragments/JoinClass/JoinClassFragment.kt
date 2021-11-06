@@ -1,8 +1,6 @@
 package com.example.doancn.Fragments.JoinClass
 
 import android.Manifest
-import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -23,6 +21,7 @@ import com.example.doancn.Models.Classroom
 import com.example.doancn.R
 import com.example.doancn.Repository.EnrollmentRepository
 import com.example.doancn.Repository.SubjectRepository
+import com.example.doancn.Utilities.TokenManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.fragment_joinclass.view.*
@@ -45,13 +44,11 @@ class JoinClassFragment : Fragment() {
     private lateinit var noclassroomimageview: ImageView
     private  var enrolmentArrayAdapter: EnrolmentArrayAdapter? =null
     var classrooms: List<Classroom>? = null
-    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sharedPreferences = requireContext().getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
         repository = SubjectRepository()
         val view = inflater.inflate(R.layout.fragment_joinclass, container, false)
         layoutmanager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -94,7 +91,7 @@ class JoinClassFragment : Fragment() {
                         val enrollmentRepository = EnrollmentRepository()
                         classrooms = enrollmentRepository.getclassenrollment(
                             listaddress[0].locality, subjectId,
-                            "Bearer " + sharedPreferences.getString("token", null)!!
+                            TokenManager.userToken
                         )
                         if (classrooms == null || classrooms!!.isEmpty()) {
                             withContext(Dispatchers.Main) {
@@ -108,7 +105,7 @@ class JoinClassFragment : Fragment() {
                                     enrolmentArrayAdapter = EnrolmentArrayAdapter(
                                         requireContext(),
                                         classrooms!!,
-                                        "Bearer " + sharedPreferences.getString("token", null)!!,
+                                      TokenManager.userToken,
                                         listsubjectname, listoptionname
                                     )
 
