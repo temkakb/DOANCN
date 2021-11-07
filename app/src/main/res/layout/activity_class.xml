@@ -3,24 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/ic_baseline_fact_check_24"
+        android:contentDescription="Điểm danh"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/mToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/primaryColor"
-                android:theme="@style/ThemeOverlay.AppCompat.Light">
-            </androidx.appcompat.widget.Toolbar>
+                android:theme="@style/ThemeOverlay.AppCompat.Light"></androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
     </LinearLayout>

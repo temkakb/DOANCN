@@ -74,13 +74,26 @@ class CreateClassFragment : Fragment() {
         viewModel.createClassResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is CreateClassEvent.Success -> {
-                    showDialog("Thành công", it.data);
+
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Thêm mới thành công")
+                        .setMessage(it.data)
+                        .setNegativeButton("Ở lại") { dialog, which ->
+                        }
+                        .setPositiveButton("Đi đén ds lớp") { dialog, which ->
+                        }
+                        .show()
                     binding.nestedScrollView.visibility = View.VISIBLE
                     binding.CreateClassProgressBar.visibility = View.INVISIBLE
                     requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 }
                 is CreateClassEvent.Error -> {
-                    if (it.data.isNotBlank()) showDialog("Lỗi tạo lớp", it.data)
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Lỗi")
+                        .setMessage(it.data)
+                        .setPositiveButton("Xác nhận") { dialog, which ->
+                        }
+                        .show()
                     binding.nestedScrollView.visibility = View.VISIBLE
                     binding.CreateClassProgressBar.visibility = View.INVISIBLE
                     requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -184,16 +197,6 @@ class CreateClassFragment : Fragment() {
 
     }
 
-    private fun showDialog(title: String, data: String) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(title)
-            .setMessage(data)
-            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
-            }
-            .setPositiveButton("Xác nhận") { dialog, which ->
-            }
-            .show()
-    }
 
     private fun checkModel(): Boolean {
         var valid = true

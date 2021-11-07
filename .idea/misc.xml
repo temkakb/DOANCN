@@ -7,6 +7,9 @@
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/drawable/grad.xml" value="0.15364583333333334" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2526041666666667" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/drawable/ic_baseline_class_24.xml" value="0.2526041666666667" />
+        <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/drawable/ic_baseline_fact_check_24.xml" value="0.23697916666666666" />
+        <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/drawable/ic_baseline_my_location_24.xml" value="0.23697916666666666" />
+        <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/drawable/line_shape.xml" value="0.23697916666666666" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/drawable/round_coner.xml" value="0.21875" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/font/open_sans_bold.xml" value="0.284375" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/MyClass_listItem.xml" value="0.22083333333333333" />
@@ -23,6 +26,8 @@
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/fragment_createclass.xml" value="0.1793478260869565" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/fragment_dashboard.xml" value="0.20104166666666667" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/fragment_home.xml" value="0.264" />
+        <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.22083333333333333" />
+        <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.22083333333333333" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/fragment_joinclass.xml" value="0.22083333333333333" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.11614583333333334" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/fragment_notifications.xml" value="0.19010416666666666" />
@@ -37,7 +42,7 @@
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/login_register_container.xml" value="0.1" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/my_class_list_item.xml" value="0.536" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/my_class_room_fragment.xml" value="0.23645833333333333" />
-        <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/people_fragment.xml" value="0.16458333333333333" />
+        <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/people_fragment.xml" value="0.4" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/section_item.xml" value="0.19479166666666667" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/single_button_layout.xml" value="0.10989583333333333" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/layout/subject_list_item.xml" value="0.115625" />

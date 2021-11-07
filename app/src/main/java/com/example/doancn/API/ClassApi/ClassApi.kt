@@ -17,7 +17,7 @@ interface ClassApi {
         @Header("Authorization") authorization: String
     ): Response<ResponseBody>
 
-    @GET("/classes")
+    @GET("/classes/mine")
     suspend fun getMyClass(@Header("Authorization") authorization: String): Response<List<Classroom>>
 
 }
