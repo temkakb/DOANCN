@@ -79,6 +79,7 @@
         <item>Hóa Học</item>
         <item>Triết Học</item>
         <item>Công Nghệ Thông Tin</item>
+        <item>Khác</item>
     </string-array>
     <string-array name="option">
         <item>Tuần</item>

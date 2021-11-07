@@ -33,8 +33,8 @@ class EnrolmentArrayAdapter (context: Context,var listclass: List<Classroom>,val
         else{
          fee = "Phí: "+listclass[position].fee.toString()+"VND"+"/"+optionarraystring[listclass[position].option.paymentOptionId.toInt()]
         }
-       val subject ="Môn: "+listsubject[listclass[position].subject.subjectId.toInt()]
-        val teacher = "Thầy: "+listclass[position].teacher.name
+       val subject = "Môn: " + listsubject[listclass[position].subject.subjectId.toInt() - 1]
+        val teacher = "Thầy: " + listclass[position].teacher.name
         val startday ="Ngày bắt đầu: "+listclass[position].startDate
         view.teacher.text= teacher
         view.subject.text=subject
