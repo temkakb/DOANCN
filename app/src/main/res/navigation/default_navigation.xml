@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/default_navigation"
+    app:startDestination="@id/nav_home">
+    <activity
+        android:id="@+id/classActivity"
+        android:name="com.example.doancn.ClassActivity"
+        android:label="@string/title_activity_class">
+        <argument
+            android:name="targetClassroom"
+            app:argType="com.example.doancn.Models.Classroom" />
+    </activity>
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.doancn.Fragments.Home.HomeFragment"
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_nav_home_to_nav_createclass"
+            app:destination="@id/nav_createclass"
+            app:enterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_setting"
+            app:destination="@id/nav_setting" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_profile"
+            app:destination="@id/nav_profile" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_joinclass"
+            app:destination="@id/nav_joinclass" />
+        <action
+            android:id="@+id/action_nav_home_to_logOutFragment"
+            app:destination="@id/nav_logout" />
+        <action
+            android:id="@+id/action_nav_home_to_myClassRoomFragment"
+            app:destination="@id/nav_myClass" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_setting"
+        android:name="com.example.doancn.Fragments.Setting.SettingFragment"
+        android:label="SettingFragment">
+        <action
+            android:id="@+id/action_nav_setting_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_parentFragment"
+        android:name="com.example.doancn.Fragments.Profile.ParentFragment"
+        android:label="fragment_parent"
+        tools:layout="@layout/fragment_parent">
+        <action
+            android:id="@+id/action_nav_parentFragment_to_nav_profile"
+            app:destination="@id/nav_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.doancn.Fragments.Profile.ProfileFragment"
+        android:label="ProfileFragment">
+        <action
+            android:id="@+id/action_nav_profile_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_parentFragment"
+            app:destination="@id/nav_parentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_joinclass"
+        android:name="com.example.doancn.Fragments.JoinClass.JoinClassFragment"
+        android:label="JoinClassFragment">
+        <action
+            android:id="@+id/action_nav_joinclass_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_joinclass_to_myClassRoomFragment"
+            app:destination="@id/nav_myClass" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_createclass"
+        android:name="com.example.doancn.Fragments.CreateClass.CreateClassFragment"
+        android:label="CreateClassFragment">
+        <action
+            android:id="@+id/action_nav_createclass_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_createclass_to_myClassRoomFragment"
+            app:destination="@id/nav_myClass" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.doancn.Fragments.LoginSignUp.LogOutFragment"
+        android:label="LogOutFragment">
+        <action
+            android:id="@+id/action_logOutFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_myClass"
+        android:name="com.example.doancn.Fragments.MyClass.MyClassRoomFragment"
+        android:label="my_class_room_fragment"
+        tools:layout="@layout/my_class_room_fragment">
+        <action
+            android:id="@+id/action_myClassRoomFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_myClass_to_classActivity"
+            app:destination="@id/classActivity" />
+    </fragment>
+</navigation>

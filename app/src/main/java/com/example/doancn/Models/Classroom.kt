@@ -1,8 +1,9 @@
 package com.example.doancn.Models
 
-import java.time.LocalDate
+import java.io.Serializable
 
-data class Classroom (
+
+data class Classroom(
     val classId: Long,
     val name: String,
     val shortDescription: String,
@@ -13,7 +14,8 @@ data class Classroom (
     val dateCreated: String,
     val teacher: User,
     val subject: Subject,
-    val location : Location,
+    val location: Location,
     val option: PaymentOption,
-    var enrolled: Boolean
-)
+    var enrolled: Boolean,
+    val shifts: ArrayList<Shift>
+) : Serializable

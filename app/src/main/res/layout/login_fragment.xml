@@ -8,11 +8,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayoutStyle"
             android:id="@+id/login_textinputlayout"
             android:layout_width="0dp"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_baseline_error_24"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".8"
@@ -23,7 +25,6 @@
             app:layout_constraintVertical_bias="0.1"
             app:counterMaxLength="64"
             app:helperTextTextColor="@color/red"
-            app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_baseline_people_24"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
@@ -38,13 +39,15 @@
             style="@style/TextInputLayoutStyle"
             android:id="@+id/login_textinputlayout2"
             android:layout_width="0dp"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_baseline_error_24"
             app:layout_constraintTop_toBottomOf="@id/login_textinputlayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias=".1"
-            app:helperText="Mật khẩu trên 8 ký tự *"
+            app:helperText="Mật khẩu *"
             app:counterEnabled="true"
             app:helperTextTextColor="@color/red"
             app:counterMaxLength="24"
@@ -77,6 +80,22 @@
             app:layout_constraintVertical_bias=".2"
             android:background="@drawable/bg_button"
             app:layout_constraintBottom_toBottomOf="parent" />
+        <ProgressBar
+            app:layout_constraintWidth_percent=".8"
+            android:visibility="invisible"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/blue"
+            android:id="@+id/process"
+            app:layout_constraintBottom_toTopOf="@id/login_textinputlayout"
+            style="?android:attr/progressBarStyleHorizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="0dp"
+            android:layout_height="20dp" />
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button_google"
             app:layout_constraintEnd_toEndOf="parent"

@@ -26,7 +26,8 @@ class CreateClassViewModel
 constructor(
     private val classRepository: ClassRepository,
     private val subjectRepository: SubjectsRepository,
-    @Named("auth_token") private val token: String
+    @Named("auth_token") val token: String,
+    @Named("user_role") val role: String
 ) : ViewModel() {
     private val mutableSelectedItem = MutableLiveData<ClassQuest.Location>()
     val selectedItem: LiveData<ClassQuest.Location> get() = mutableSelectedItem
@@ -34,13 +35,43 @@ constructor(
         mutableSelectedItem.value = item
     }
 
-    private val _dataState: MutableLiveData<DataState<List<ClassQuest.Subject>>> = MutableLiveData()
-
-    val dataState: LiveData<DataState<List<ClassQuest.Subject>>>
-        get() = _dataState
-    private val _createClassResponse: MutableLiveData<DataState<String>> = MutableLiveData()
-    val createClassResponse: LiveData<DataState<String>>
+    private val _createClassResponse: MutableLiveData<CreateClassEvent<String>> = MutableLiveData()
+    val createClassResponse: LiveData<CreateClassEvent<String>>
         get() = _createClassResponse
+
+    fun createClassroom(classRoom: ClassQuest) {
+        viewModelScope.launch {
+            val s: Flow<DataState<String>> = classRepository.createClassroom(classRoom, token)
+            s.onEach {
+                when (it) {
+                    is DataState.Success -> {
+                        _createClassResponse.value = CreateClassEvent.Success(it.data)
+                    }
+                    is DataState.Error -> {
+                        _createClassResponse.value = CreateClassEvent.Error(it.data)
+                    }
+                    is DataState.Loading -> {
+                        _createClassResponse.value = CreateClassEvent.Loading
+                    }
+                    else -> Log.d("TAG", "No data")
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+}
+
+sealed class CreateClassEvent<out R>() {
+    data class Success<out T>(val data: T) : CreateClassEvent<T>()
+    data class Error(val data: String) : CreateClassEvent<Nothing>()
+    object Loading : CreateClassEvent<Nothing>()
+}
+
+
+//    private val _dataState: MutableLiveData<DataState<List<ClassQuest.Subject>>> = MutableLiveData()
+//    val dataState: LiveData<DataState<List<ClassQuest.Subject>>>
+//        get() = _dataState
+
 
 //    fun getSubject() {
 //        viewModelScope.launch {
@@ -51,28 +82,4 @@ constructor(
 //                .launchIn(viewModelScope)
 //            Log.d("TAG", _dataState.toString())
 //        }
-    //}
-
-    fun createClassroom(classRoom: ClassQuest) {
-        viewModelScope.launch {
-            Log.d("TAG", classRepository.toString())
-            val s: Flow<DataState<String>> = classRepository.createClassroom(classRoom, token)
-            s.onEach {
-                Log.d("createClassroom_when", it.toString())
-                when (it) {
-                    is DataState.Success -> {
-                        Log.d("DataState.Success", it.toString())
-                        _createClassResponse.value = DataState.Success(it.data)
-                    }
-                    is DataState.Error -> {
-                        Log.d("DataState.Error", it.toString())
-                        _createClassResponse.value = DataState.Error(it.data)
-                    }
-                    else -> Log.d("TAG", "No data")
-                }
-            }.launchIn(viewModelScope)
-
-        }
-    }
-
-}
+//}

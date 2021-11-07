@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.doancn.R
 import com.example.doancn.databinding.ActivityMapsBinding
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -18,6 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -43,8 +42,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         Places.initialize(this, apiKey)
         mPlacesClient = Places.createClient(this)
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
+        initRequest()
         setupMyLocation()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun initRequest() {
+        val mLocationRequest: LocationRequest = LocationRequest.create()
+        mLocationRequest.interval = 60000
+        mLocationRequest.fastestInterval = 5000
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        val mLocationCallback: LocationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+                    if (location != null) {
+                        mMap.animateCamera(
+                            CameraUpdateFactory
+                                .newLatLngZoom(
+                                    LatLng(location.latitude, location.longitude),
+                                    DEFAULT_ZOOM
+                                )
+                        )
+                    }
+                }
+            }
+        }
+        LocationServices.getFusedLocationProviderClient(this)
+            .requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
 
     private fun setupMyLocation() {
@@ -57,29 +81,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     private fun getDeviceLocation() {
         mFusedLocationProviderClient?.lastLocation
-            ?.addOnCompleteListener(this) {
-                if (it.isSuccessful) {
-                    //mMap.animateCamera(CameraUpdateFactory.zoomOut())
-                    val handler = Handler()
-                    handler.postDelayed(Runnable {
-                        mMap.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                LatLng(
-                                    it.result.latitude,
-                                    it.result.longitude
-                                ), DEFAULT_ZOOM
+            ?.addOnSuccessListener(this) { location ->
+                if (location != null) {
+                    mMap.animateCamera(
+                        CameraUpdateFactory
+                            .newLatLngZoom(
+                                LatLng(location.latitude, location.longitude),
+                                DEFAULT_ZOOM
                             )
-                        )
-                    }, 500)
-
+                    )
                 } else {
                     Log.d(TAG, "Current location is null")
-                    mMap.moveCamera(
+                    mMap.animateCamera(
                         CameraUpdateFactory
                             .newLatLngZoom(vietnam, DEFAULT_ZOOM)
-                    );
-                    Log.e(TAG, "Exception: %s", it.exception)
+                    )
                 }
+
             }
     }
 
@@ -88,6 +106,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         getDeviceLocation()
         googleMap.setOnCameraIdleListener {
+            binding.confirmBtn.isEnabled = true
+            binding.confirmBtn.isClickable = true
             val center: LatLng = googleMap.cameraPosition.target
             Log.d("Camera move", center.toString())
             binding.confirmBtn.setOnClickListener {
@@ -97,6 +117,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 setResult(RESULT_OK, intent)
                 finish()
             }
+        }
+        googleMap.setOnCameraMoveListener {
+            binding.confirmBtn.isEnabled = false
+            binding.confirmBtn.isClickable = false
         }
     }
 }

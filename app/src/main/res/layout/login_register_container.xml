@@ -46,7 +46,7 @@
             app:tabTextColor="@color/black"
             app:tabIndicatorColor="@color/black"
             android:id="@+id/tab_login_sigup"
-            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_bias=".02"
             app:layout_constraintWidth_percent=".85"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

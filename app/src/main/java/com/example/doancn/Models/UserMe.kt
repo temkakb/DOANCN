@@ -1,18 +1,19 @@
 package com.example.doancn.Models
 
+
 data class UserMe(
     val account: AccountX,
-    val address: String,
+    var address: String,
     val attendances: List<Attendace>,
-    val currentWorkPlace: String,
+    var currentWorkPlace: String,
     val dateCreated: String,
-    val dob: String,
-    val educationLevel: String,
-    val enrollments: List<Enrollment>,
-    val gender: GenderX,
-    val image: String,
+    var dob: String,
+    var educationLevel: String,
+    var enrollments: ArrayList<Enrollment>?,
+    var gender: GenderX,
+    var image: String,
     var name: String,
-    val parents: List<Parent>,
-    val phoneNumber: String,
+    var parents: ArrayList<Parent>,
+    var phoneNumber: String,
     val userId: Int
 )

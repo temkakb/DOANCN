@@ -1,3 +1,5 @@
 package com.example.doancn.Models
 
-data class Subject (val subjectId: Long,val name: String)
+import java.io.Serializable
+
+data class Subject(val subjectId: Long, val name: String) : Serializable

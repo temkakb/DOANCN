@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -19,7 +20,6 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.example.doancn.DI.DataState
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.R
 import com.example.doancn.Utilities.StringUtils
@@ -67,20 +67,47 @@ class CreateClassFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = CreateClassFragmentBinding.inflate(inflater, container, false)
+
         viewModel.selectedItem.observe(viewLifecycleOwner, Observer {
             location = it
 
         })
-        viewModel.createClassResponse.observe(viewLifecycleOwner, Observer {
 
+        viewModel.createClassResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is DataState.Success -> {
-                    showDialog("Thành công", it.data);
+                is CreateClassEvent.Success -> {
+
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Thêm mới thành công")
+                        .setMessage(it.data)
+                        .setNegativeButton("Ở lại") { dialog, which ->
+                        }
+                        .setPositiveButton("Đi đén ds lớp") { dialog, which ->
+                        }
+                        .show()
+                    binding.nestedScrollView.visibility = View.VISIBLE
+                    binding.CreateClassProgressBar.visibility = View.INVISIBLE
+                    requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 }
-                is DataState.Error -> {
-                    if (it.data.isNotBlank()) showDialog("Lịch học bị trùng khớp", it.data)
+                is CreateClassEvent.Error -> {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Lỗi")
+                        .setMessage(it.data)
+                        .setPositiveButton("Xác nhận") { dialog, which ->
+                        }
+                        .show()
+                    binding.nestedScrollView.visibility = View.VISIBLE
+                    binding.CreateClassProgressBar.visibility = View.INVISIBLE
+                    requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 }
-                is DataState.Loading -> TODO()
+                is CreateClassEvent.Loading -> {
+                    binding.nestedScrollView.visibility = View.INVISIBLE
+                    binding.CreateClassProgressBar.visibility = View.VISIBLE
+                    requireActivity().window.setFlags(
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    );
+                }
             }
 
         })
@@ -101,9 +128,7 @@ class CreateClassFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         binding.createClassBtn.setOnClickListener {
-
             if (checkModel()) {
                 shifts = ArrayList()
                 dowSet.forEach {
@@ -131,10 +156,7 @@ class CreateClassFragment : Fragment() {
                 )
                 Log.d("createClassroom", classRoom.toString())
                 createClassroom(classRoom)
-
             }
-
-
         }
     }
 
@@ -177,17 +199,6 @@ class CreateClassFragment : Fragment() {
 
     }
 
-
-    private fun showDialog(title: String, data: String) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(title)
-            .setMessage(data)
-            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
-            }
-            .setPositiveButton("Xác nhận") { dialog, which ->
-            }
-            .show()
-    }
 
     private fun checkModel(): Boolean {
         var valid = true

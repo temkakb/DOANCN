@@ -1,14 +1,12 @@
 package com.example.doancn.Fragments.LoginSignUp
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.doancn.LoginRegisterActivity
@@ -34,6 +32,8 @@ class SigupFragment : Fragment() {
     lateinit private var viewModel: SignUpManagerViewModel
     lateinit private var btnnext: Button
     lateinit private var btnprevious: Button
+    lateinit var txtfinish : TextView
+    lateinit var process : ProgressBar
     private var position = 0
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +44,8 @@ class SigupFragment : Fragment() {
         val view = layoutInflater.inflate(R.layout.signup_fragment, container, false)
         btnnext = view.btn_next
         btnprevious = view.btn_previous
+        process=view.process
+        txtfinish=view.txt_finish
         // get view model
         btnprevious.visibility = View.GONE
         dotranscation(youaresingleton) // transcation a child fragment
@@ -53,7 +55,7 @@ class SigupFragment : Fragment() {
     }
 
     private fun setEvent2Button() {
-        GlobalScope.launch(Dispatchers.Default) {
+
             btnnext.setOnClickListener {
                 btnprevious.visibility = View.VISIBLE // hien thi nut back
                 val fragment: Fragment? =
@@ -61,26 +63,30 @@ class SigupFragment : Fragment() {
                 if (setdata(fragment!!)) {
                     if (fragment::class != UserFillInfoFragment3::class) { // check fragment end then do stuff
                         dotranscation(managersingleton.listfragment[position])
+
                         // set event khi fragment change
                         position++
                     } else {
-                        Log.d("gigidone",viewModel.account.user.name)
-                        Log.d("gigidone",viewModel.account.user.address)
-                        Log.d("gigidone",viewModel.account.mgender)
-                        Log.d("gigidone",viewModel.account.password)
-                        Log.d("gigidone",viewModel.account.user.currentWorkPlace)
+                        process.visibility=View.VISIBLE
                         GlobalScope.launch {
                             try {
+                                withContext(Dispatchers.Main){
+                                    btnnext.text=null
+                                }
                                 val authapi = AuthRepository()
                                 authapi.signup(viewModel.account) // post dang ky
                                 dotranscation(managersingleton.listfragment[3]) // fragment hoan tat
                                 withContext(Dispatchers.Main)
                                 {
+                                    process.visibility=View.INVISIBLE
+                                    txtfinish.visibility=View.VISIBLE
                                     btnprevious.visibility = View.GONE
                                     btnnext.visibility = View.GONE
                                 }
                             } catch (e: HttpException) {
                                 withContext(Dispatchers.Main) {
+                                    process.visibility=View.INVISIBLE
+                                    btnnext.text=resources.getString(R.string.next2)
                                     val jObjError = JSONObject(e.response()?.errorBody()!!.string())
                                     val msg = jObjError.get("message")
                                     Toast.makeText(
@@ -91,6 +97,8 @@ class SigupFragment : Fragment() {
                                 }
                             } catch (Eof: EOFException) {
                                 withContext(Dispatchers.Main) {
+                                    process.visibility=View.INVISIBLE
+                                    btnnext.text=resources.getString(R.string.next2)
                                     Toast.makeText(
                                         requireContext(),
                                         "Thao tác quá nhanh, từ từ thôi",
@@ -99,6 +107,8 @@ class SigupFragment : Fragment() {
                                 }
                             } catch (e: SocketTimeoutException) {
                                 withContext(Dispatchers.Main) {
+                                    process.visibility=View.INVISIBLE
+                                    btnnext.text=resources.getString(R.string.next2)
                                     Toast.makeText(
                                         requireContext(),
                                         "Lỗi mạng",
@@ -117,7 +127,7 @@ class SigupFragment : Fragment() {
                     btnprevious.visibility = View.GONE
                 }
             }
-        }
+
     }
 
     private fun setdata(fragment: Fragment): Boolean {
@@ -125,7 +135,7 @@ class SigupFragment : Fragment() {
             val email = fragment.requireView().findViewById(R.id.email) as TextInputEditText
             val password = fragment.requireView().findViewById(R.id.password) as TextInputEditText
             val name = fragment.requireView().findViewById(R.id.yourname) as TextInputEditText
-            if (isEmptyET(email) || isEmptyET(password) || isEmptyET(name)) {
+            if (isEmptyText(email.text.toString()) || isEmptyText(password.text.toString()) || isEmptyText(name.text.toString())) {
                 Toast.makeText(
                     requireContext(),
                     "Các ô Bắt buộc* không được trống",
@@ -133,11 +143,12 @@ class SigupFragment : Fragment() {
                 ).show()
                 return false
             }
+
             if (password.text!!.length < 8) {
                 Toast.makeText(requireContext(), "Mật khẩu dưới 8 ký tự", Toast.LENGTH_SHORT).show()
                 return false
             }
-            if (!validateemailaddress(email)) {
+            if (!validateemailaddress(email.text.toString())) {
                 Toast.makeText(requireContext(), "Email sai định dạng", Toast.LENGTH_SHORT).show()
                 return false
             }
@@ -150,6 +161,17 @@ class SigupFragment : Fragment() {
             val gender = fragment.requireView().findViewById(R.id.gender) as AutoCompleteTextView
             val phone = fragment.requireView().findViewById(R.id.phone) as TextInputEditText
             val address = fragment.requireView().findViewById(R.id.address) as TextInputEditText
+            if (!phone.text.isNullOrEmpty()  ){
+                if(!validatePhoneNumber(phone.text.toString())){
+                        Toast.makeText(requireContext(), "Số điện thoại không được chứa chữ hoặc ký tự đặc biệt", Toast.LENGTH_SHORT).show()
+                        return false
+                    }
+                if(phone.text!!.length<9){
+                    Toast.makeText(requireContext(), "Số điện thoại không hợp lệ (dưới 9 số)", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
+            }
             try {
                 viewModel.account.mgender = viewModel.genderpick.get(gender.text.toString())!!
             } catch (e: NullPointerException) {
@@ -164,7 +186,9 @@ class SigupFragment : Fragment() {
             val educationLevel =
                 fragment.requireView().findViewById(R.id.educationLevel) as TextInputEditText
             val dateborn = fragment.requireView().findViewById(R.id.dateborn) as TextInputEditText
-            if (isEmptyET(dateborn)) return false
+            if (isEmptyText(dateborn.text.toString())) {
+                Toast.makeText(requireContext(), "Chưa chọn ngày sinh", Toast.LENGTH_SHORT).show()
+                return false }
 
             viewModel.account.user.currentWorkPlace = currentWorkPlace.text.toString()
             viewModel.account.user.educationLevel = educationLevel.text.toString()
@@ -189,14 +213,19 @@ class SigupFragment : Fragment() {
         transcation.commit()
     }
 
-    private fun isEmptyET(etText: TextInputEditText): Boolean {
-        return if (etText.text.toString().trim { it <= ' ' }.length > 0) false else true
-    }
+    companion object {
+       fun isEmptyText(text : String): Boolean {
+            return if (text.trim { it <= ' ' }.length > 0) false else true
+        }
+       fun validateemailaddress(email: String): Boolean {
 
-    private fun validateemailaddress(et: TextInputEditText): Boolean {
-        val etstring = et.text.toString()
-        return Patterns.EMAIL_ADDRESS.matcher(etstring).matches()
-
+            return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        }
+        fun validatePhoneNumber(phonenumber: String) : Boolean{
+            if(phonenumber.isDigitsOnly())
+                return true
+            return false
+        }
     }
 
     object managersingleton { // tuan tu fragment

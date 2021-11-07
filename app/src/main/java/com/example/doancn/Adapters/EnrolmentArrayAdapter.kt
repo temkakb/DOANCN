@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
-class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val token: String,val listsubject : Array<String>,val optionarraystring : Array<String>): ArrayAdapter<Classroom>(context,
+class EnrolmentArrayAdapter (context: Context,var listclass: List<Classroom>,val token: String,val listsubject : Array<String>,val optionarraystring : Array<String>): ArrayAdapter<Classroom>(context,
     R.layout.class_items,listclass) {
 
 
@@ -54,7 +54,9 @@ class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val
     }
 
 
-
+    override fun getCount(): Int {
+        return listclass.size
+    }
 
     private fun switchtoenroll(btn : Button){
         btn.text=context.resources.getString(R.string.sigup)
@@ -132,40 +134,41 @@ class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val
             dialog.cancel_button.setOnClickListener {
                 dialog.dismiss()
             }
-            if(c.enrolled){
+            if (c.enrolled) {
                 switchtoenrolled(dialog.btn_enroll)
-                setEventButtonDialog(dialog.btn_enroll,view.btn_enroll,c)
-            }
-            else{
+                setEventButtonDialog(dialog.btn_enroll, view.btn_enroll, c)
+            } else {
                 switchtoenroll(dialog.btn_enroll)
-                setEventButtonDialog(dialog.btn_enroll,view.btn_enroll,c)
+                setEventButtonDialog(dialog.btn_enroll, view.btn_enroll, c)
 
             }
             dialog.show()
 
         }
     }
-    suspend fun  doEnrollOrRemove(btn: Button,c: Classroom) : Boolean{
+
+    private suspend fun doEnrollOrRemove(btn: Button, c: Classroom): Boolean {
         val enrollmentRepository = EnrollmentRepository()
-        if(btn.text.equals(context.getString(R.string.sigup)))
-        {
-                try{
-                enrollmentRepository.doEnroll(c.classId,token)
-                c.enrolled=true
-                }catch (e: HttpException){
-                  if (e.code()==410){
-                      withContext(Dispatchers.Main){
-                          Toast.makeText(context,"Không thể đăng ký, Khóa học đã bắt đầu",Toast.LENGTH_SHORT).show()
-                      }
-                  }
-                    if(e.code()==400)
-                    {
-                        withContext(Dispatchers.Main){
-                            Toast.makeText(context,"Không tìm thấy lớp học",Toast.LENGTH_SHORT).show()
-                        }
+        if (btn.text.equals(context.getString(R.string.sigup))) {
+            try {
+                enrollmentRepository.doEnroll(c.classId, token)
+                c.enrolled = true
+            } catch (e: HttpException) {
+                if (e.code() == 410) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Không thể đăng ký, Khóa học đã bắt đầu",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    if(e.code()==409)
-                    {
+                }
+                if (e.code() == 400) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Không tìm thấy lớp học", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                if (e.code() == 409) {
                         withContext(Dispatchers.Main){
                             Toast.makeText(context,"đã đăng ký khóa học",Toast.LENGTH_SHORT).show()
                         }
@@ -180,9 +183,10 @@ class EnrolmentArrayAdapter (context: Context,val listclass: List<Classroom>,val
         }
         return true
     }
-
-
-
+    fun swapDataSet(listclass: List<Classroom>){
+        this.listclass=listclass
+        notifyDataSetChanged()
+    }
     }
 
 
