@@ -67,10 +67,12 @@ class CreateClassFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = CreateClassFragmentBinding.inflate(inflater, container, false)
+
         viewModel.selectedItem.observe(viewLifecycleOwner, Observer {
             location = it
 
         })
+
         viewModel.createClassResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is CreateClassEvent.Success -> {

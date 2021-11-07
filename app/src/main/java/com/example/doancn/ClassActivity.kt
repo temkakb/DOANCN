@@ -12,15 +12,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.doancn.Models.Classroom
-import com.example.doancn.Utilities.QrCodeManager
-import com.example.doancn.Utilities.TokenManager
 import com.example.doancn.databinding.ActivityClassBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ClassActivity : AppCompatActivity() {
 
     private val classViewModel: ClassViewModel by viewModels()
@@ -28,8 +27,6 @@ class ClassActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClassBinding
     private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
     private lateinit var options: ScanOptions
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val classroom = intent.getSerializableExtra("targetClassroom") as Classroom
@@ -37,6 +34,7 @@ class ClassActivity : AppCompatActivity() {
             Log.d("ClassActivity", "classroom $classroom")
             classViewModel.selectItem(classroom = classroom)
         }
+        Log.d("context", this.toString())
         binding = ActivityClassBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navView: BottomNavigationView = binding.navView
@@ -55,7 +53,7 @@ class ClassActivity : AppCompatActivity() {
         }
         initQrCode()
         binding.floatingActionButton.setOnClickListener {
-            QrCodeManager.getQrCode(this)
+            classViewModel.createQR(classViewModel.classroom.value!!.classId, this)
         }
     }
 
@@ -66,10 +64,7 @@ class ClassActivity : AppCompatActivity() {
             if (result.contents == null) {
                 Toast.makeText(this, "Hủy quét", Toast.LENGTH_LONG).show()
             } else { // diem danh
-                QrCodeManager.doAttendace(
-                    2L, result.contents.toString(),
-                    TokenManager.userToken, this
-                )
+                classViewModel.doAttendance(result.contents.toString(), this)
 
             }
         }

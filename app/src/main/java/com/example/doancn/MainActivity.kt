@@ -27,14 +27,11 @@ import com.example.doancn.Models.UserMe
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.Retrofit.RetrofitManager
-import com.example.doancn.Utilities.TokenManager
 import com.example.doancn.ViewModels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
@@ -48,7 +45,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
 
-    private val viewModel: CreateClassViewModel by viewModels()
+    private val createClassViewModel: CreateClassViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +71,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             startActivity(intent)
             finish()
         } else {
+
             GlobalScope.launch {
                 try {
                     val auth = AuthRepository()
@@ -109,26 +108,40 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
                         }
                     }
-
-                    TokenManager.apply {
-                        getpublickey(token)
-                        readrolefromtokenJws()
-                        userToken= "Bearer $token"
-                        if (role == "STUDENT") {
+                    withContext(Dispatchers.Main) {
+                        Log.d("MainActivity", mainViewModel.role)
+                        if (mainViewModel.role == "STUDENT") {
                             runOnUiThread {
                                 val navmenu: Menu = nav_view.menu
                                 navmenu.findItem(R.id.nav_createclass).isVisible = false
+                                navmenu.findItem(R.id.nav_joinclass).isVisible = true
                             }
-                        } else if (role == "TEACHER") {
+                        } else if (mainViewModel.role == "TEACHER") {
                             runOnUiThread {
                                 val navmenu: Menu = nav_view.menu
                                 navmenu.findItem(R.id.nav_joinclass).isVisible = false
+                                navmenu.findItem(R.id.nav_createclass).isVisible = true
                             }
                         }
                     }
-                }
-                // token ko hop le
-                catch (e: retrofit2.HttpException) {
+//                    TokenManager.apply {
+//                        getpublickey(token)
+//                        readrolefromtokenJws()
+//                        userToken= "Bearer $token"
+//                        if (role == "STUDENT") {
+//                            runOnUiThread {
+//                                val navmenu: Menu = nav_view.menu
+//                                navmenu.findItem(R.id.nav_createclass).isVisible = false
+//                            }
+//                        } else if (role == "TEACHER") {
+//                            runOnUiThread {
+//                                val navmenu: Menu = nav_view.menu
+//                                navmenu.findItem(R.id.nav_joinclass).isVisible = false
+//                            }
+//                        }
+//                    }
+
+                } catch (e: retrofit2.HttpException) {// token ko hop lecatch
                     sharedprefernces.edit().clear().apply()
                     startActivity(intent)
                     finish()
@@ -220,8 +233,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 val edit = sharedprefernces.edit()
                 edit.apply { remove("token") }.apply()
                 val intent = Intent(this, LoginRegisterActivity::class.java)
-                startActivity(intent)
                 finish()
+                startActivity(intent)
             }
         }
     }
@@ -247,8 +260,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 }
                 Log.d("TAG", item.toString())
 
-                item?.let { viewModel.selectItem(it) }
-                Log.d("onActivityResult", viewModel.selectedItem.value.toString())
+                item?.let { createClassViewModel.selectItem(it) }
+                Log.d("onActivityResult", createClassViewModel.selectedItem.value.toString())
             }
 
 

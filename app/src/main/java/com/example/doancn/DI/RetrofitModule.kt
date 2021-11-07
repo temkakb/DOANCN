@@ -1,6 +1,5 @@
 package com.example.doancn.DI
 
-import android.content.Context
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
 import com.example.doancn.Retrofit.Urls
@@ -9,11 +8,9 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -52,11 +49,6 @@ object RetrofitModule {
             .build()
             .create(SubjectApi::class.java)
     }
-    @Singleton
-    @Provides
-    @Named("auth_token")
-    fun provideToken(@ApplicationContext context: Context): String {
-        return "Bearer " + context.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE).getString("token", null)
-    }
+
 
 }

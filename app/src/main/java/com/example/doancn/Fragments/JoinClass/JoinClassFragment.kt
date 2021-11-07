@@ -13,17 +13,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doancn.Adapters.EnrolmentArrayAdapter
 import com.example.doancn.Adapters.SubjectsAdapter
+import com.example.doancn.MainViewModel
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
 import com.example.doancn.Repository.EnrollmentRepository
 import com.example.doancn.Repository.SubjectRepository
-import com.example.doancn.Utilities.TokenManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_joinclass.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -32,7 +34,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.util.*
 
-
+@AndroidEntryPoint
 class JoinClassFragment : Fragment() {
     private lateinit var repository: SubjectRepository
     private lateinit var listoptionname: Array<String>
@@ -42,8 +44,13 @@ class JoinClassFragment : Fragment() {
     private lateinit var fusedLocation: FusedLocationProviderClient
     private lateinit var noclassroom: TextView
     private lateinit var noclassroomimageview: ImageView
-    private  var enrolmentArrayAdapter: EnrolmentArrayAdapter? =null
+    private var enrolmentArrayAdapter: EnrolmentArrayAdapter? = null
     var classrooms: List<Classroom>? = null
+    private val viewModel: MainViewModel by activityViewModels()
+//    @Inject
+//    @Named("auth_token")
+//    lateinit var token: String
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -91,7 +98,7 @@ class JoinClassFragment : Fragment() {
                         val enrollmentRepository = EnrollmentRepository()
                         classrooms = enrollmentRepository.getclassenrollment(
                             listaddress[0].locality, subjectId,
-                            TokenManager.userToken
+                            viewModel.token
                         )
                         if (classrooms == null || classrooms!!.isEmpty()) {
                             withContext(Dispatchers.Main) {
@@ -105,7 +112,7 @@ class JoinClassFragment : Fragment() {
                                     enrolmentArrayAdapter = EnrolmentArrayAdapter(
                                         requireContext(),
                                         classrooms!!,
-                                      TokenManager.userToken,
+                                        viewModel.token,
                                         listsubjectname, listoptionname
                                     )
 

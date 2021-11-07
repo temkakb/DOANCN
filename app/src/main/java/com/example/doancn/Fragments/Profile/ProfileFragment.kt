@@ -22,18 +22,20 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.doancn.LoginRegisterActivity
 import com.example.doancn.MainActivity
+import com.example.doancn.MainViewModel
 import com.example.doancn.Models.UserMe
 import com.example.doancn.R
 import com.example.doancn.Retrofit.RetrofitManager
-import com.example.doancn.Utilities.TokenManager
 import com.example.doancn.ViewModels.UserViewModel
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedbottompicker.TedBottomPicker
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.change_pasword.view.*
@@ -50,21 +52,23 @@ import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
-
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
-    private var userme:UserMe? = null
-    private lateinit var navController : NavController
+    private var userme: UserMe? = null
+    private lateinit var navController: NavController
+
+    private val viewModel: MainViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        navController= requireParentFragment().findNavController()
-        val main : MainActivity = activity as MainActivity
-        val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
+        navController = requireParentFragment().findNavController()
+        val main: MainActivity = activity as MainActivity
+        val model: UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
         userme = model.user
-        return inflater.inflate(R.layout.fragment_profile,container,false)
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
 
@@ -117,12 +121,12 @@ class ProfileFragment : Fragment() {
                         profile_img.setImageResource(R.drawable.man)
                 }
             }
-            TokenManager.apply {
-                if (role == "TEACHER") {
+            viewModel.role.apply {
+                if (this == "TEACHER") {
                     tv_nlht.text = getString(R.string.currentWorkPlace)
                     profile_role.text = getString(R.string.teacher)
                     p_parent.visibility = View.GONE
-                } else if (role == "STUDENT") {
+                } else if (this == "STUDENT") {
                     profile_role.text = getString(R.string.student)
                 }
             }

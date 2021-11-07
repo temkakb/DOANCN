@@ -22,17 +22,22 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import java.util.concurrent.TimeUnit
 
-object QrCodeManager {
+class QrCodeManager(var token: String) {
     val repository = AttendanceRepository()
     var qrcode: QrCodeX? = null
     var multiFormatWriter: MultiFormatWriter = MultiFormatWriter()
     val encode = BarcodeEncoder()
+    var classId: Long = -1
 
-    fun getQrCode(context: Context) {
+    fun getQrCode(context: Context, classId: Long, token: String) {
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                qrcode = repository.getQrcodeToken(2L, TokenManager.userToken)
+
+                Log.d("QrCodeManager", "token : $token")
+                Log.d("context", context.toString())
+                this@QrCodeManager.classId = classId
+                qrcode = repository.getQrcodeToken(classId, token)
                 withContext(Dispatchers.Main) {
                     showDialog(context)
                 }
@@ -50,8 +55,9 @@ object QrCodeManager {
         }
     }
 
-    fun showDialog(context: Context) {
+    private fun showDialog(context: Context) {
         val dialog = Dialog(context)
+        //dialog.window!!.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)
         dialog.setContentView(R.layout.dialog_qrcode)
         dialog.btn_close.setOnClickListener {
             dialog.dismiss()
@@ -72,7 +78,7 @@ object QrCodeManager {
                 dialogalert.setTitle(context.resources.getString(R.string.qrcode_expired_title))
                     .setMessage(context.resources.getString(R.string.qrcode_expired_msg))
                     .setPositiveButton(context.resources.getString(R.string.qrcode_expired_yes)) { dialoginterface, int ->
-                        getQrCode(context)
+                        getQrCode(context, classId = classId, token)
                     }
                     .setNegativeButton(context.resources.getString(R.string.qrcode_expired_no)) { dialoginterface, int ->
                         dialoginterface.dismiss()
@@ -91,10 +97,10 @@ object QrCodeManager {
         dialog.show()
     }
 
-    fun doAttendace(classId: Long, qrId: String, token: String, context: Context) {
+    fun doAttendace(classId: Long, qrcode: String, token: String, context: Context) {
         GlobalScope.launch {
             try {
-                repository.doAttendance(classId, qrId, token)
+                repository.doAttendance(classId, qrcode, token)
             } catch (e: HttpException) {
                 val jObjError = JSONObject(e.response()?.errorBody()!!.string())
                 val msg = jObjError.get("message")
