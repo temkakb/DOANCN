@@ -77,16 +77,12 @@ u
 Eapp/src/main/java/com/example/doancn/Repository/SectionsRepository.kt,9\f\9ff76ceca03ec977faaf0ecfcd5603742d4fb3ca
 n
 >app/src/main/java/com/example/doancn/HorizontalWeekCalendar.kt,0\4\049a00bb44de6efae59114d6a06bf71e196186d4
-v
-Fapp/src/main/java/com/example/doancn/Adapters/EnrolmentArrayAdapter.kt,1\e\1ed95af061ca397d56e90a6f816d14343c6f6d67
 s
 Capp/src/main/java/com/example/doancn/Fragments/Home/HomeFragment.kt,a\f\af2e656780308c44f4bd0ef6a2eb2e34eebf8c19
 m
 =app/src/main/java/com/example/doancn/LoginRegisterActivity.kt,f\2\f254434378460a5c91f3cd70204581467dab12fa
 f
 6app/src/main/java/com/example/doancn/Models/QrCodeX.kt,1\a\1a5cb7108f7f3a3e5ffdcf06d088042380e2c565
-q
-Aapp/src/main/java/com/example/doancn/Repository/AuthRepository.kt,2\9\293173f5abb1e93bd33a7878e3a5fbf0a1f9eaf6
 g
 7app/src/main/java/com/example/doancn/API/ISectionApi.kt,6\0\6061f4fd4653ff111a695453e494a4a9629a1a8d
 g
@@ -101,9 +97,5 @@ n
 >app/src/main/java/com/example/doancn/Utilities/TokenManager.kt,a\0\a0d9c18db884a13eee8682050172dafc3e3c92db
 d
 4app/src/main/java/com/example/doancn/MainActivity.kt,b\3\b3409f0586a886b28c74fad5b4c4c2cb33e9f430
-}
-Mapp/src/main/java/com/example/doancn/Fragments/JoinClass/JoinClassFragment.kt,7\1\717ab194601e1608a891428a336d1926d6dae1d2
-P
- app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
