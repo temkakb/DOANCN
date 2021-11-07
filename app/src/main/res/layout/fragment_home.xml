@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.example.demohomekotlin.HorizontalWeekCalendar
+    <com.example.doancn.HorizontalWeekCalendar
         android:id="@+id/horizontalCalendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.example.doancn.Fragments.Home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -9,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.demohomekotlin.HorizontalWeekCalendar
+import com.example.doancn.HorizontalWeekCalendar
 import com.example.demotranghome.Adapters.CalendarWeekAdapter
 import com.example.demotranghome.Interfaces.DateWatcher
 import com.example.demotranghome.Interfaces.OnDateClickListener
@@ -59,17 +60,16 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home,container,false)
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val main : MainActivity = activity as MainActivity
 
         val calendar = Calendar.getInstance()
         selected = GregorianCalendar(calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
 
         calendarView = HorizontalWeekCalendar.Builder()
             .setView(R.id.horizontalCalendar)
-            .init(main)
+            .init(this)
 
         calendarView!!.setSelectedBackground(R.drawable.grad)
         calendarView!!.setSelectedTextColor(Color.WHITE)
@@ -114,6 +114,8 @@ class HomeFragment : Fragment() {
         }
     }
 
+
+
     override fun onResume() {
         super.onResume()
         if( userme?.enrollments == null) {
@@ -124,20 +126,18 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun setEventAdpater() {
         val todayClass = TodayClass()
-        var selectedDayOfWeek : String = selected?.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG,Locale.getDefault())!!.uppercase()
+        val selectedDayOfWeek : String = selected?.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG,Locale.getDefault())!!.uppercase()
         val listsubjectname: Array<String> = resources.getStringArray(R.array.Subjects)
-        var dailyClass : ArrayList<Classroom> = ArrayList()
+        val dailyClass: ArrayList<Classroom>
+
         for(i in userme!!.enrollments!!) {
-            todayClass.enrollments = userme!!.enrollments!!
             todayClass.classrooms.add(i.classroom)
             }
-        for (a in todayClass.classrooms){
-                dailyClass = todayClass.ClassroomsForDate(selectedDayOfWeek)
-            }
-        for (ia in dailyClass)
-            Log.i("Danh sach lớp",ia.classId.toString())
+
+        dailyClass = todayClass.ClassroomsForDate(selectedDayOfWeek)
 
         val eventAdapter = ShiftOfClassAdapter(requireContext(),dailyClass
             ,selectedDayOfWeek,listsubjectname)
@@ -145,11 +145,9 @@ class HomeFragment : Fragment() {
         if (dailyClass.count() == 0)
         {
             noclassroom.visibility = View.VISIBLE
-
         }
         else{
             noclassroom.visibility = View.GONE
-
         }
 
         today_class_listview.setOnItemClickListener { parent, view, position, id ->

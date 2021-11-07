@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import com.bumptech.glide.Glide
 import com.example.doancn.IMainActivity
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
@@ -53,12 +52,12 @@ class ListClassAdapter(var context: Context, var classList: List<Classroom>) :
             circularProgressDrawable.strokeWidth = 5f
             circularProgressDrawable.centerRadius = 30f
             circularProgressDrawable.start()
-            Glide.with(context)
-                .load(classroom.teacher.image)
-                .centerCrop()
-                .placeholder(circularProgressDrawable)
-                .error(R.drawable.ic_launcher_background)
-                .into(imageView)
+//            Glide.with(context)
+//                .load(classroom.teacher.image)
+//                .centerCrop()
+//                .placeholder(circularProgressDrawable)
+//                .error(R.drawable.ic_launcher_background)
+//                .into(imageView)
             className.text = classroom.name
             teacherName.text = classroom.teacher.name
             numberOfAttendances.text = "${classroom.currentAttendanceNumber} đã đăng kí tham gia."

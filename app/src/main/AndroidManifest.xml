@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.doancn">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -28,8 +29,6 @@
             android:exported="true"
             android:label="@string/title_activity_class"
             android:parentActivityName=".MainActivity">
-
-
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -43,6 +42,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
         <activity
             android:name=".Fragments.CreateClass.MapsActivity"
             android:exported="true"

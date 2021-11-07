@@ -3,6 +3,8 @@ package com.example.doancn
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,8 +12,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Utilities.QrCodeManager
+import com.example.doancn.Utilities.TokenManager
 import com.example.doancn.databinding.ActivityClassBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 
 
 class ClassActivity : AppCompatActivity() {
@@ -19,13 +26,16 @@ class ClassActivity : AppCompatActivity() {
     private val classViewModel: ClassViewModel by viewModels()
 
     private lateinit var binding: ActivityClassBinding
+    private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
+    private lateinit var options: ScanOptions
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-            val classroom = intent.getSerializableExtra("targetClassroom") as Classroom
-            classroom.let {
-                Log.d("ClassActivity","classroom $classroom")
-                classViewModel.selectItem(classroom = classroom)
+        val classroom = intent.getSerializableExtra("targetClassroom") as Classroom
+        classroom.let {
+            Log.d("ClassActivity", "classroom $classroom")
+            classViewModel.selectItem(classroom = classroom)
         }
         binding = ActivityClassBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,21 +49,44 @@ class ClassActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener{controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         }
-     }
+        initQrCode()
+        binding.floatingActionButton.setOnClickListener {
+            QrCodeManager.getQrCode(this)
+        }
+    }
 
+    private fun initQrCode() {
+        barcodeLauncher = registerForActivityResult(
+            ScanContract()
+        ) { result: ScanIntentResult ->
+            if (result.contents == null) {
+                Toast.makeText(this, "Hủy quét", Toast.LENGTH_LONG).show()
+            } else { // diem danh
+                QrCodeManager.doAttendace(
+                    2L, result.contents.toString(),
+                    TokenManager.userToken, this
+                )
+
+            }
+        }
+        options = ScanOptions()
+        options.setBeepEnabled(false)
+        options.setPrompt("quét mã QR để tiến hành điểm danh")
+    }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id==android.R.id.home) {
+        if (id == android.R.id.home) {
             finish();
         }
         return true
     }
+
     override fun onResume() {
         super.onResume()
     }

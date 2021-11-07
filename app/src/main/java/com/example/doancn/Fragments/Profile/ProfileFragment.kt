@@ -30,7 +30,7 @@ import com.example.doancn.MainActivity
 import com.example.doancn.Models.UserMe
 import com.example.doancn.R
 import com.example.doancn.Retrofit.RetrofitManager
-import com.example.doancn.Utilities.JwtManager
+import com.example.doancn.Utilities.TokenManager
 import com.example.doancn.ViewModels.UserViewModel
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
@@ -117,7 +117,7 @@ class ProfileFragment : Fragment() {
                         profile_img.setImageResource(R.drawable.man)
                 }
             }
-            JwtManager.apply {
+            TokenManager.apply {
                 if (role == "TEACHER") {
                     tv_nlht.text = getString(R.string.currentWorkPlace)
                     profile_role.text = getString(R.string.teacher)

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        android:padding="15dp"
+        android:id="@+id/iv_qrcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter" />
+    <TextView
+        android:id="@+id/countdown"
+        android:layout_width="match_parent"
+        android:textColor="@color/primaryTextColor"
+
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btn_close"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:text="Đóng"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

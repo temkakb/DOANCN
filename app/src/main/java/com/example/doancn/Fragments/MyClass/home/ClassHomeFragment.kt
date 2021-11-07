@@ -27,6 +27,10 @@ class ClassHomeFragment : Fragment() {
         fun newInstance() = ClassHomeFragment()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +39,7 @@ class ClassHomeFragment : Fragment() {
         _binding = ClassHomeFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setupAnnouncementTable()
-        classViewModel.classroom.observe(viewLifecycleOwner, {
-            setUpShift(it)
-        })
+
         return root
     }
 
@@ -46,6 +48,10 @@ class ClassHomeFragment : Fragment() {
         vp2 = binding.vp2Announcement
         vp2.adapter = AnnouncementAdapter(requireContext(), Announcement.listOfAnnouncement())
         vp2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        classViewModel.classroom.observe(viewLifecycleOwner, {
+            setUpShift(it)
+        })
+
     }
 
 

@@ -27,7 +27,7 @@ import com.example.doancn.Models.UserMe
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.Retrofit.RetrofitManager
-import com.example.doancn.Utilities.JwtManager
+import com.example.doancn.Utilities.TokenManager
 import com.example.doancn.ViewModels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -110,9 +110,10 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                         }
                     }
 
-                    JwtManager.apply {
+                    TokenManager.apply {
                         getpublickey(token)
                         readrolefromtokenJws()
+                        userToken= "Bearer $token"
                         if (role == "STUDENT") {
                             runOnUiThread {
                                 val navmenu: Menu = nav_view.menu
