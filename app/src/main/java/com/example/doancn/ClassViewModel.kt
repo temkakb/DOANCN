@@ -15,7 +15,7 @@ class ClassViewModel
 @Inject
 constructor(
     private var qrCodeManager: QrCodeManager,
-    @Named("auth_token") val token: String
+    @Named("auth_token") val token: String?
 ) : ViewModel() {
     private val _classroom = MutableLiveData<Classroom>()
     val classroom: LiveData<Classroom> get() = _classroom
@@ -25,10 +25,10 @@ constructor(
     }
 
     fun createQR(classId: Long, context: Context) {
-        qrCodeManager.getQrCode(context, classId, token)
+        qrCodeManager.getQrCode(context, classId, token!!)
     }
 
     fun doAttendance(qr: String, context: Context) {
-        qrCodeManager.doAttendace(classId = 2L, qr, token, context)
+        qrCodeManager.doAttendace(classId = 2L, qr, token!!, context)
     }
 }

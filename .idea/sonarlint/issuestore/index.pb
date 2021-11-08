@@ -47,8 +47,6 @@ Rapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment
 Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment2.kt,8\7\87349b417b3504eb2772e2f55400a0f6dd740802
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
-z
-Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
 |
 Lapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/YouAreFragment.kt,0\e\0e9ac11b2597e89d9254a738945d8bc276fd2898
 x
@@ -57,8 +55,6 @@ n
 >app/src/main/java/com/example/doancn/Adapters/ParentAdapter.kt,5\c\5c877a9e50035748ca6ec3462cbb1194de44a5e1
 q
 Aapp/src/main/java/com/example/doancn/API/ProfileApi/IParentApi.kt,4\8\48607487e18954af4ee0da385982d1bb7535dfd0
-o
-?app/src/main/java/com/example/doancn/API/ProfileApi/IUserApi.kt,4\8\48ae375fd0bd148159182ded61e9abd502a1fe5c
 p
 @app/src/main/java/com/example/doancn/Adapters/SubjectsAdapter.kt,d\d\dd46baf00f946b8429fdba93d253bad67a690d82
 u
@@ -119,13 +115,9 @@ Rapp/src/main/java/com/example/doancn/Fragments/CreateClass/CreateClassViewModel
 Mapp/src/main/java/com/example/doancn/Fragments/MyClass/MyClassRoomFragment.kt,1\0\10109001bad9fe50f8c08281a651b3b9eafee50e
 k
 ;app/src/main/java/com/example/doancn/DI/RepositoryModule.kt,5\e\5e640e696927389b649fa5085e46829a88479ad6
-i
-9app/src/main/java/com/example/doancn/DI/RetrofitModule.kt,d\0\d0313dd9e7d52c9d5922b562ac1c9ecfa0891d86
 Å
 Qapp/src/main/java/com/example/doancn/Fragments/CreateClass/CreateClassFragment.kt,0\0\00f849a26d681bbbdda8d270c5c0766d65a5978f
 d
 4app/src/main/java/com/example/doancn/API/IauthApi.kt,8\4\84157d5863f270213ad9344ce4a14674c50401f5
-~
-Napp/src/main/java/com/example/doancn/Fragments/MyClass/MyClassRoomViewModel.kt,5\e\5e20baff9d2f811bda587e06f37a9ed0cac48354
 r
 Bapp/src/main/java/com/example/doancn/Repository/ClassRepository.kt,d\0\d0f615fbb6a4dd49cc6f3e4addccea8b92639ff6

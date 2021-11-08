@@ -1,5 +1,7 @@
 package com.example.doancn.DI
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
 import com.example.doancn.API.IauthApi
@@ -9,6 +11,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -54,9 +57,15 @@ object RetrofitModule {
 
     @Singleton
     @Provides
+
     fun provideAuthApi(retrofit: Retrofit.Builder): IauthApi {
         return retrofit.build().create(IauthApi::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideShareReferences(@ApplicationContext context: Context): SharedPreferences =
+        context.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
 
 
 }

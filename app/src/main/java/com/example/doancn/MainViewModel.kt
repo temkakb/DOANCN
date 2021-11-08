@@ -16,12 +16,13 @@ import javax.inject.Named
 @HiltViewModel
 class MainViewModel
 @Inject constructor(
-    @Named("auth_token") val token: String,
-    @Named("user_role") val role: String,
+
+    @Named("auth_token") val token: String?,
+    @Named("user_role") val role: String?,
     val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private val _validatetoken = MutableStateFlow<DataState<String>>(DataState.Emty)
+    private val _validatetoken = MutableStateFlow<DataState<String>>(DataState.Empty)
     val validatetoken: StateFlow<DataState<String>> = _validatetoken
 
 
@@ -29,8 +30,8 @@ class MainViewModel
         viewModelScope.launch {
 
             viewModelScope.launch {
-                Log.d("tokendasdada", token)
-                val jsontoken = mapOf(pair = Pair("token", token.substring(7)))
+                Log.d("tokendasdada", token!!)
+                val jsontoken = mapOf(pair = Pair("token", token!!.substring(7)))
                 when (val dataState = authRepository.validate(jsontoken)) {
                     is DataState.Success -> _validatetoken.value = dataState
                     is DataState.Error -> _validatetoken.value = dataState
