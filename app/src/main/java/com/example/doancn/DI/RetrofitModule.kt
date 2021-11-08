@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
+import com.example.doancn.API.IauthApi
 import com.example.doancn.Retrofit.Urls
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -52,6 +53,13 @@ object RetrofitModule {
         return retrofit
             .build()
             .create(SubjectApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+
+    fun provideAuthApi(retrofit: Retrofit.Builder): IauthApi {
+        return retrofit.build().create(IauthApi::class.java)
     }
 
     @Singleton

@@ -34,10 +34,12 @@ object AppModule {
     @ActivityRetainedScoped
     @Provides
     @Named("auth_token")
+
     fun provideToken(sharedPreferences: SharedPreferences): String? {
         if (sharedPreferences.contains("token")) {
             return "Bearer " + sharedPreferences.getString("token", null)
         }
         return null
+
     }
 }
