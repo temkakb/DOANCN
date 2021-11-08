@@ -19,4 +19,9 @@
         android:name="com.example.doancn.Fragments.MyClass.people.PeopleFragment"
         android:label="people_fragment"
         tools:layout="@layout/people_fragment" />
+    <dialog
+        android:id="@+id/navigation_bottom_sheet"
+        android:name="com.example.doancn.Fragments.MyClass.more.ItemListDialogFragment"
+        android:label="fragment_item_list_dialog_list_dialog"
+        tools:layout="@layout/fragment_item_list_dialog_list_dialog" />
 </navigation>

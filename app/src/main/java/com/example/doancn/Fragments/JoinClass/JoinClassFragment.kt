@@ -98,7 +98,7 @@ class JoinClassFragment : Fragment() {
                         val enrollmentRepository = EnrollmentRepository()
                         classrooms = enrollmentRepository.getclassenrollment(
                             listaddress[0].locality, subjectId,
-                            viewModel.token
+                            viewModel.token!!
                         )
                         if (classrooms == null || classrooms!!.isEmpty()) {
                             withContext(Dispatchers.Main) {
@@ -112,7 +112,7 @@ class JoinClassFragment : Fragment() {
                                     enrolmentArrayAdapter = EnrolmentArrayAdapter(
                                         requireContext(),
                                         classrooms!!,
-                                        viewModel.token,
+                                        viewModel.token!!,
                                         listsubjectname, listoptionname
                                     )
 

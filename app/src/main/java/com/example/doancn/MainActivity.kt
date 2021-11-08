@@ -1,7 +1,7 @@
 package com.example.doancn
 
-import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.os.Build
@@ -35,6 +35,7 @@ import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.HashMap
 
 @ExperimentalCoroutinesApi
@@ -47,6 +48,9 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     private val createClassViewModel: CreateClassViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var sharedPrefernces: SharedPreferences
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,22 +68,18 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         setUpNavigation()
         // khai báo UserViewModel
         val model: UserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        val sharedprefernces = getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-        val token: String? = sharedprefernces.getString("token", null)
-        val intent = Intent(this, LoginRegisterActivity::class.java)
-        if (token == null) { // CODE CHAY CHO MAU, co gi chu improve nha
-            startActivity(intent)
-            finish()
+        if (mainViewModel.token == null) { // CODE CHAY CHO MAU, co gi chu improve nha
+            toLoginFragment()
         } else {
-
             GlobalScope.launch {
                 try {
+                    val myToken = mainViewModel.token!!.substring(7)
                     val auth = AuthRepository()
                     val map = HashMap<String, String>()
-                    map["token"] = token
-                    Log.i("MyToken", token)
+                    map["token"] = myToken
+                    Log.i("MyToken", myToken)
                     auth.validate(map)
-                    getMyUser(token, model)
+                    getMyUser(myToken, model)
                     if (model.user != null) {
                         Log.i("Username", model.user!!.name)
                         runOnUiThread {
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                         }
                     }
                     withContext(Dispatchers.Main) {
-                        Log.d("MainActivity", mainViewModel.role)
+                        Log.d("MainActivity", mainViewModel.role!!)
                         if (mainViewModel.role == "STUDENT") {
                             runOnUiThread {
                                 val navmenu: Menu = nav_view.menu
@@ -124,27 +124,9 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                             }
                         }
                     }
-//                    TokenManager.apply {
-//                        getpublickey(token)
-//                        readrolefromtokenJws()
-//                        userToken= "Bearer $token"
-//                        if (role == "STUDENT") {
-//                            runOnUiThread {
-//                                val navmenu: Menu = nav_view.menu
-//                                navmenu.findItem(R.id.nav_createclass).isVisible = false
-//                            }
-//                        } else if (role == "TEACHER") {
-//                            runOnUiThread {
-//                                val navmenu: Menu = nav_view.menu
-//                                navmenu.findItem(R.id.nav_joinclass).isVisible = false
-//                            }
-//                        }
-//                    }
-
                 } catch (e: retrofit2.HttpException) {// token ko hop lecatch
-                    sharedprefernces.edit().clear().apply()
-                    startActivity(intent)
-                    finish()
+                    sharedPrefernces.edit().clear().apply()
+                    toLoginFragment()
                 }
             }
         }
@@ -229,12 +211,9 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 actionBar?.title = "Cài đặt"
             }
             if (destination.id == R.id.nav_logout) {
-                val sharedprefernces = getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-                val edit = sharedprefernces.edit()
+                val edit = sharedPrefernces.edit()
                 edit.apply { remove("token") }.apply()
-                val intent = Intent(this, LoginRegisterActivity::class.java)
-                finish()
-                startActivity(intent)
+                toLoginFragment()
             }
         }
     }
@@ -270,10 +249,14 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     override fun toClass(classroom: Classroom) {
         val bundle = Bundle()
-        //Log.d("MainActivity", "classroom $classroom")
         bundle.putSerializable("targetClassroom", classroom)
-        //startActivity(Intent(this, ClassActivity::class.java).apply { putExtras(bundle) })
         navcontroller.navigate(R.id.action_nav_myClass_to_classActivity, bundle)
+    }
+
+    private fun toLoginFragment() {
+        val intent = Intent(this, LoginRegisterActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
 }
