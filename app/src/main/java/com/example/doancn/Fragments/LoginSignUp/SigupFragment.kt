@@ -13,19 +13,10 @@ import com.example.doancn.LoginRegisterActivity
 import com.example.doancn.Models.AccountSignUp
 import com.example.doancn.Models.User
 import com.example.doancn.R
-import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.ViewModels.MviewmodelProviderFactory
 import com.example.doancn.ViewModels.SignUpManagerViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.signup_fragment.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
-import retrofit2.HttpException
-import java.io.EOFException
-import java.net.SocketTimeoutException
 
 
 class SigupFragment : Fragment() {
@@ -67,56 +58,56 @@ class SigupFragment : Fragment() {
                         // set event khi fragment change
                         position++
                     } else {
-                        process.visibility=View.VISIBLE
-                        GlobalScope.launch {
-                            try {
-                                withContext(Dispatchers.Main){
-                                    btnnext.text=null
-                                }
-                                val authapi = AuthRepository()
-                                authapi.signup(viewModel.account) // post dang ky
-                                dotranscation(managersingleton.listfragment[3]) // fragment hoan tat
-                                withContext(Dispatchers.Main)
-                                {
-                                    process.visibility=View.INVISIBLE
-                                    txtfinish.visibility=View.VISIBLE
-                                    btnprevious.visibility = View.GONE
-                                    btnnext.visibility = View.GONE
-                                }
-                            } catch (e: HttpException) {
-                                withContext(Dispatchers.Main) {
-                                    process.visibility=View.INVISIBLE
-                                    btnnext.text=resources.getString(R.string.next2)
-                                    val jObjError = JSONObject(e.response()?.errorBody()!!.string())
-                                    val msg = jObjError.get("message")
-                                    Toast.makeText(
-                                        requireContext(),
-                                        msg.toString(),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            } catch (Eof: EOFException) {
-                                withContext(Dispatchers.Main) {
-                                    process.visibility=View.INVISIBLE
-                                    btnnext.text=resources.getString(R.string.next2)
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Thao tác quá nhanh, từ từ thôi",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            } catch (e: SocketTimeoutException) {
-                                withContext(Dispatchers.Main) {
-                                    process.visibility=View.INVISIBLE
-                                    btnnext.text=resources.getString(R.string.next2)
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Lỗi mạng",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
+                        process.visibility = View.VISIBLE
+//                        GlobalScope.launch {
+//                            try {
+//                                withContext(Dispatchers.Main){
+//                                    btnnext.text=null
+//                                }
+//                                val authapi = AuthRepository()
+//                                authapi.signup(viewModel.account) // post dang ky
+//                                dotranscation(managersingleton.listfragment[3]) // fragment hoan tat
+//                                withContext(Dispatchers.Main)
+//                                {
+//                                    process.visibility=View.INVISIBLE
+//                                    txtfinish.visibility=View.VISIBLE
+//                                    btnprevious.visibility = View.GONE
+//                                    btnnext.visibility = View.GONE
+//                                }
+//                            } catch (e: HttpException) {
+//                                withContext(Dispatchers.Main) {
+//                                    process.visibility=View.INVISIBLE
+//                                    btnnext.text=resources.getString(R.string.next2)
+//                                    val jObjError = JSONObject(e.response()?.errorBody()!!.string())
+//                                    val msg = jObjError.get("message")
+//                                    Toast.makeText(
+//                                        requireContext(),
+//                                        msg.toString(),
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                }
+//                            } catch (Eof: EOFException) {
+//                                withContext(Dispatchers.Main) {
+//                                    process.visibility=View.INVISIBLE
+//                                    btnnext.text=resources.getString(R.string.next2)
+//                                    Toast.makeText(
+//                                        requireContext(),
+//                                        "Thao tác quá nhanh, từ từ thôi",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                }
+//                            } catch (e: SocketTimeoutException) {
+//                                withContext(Dispatchers.Main) {
+//                                    process.visibility=View.INVISIBLE
+//                                    btnnext.text=resources.getString(R.string.next2)
+//                                    Toast.makeText(
+//                                        requireContext(),
+//                                        "Lỗi mạng",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                }
+//                            }
+//                        }
                     }
                 }
             }

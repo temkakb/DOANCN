@@ -10,13 +10,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.example.doancn.Adapters.ViewpageLoginSigupAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.login_register_container.*
 import kotlinx.android.synthetic.main.signup_fragment.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class LoginRegisterActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()

@@ -1,11 +1,11 @@
 
-akotlin:S1192´"HDefine a constant instead of duplicating this literal "ERROR: " 3 times.(¼–»ˆ
-jkotlin:S3776I"RRefactor this method to reduce its Cognitive Complexity from 63 to the 15 allowed.(ëü«
-skotlin:S117õ"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(®”‡²ùÿÿÿÿ
-nkotlin:S117ö"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(Ì§ó¢
-nkotlin:S117÷"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(§şËÅ
-nkotlin:S117ø"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(¯ëá«
-skotlin:S117ù"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(ş…’âüÿÿÿÿ
-skotlin:S117ú"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(¶˜ö÷ÿÿÿÿÿ
-skotlin:S117û"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(ó¶èœøÿÿÿÿ
-nkotlin:S117ı"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(ÒØ²’
+akotlin:S1192¸"HDefine a constant instead of duplicating this literal "ERROR: " 3 times.(¼–»ˆ
+jkotlin:S3776M"RRefactor this method to reduce its Cognitive Complexity from 63 to the 15 allowed.(ëü«
+skotlin:S117ù"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(®”‡²ùÿÿÿÿ
+nkotlin:S117ú"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(Ì§ó¢
+nkotlin:S117û"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(§şËÅ
+nkotlin:S117ü"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(¯ëá«
+skotlin:S117ı"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(ş…’âüÿÿÿÿ
+zkotlin:S117ş"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(¶˜ö÷ÿÿÿÿÿ8ÏÛ±ÎÏ/
+zkotlin:S117ÿ"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(ó¶èœøÿÿÿÿ8ĞÛ±ÎÏ/
+ukotlin:S117"VRename this local variable to match the regular expression "^`?[_a-z][a-zA-Z0-9]*`?$".(ÒØ²’8ĞÛ±ÎÏ/

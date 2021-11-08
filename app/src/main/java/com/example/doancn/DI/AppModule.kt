@@ -37,7 +37,7 @@ object AppModule {
     @Named("auth_token")
     fun provideToken(@ApplicationContext context: Context): String {
         return "Bearer " + context.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-            .getString("token", null)
+            .getString("token", null) ?: ""
     }
 
 
