@@ -9,6 +9,6 @@ import javax.inject.Named
 @HiltViewModel
 class MainViewModel
 @Inject constructor(
-    @Named("auth_token") val token: String,
-    @Named("user_role") val role: String
+    @Named("auth_token") val token: String?,
+    @Named("user_role") val role: String?
 ) : ViewModel()

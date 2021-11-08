@@ -1,5 +1,7 @@
 package com.example.doancn.DI
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
 import com.example.doancn.Retrofit.Urls
@@ -8,6 +10,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -42,6 +45,7 @@ object RetrofitModule {
             .build()
             .create(ClassApi::class.java)
     }
+
     @Singleton
     @Provides
     fun provideSubjectApi(retrofit: Retrofit.Builder): SubjectApi {
@@ -49,6 +53,11 @@ object RetrofitModule {
             .build()
             .create(SubjectApi::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideShareReferences(@ApplicationContext context: Context): SharedPreferences =
+        context.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
 
 
 }

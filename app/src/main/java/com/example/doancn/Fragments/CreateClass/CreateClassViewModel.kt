@@ -26,8 +26,8 @@ class CreateClassViewModel
 constructor(
     private val classRepository: ClassRepository,
     private val subjectRepository: SubjectsRepository,
-    @Named("auth_token") val token: String,
-    @Named("user_role") val role: String
+    @Named("auth_token") val token: String?,
+    @Named("user_role") val role: String?
 ) : ViewModel() {
     private val mutableSelectedItem = MutableLiveData<ClassQuest.Location>()
     val selectedItem: LiveData<ClassQuest.Location> get() = mutableSelectedItem
@@ -41,7 +41,7 @@ constructor(
 
     fun createClassroom(classRoom: ClassQuest) {
         viewModelScope.launch {
-            val s: Flow<DataState<String>> = classRepository.createClassroom(classRoom, token)
+            val s: Flow<DataState<String>> = classRepository.createClassroom(classRoom, token!!)
             s.onEach {
                 when (it) {
                     is DataState.Success -> {

@@ -20,7 +20,7 @@ import javax.inject.Named
 class MyClassRoomViewModel
 @Inject constructor(
     private val classRepository: ClassRepository,
-    @Named("auth_token") private val token: String
+    @Named("auth_token") private val token: String?
 ) : ViewModel() {
     sealed class GetClassEvent<out R>() {
         data class Success<out T>(val data: T) : GetClassEvent<T>()
@@ -38,7 +38,7 @@ class MyClassRoomViewModel
         viewModelScope.launch(Dispatchers.IO) {
             _classList.value = GetClassEvent.Loading
             delay(1000)
-            when (val listClassroom = classRepository.getListClass(token)) {
+            when (val listClassroom = classRepository.getListClass(token!!)) {
                 is DataState.Success -> {
                     _classList.value = GetClassEvent.Success(listClassroom.data)
 
