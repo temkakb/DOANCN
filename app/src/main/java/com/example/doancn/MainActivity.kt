@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             startActivity(intent)
             finish()
         } else {
-            obverseData()
+            obverseData() // LOGIN
             mainViewModel.doValidateToken()
             GlobalScope.launch {
 
@@ -255,7 +255,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         navcontroller.navigate(R.id.action_nav_myClass_to_classActivity, bundle)
     }
 
-    private fun obverseData() {
+    private fun obverseData() { // check token valid
         lifecycleScope.launchWhenCreated {
             mainViewModel.validatetoken.collect { datastate ->
                 when (datastate) {

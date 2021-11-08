@@ -6,5 +6,5 @@ sealed class DataState<out R> {
     data class Error(val data: String) : DataState<Nothing>()
     data class ErrorWithException(val exception: Exception) : DataState<Nothing>()
     object Loading : DataState<Nothing>()
-    object Emty : DataState<Nothing>()
+    object Empty : DataState<Nothing>()
 }

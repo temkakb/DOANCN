@@ -50,8 +50,6 @@ Sapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/UserFillInfoFragment
 z
 Japp/src/main/java/com/example/doancn/Adapters/ViewpageLoginSigupAdapter.kt,b\1\b116aacba406a289b066d6644006550e2483a690
 |
-Lapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/LogOutFragment.kt,c\a\ca86f8ded898e275da658634e6c438d8d322766f
-|
 Lapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/YouAreFragment.kt,0\e\0e9ac11b2597e89d9254a738945d8bc276fd2898
 x
 Happ/src/main/java/com/example/doancn/Fragments/Profile/ParentFragment.kt,8\b\8b74f0c6553eb0f95f7b9ce5292d134fb840a0bc
@@ -109,8 +107,6 @@ t
 Dapp/src/main/java/com/example/doancn/Models/classModel/Class item.kt,6\3\63f060e59f5185919b207b1ea1fb9d25854b683e
 |
 Lapp/src/main/java/com/example/doancn/ViewModels/MviewmodelProviderFactory.kt,9\0\90e11aa6c7d6e20549f9f35a063d33cf33b4114a
-y
-Iapp/src/main/java/com/example/doancn/ViewModels/SignUpManagerViewModel.kt,9\a\9ad2851b18e15b70992f86f10c1bc95febb1712a
 Ä
 Papp/src/main/java/com/example/doancn/Fragments/MyClass/home/ClassHomeFragment.kt,7\0\70f77aaee8850cdb6809e02263fadf3a36615bf5
 Å
@@ -133,5 +129,3 @@ d
 Napp/src/main/java/com/example/doancn/Fragments/MyClass/MyClassRoomViewModel.kt,5\e\5e20baff9d2f811bda587e06f37a9ed0cac48354
 r
 Bapp/src/main/java/com/example/doancn/Repository/ClassRepository.kt,d\0\d0f615fbb6a4dd49cc6f3e4addccea8b92639ff6
-|
-Lapp/src/main/java/com/example/doancn/Fragments/LoginSignUp/LoginViewModel.kt,8\8\88d96b7bb4fd270fc26e90c60556fe8cc9783fc2

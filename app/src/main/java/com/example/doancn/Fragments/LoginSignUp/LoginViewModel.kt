@@ -20,7 +20,7 @@ class LoginViewModel
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private val _loginstatus = MutableStateFlow<DataState<Map<String, String>?>>(DataState.Emty)
+    private val _loginstatus = MutableStateFlow<DataState<Map<String, String>?>>(DataState.Empty)
     val loginstatus: StateFlow<DataState<Map<String, String>?>> = _loginstatus
 
     fun doLogin(account: Account) {
