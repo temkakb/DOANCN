@@ -4,7 +4,6 @@ import com.example.doancn.API.IauthApi
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Account
 import com.example.doancn.Models.AccountSignUp
-import com.example.doancn.Retrofit.RetrofitManager
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
@@ -29,7 +28,11 @@ class AuthRepository @Inject constructor(
         else return DataState.Error("Phiên đăng nhập đã hết hạn")
     }
 
-    suspend fun signup(account: AccountSignUp) {
-        RetrofitManager.authapi.signup(account)
+    suspend fun signup(account: AccountSignUp): DataState<String> {
+        val response = authapi.signup(account)
+        if (response.isSuccessful)
+            return DataState.Success("Đăng ký thành công")
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
     }
 }

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
@@ -18,38 +17,45 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 
-class EnrolmentArrayAdapter (context: Context,var listclass: List<Classroom>,val token: String,val listsubject : Array<String>,val optionarraystring : Array<String>): ArrayAdapter<Classroom>(context,
-    R.layout.class_items,listclass) {
+// noi that vong thau troi xanh
+class EnrolmentArrayAdapter(
+    context: Context,
+    var listclass: List<Classroom>,
+    val token: String,
+    val listsubject: Array<String>,
+    val optionarraystring: Array<String>,
+    val enrollmentRepository: EnrollmentRepository
+) : ArrayAdapter<Classroom>(
+    context,
+    R.layout.class_items, listclass
+) {
 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-       val  view =  LayoutInflater.from(context).inflate(R.layout.class_items,null)
-        val fee : String
-        if(listclass[position].option.paymentOptionId.toInt()==6){
-           fee = "Miễn phí"
+        val view = LayoutInflater
+            .from(context).inflate(R.layout.class_items, null)
+        val fee: String
+        if (listclass[position].option.paymentOptionId.toInt() == 6) {
+            fee = "Miễn phí"
+        } else {
+            fee =
+                "Phí: " + listclass[position].fee.toString() + "VND" + "/" + optionarraystring[listclass[position].option.paymentOptionId.toInt() - 1]
         }
-        else{
-         fee = "Phí: "+listclass[position].fee.toString()+"VND"+"/"+optionarraystring[listclass[position].option.paymentOptionId.toInt()]
-        }
-       val subject = "Môn: " + listsubject[listclass[position].subject.subjectId.toInt() - 1]
+        val subject = "Môn: " + listsubject[listclass[position].subject.subjectId.toInt() - 1]
         val teacher = "Thầy: " + listclass[position].teacher.name
-        val startday ="Ngày bắt đầu: "+listclass[position].startDate
-        view.teacher.text= teacher
-        view.subject.text=subject
-        view.classname.text= listclass[position].name
-        view.fee.text=fee
-        view.startday.text=startday
-        if(listclass[position].enrolled){
+        val startday = "Ngày bắt đầu: " + listclass[position].startDate
+        view.teacher.text = teacher
+        view.subject.text = subject
+        view.classname.text = listclass[position].name
+        view.fee.text = fee
+        view.startday.text = startday
+        if (listclass[position].enrolled)
             switchtoenrolled(view.btn_enroll)
-            setEventButtonEnrollment(view.btn_enroll,listclass[position])
-        }
-        else{
+        else
             switchtoenroll(view.btn_enroll)
-            setEventButtonEnrollment(view.btn_enroll,listclass[position]) // set event for button in listclassroom
-        }
-        setEventForView(view,listclass[position]) // set event for view show dialog
+        setEventButtonEnrollment(view.btn_enroll, listclass[position])
+        setEventForView(view, listclass[position]) // set event for view show dialog
         return view
     }
 
@@ -58,28 +64,27 @@ class EnrolmentArrayAdapter (context: Context,var listclass: List<Classroom>,val
         return listclass.size
     }
 
-    private fun switchtoenroll(btn : Button){
-        btn.text=context.resources.getString(R.string.sigup)
-       btn.background=(ContextCompat.getDrawable(context,R.drawable.bg_button_enroll))
+    private fun switchtoenroll(btn: Button) {
+        btn.text = context.resources.getString(R.string.sigup)
+        btn.background = (ContextCompat.getDrawable(context, R.drawable.bg_button_enroll))
     }
 
-    private fun switchtoenrolled(btn: Button){
-        btn.text=context.resources.getString(R.string.enrolled)
-        btn.background=(ContextCompat.getDrawable(context,R.drawable.bg_button_enrolled))
+    private fun switchtoenrolled(btn: Button) {
+        btn.text = context.resources.getString(R.string.enrolled)
+        btn.background = (ContextCompat.getDrawable(context, R.drawable.bg_button_enrolled))
     }
 
-    private fun setEventButtonEnrollment (btn: Button,c: Classroom){
+    private fun setEventButtonEnrollment(btn: Button, c: Classroom) {
         btn.setOnClickListener {
             GlobalScope.launch {
-               val doevent= doEnrollOrRemove(btn,c)
-                if (doevent){
-                    if(it.btn_enroll.text==context.resources.getString(R.string.sigup)){
-                        withContext(Dispatchers.Main){ // gan view on main
+                val doevent = doEnrollOrRemove(btn, c)
+                if (doevent) {
+                    if (it.btn_enroll.text == context.resources.getString(R.string.sigup)) {
+                        withContext(Dispatchers.Main) { // gan view on main
                             switchtoenrolled(btn)
                         }
-                    }
-                    else{
-                        withContext(Dispatchers.Main){
+                    } else {
+                        withContext(Dispatchers.Main) {
                             switchtoenroll(btn)
                         }
 
@@ -91,8 +96,7 @@ class EnrolmentArrayAdapter (context: Context,var listclass: List<Classroom>,val
     private fun setEventButtonDialog(btn: Button,btnview: Button,c:Classroom){
         btn.setOnClickListener {
             GlobalScope.launch {
-                val doevent=   doEnrollOrRemove(btn,c)
-                if (doevent){
+                doEnrollOrRemove(btn, c)
                     if(btn.btn_enroll.text==context.resources.getString(R.string.sigup)){
                         withContext(Dispatchers.Main){
                             switchtoenrolled(btn)
@@ -106,87 +110,56 @@ class EnrolmentArrayAdapter (context: Context,var listclass: List<Classroom>,val
                             switchtoenroll(btnview)
                         }
                     }
-                }
+
             }
         }
     }
 
-
-    private fun setEventForView (view: View,c: Classroom){
+    private fun setEventForView(view: View, c: Classroom) {
         view.setOnClickListener {
             val dialog = Dialog(context)
             dialog.setContentView(R.layout.detail_classroom_dialog)
-            dialog.about.text=c.about
-            dialog.shortdescription.text=c.shortDescription
-            dialog.address.text=c.location.address
-            dialog.teacher.text=c.teacher.name
-            dialog.classname.text=c.name
-            dialog.startday.text=c.startDate
-            dialog.numberattendance.text=c.currentAttendanceNumber.toString()
-            val fee : String
-            if(c.option.paymentOptionId.toInt()==6){
+            dialog.about.text = c.about
+            dialog.shortdescription.text = c.shortDescription
+            dialog.address.text = c.location.address
+            dialog.teacher.text = c.teacher.name
+            dialog.classname.text = c.name
+            dialog.startday.text = c.startDate
+            dialog.numberattendance.text = c.currentAttendanceNumber.toString()
+            val fee: String
+            if (c.option.paymentOptionId.toInt() == 6) {
                 fee = "Miễn phí"
+            } else {
+                fee =
+                    c.fee.toString() + "VND" + "\n" + optionarraystring[c.option.paymentOptionId.toInt() - 1]
             }
-            else{
-                fee = c.fee.toString()+"VND"+"\n"+optionarraystring[c.option.paymentOptionId.toInt()]
-            }
-            dialog.fee.text=fee
+            dialog.fee.text = fee
             dialog.cancel_button.setOnClickListener {
                 dialog.dismiss()
             }
-            if (c.enrolled) {
+            if (c.enrolled)
                 switchtoenrolled(dialog.btn_enroll)
-                setEventButtonDialog(dialog.btn_enroll, view.btn_enroll, c)
-            } else {
+            else
                 switchtoenroll(dialog.btn_enroll)
-                setEventButtonDialog(dialog.btn_enroll, view.btn_enroll, c)
-
-            }
+            setEventButtonDialog(dialog.btn_enroll, view.btn_enroll, c)
             dialog.show()
 
         }
     }
 
     private suspend fun doEnrollOrRemove(btn: Button, c: Classroom): Boolean {
-        val enrollmentRepository = EnrollmentRepository()
         if (btn.text.equals(context.getString(R.string.sigup))) {
-            try {
-                enrollmentRepository.doEnroll(c.classId, token)
-                c.enrolled = true
-            } catch (e: HttpException) {
-                if (e.code() == 410) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            context,
-                            "Không thể đăng ký, Khóa học đã bắt đầu",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-                if (e.code() == 400) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Không tìm thấy lớp học", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                if (e.code() == 409) {
-                        withContext(Dispatchers.Main){
-                            Toast.makeText(context,"đã đăng ký khóa học",Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                return false
-                }
-        }else{
-            GlobalScope.launch {
-                enrollmentRepository.doDeleteEnrollment(c.classId,token)
-                c.enrolled=false
-            }
+            enrollmentRepository.doEnroll(c.classId, token)
+        } else {
+            enrollmentRepository.doDeleteEnrollment(c.classId, token)
         }
         return true
     }
-    fun swapDataSet(listclass: List<Classroom>){
-        this.listclass=listclass
+
+    fun swapDataSet(listclass: List<Classroom>) {
+        this.listclass = listclass
         notifyDataSetChanged()
     }
-    }
+}
 
 

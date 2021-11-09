@@ -9,5 +9,4 @@ class User() : Serializable {
     lateinit var currentWorkPlace: String
     lateinit var educationLevel: String
     lateinit var dob: String
-    lateinit var image: String
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
+import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.API.IauthApi
 import com.example.doancn.Retrofit.Urls
 import com.google.gson.Gson
@@ -66,6 +67,13 @@ object RetrofitModule {
     @Provides
     fun provideShareReferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
+
+    @Singleton
+    @Provides
+    fun provideEnrollmentApi(retrofit: Retrofit.Builder): IEnrollmentApi {
+        return retrofit.build().create(IEnrollmentApi::class.java)
+
+    }
 
 
 }

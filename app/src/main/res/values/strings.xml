@@ -88,6 +88,19 @@
         <item>Năm</item>
         <item>Trả trước</item>
         <item>Miễn phí</item>
+        <item>khác</item>
+    </string-array>
+    <string-array name="enrollment_subjects">
+        <item>Tất cả</item>
+        <item>Toán</item>
+        <item>Lý</item>
+        <item>Văn</item>
+        <item>Ngoại Ngữ</item>
+        <item>Sinh Học</item>
+        <item>Hóa Học</item>
+        <item>Triết Học</item>
+        <item>Công Nghệ Thông Tin</item>
+        <item>Khác</item>
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="fab_content_desc">Vị trí của tôi</string>

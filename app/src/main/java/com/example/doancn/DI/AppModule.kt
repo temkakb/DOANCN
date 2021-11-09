@@ -1,6 +1,8 @@
 package com.example.doancn.DI
 
 import android.content.SharedPreferences
+import com.example.doancn.Models.AccountSignUp
+import com.example.doancn.Models.User
 import com.example.doancn.Utilities.QrCodeManager
 import com.example.doancn.Utilities.TokenManager
 import dagger.Module
@@ -42,4 +44,8 @@ object AppModule {
         return null
 
     }
+
+    @ActivityRetainedScoped
+    @Provides
+    fun provideAccountSignUp() = AccountSignUp(User())
 }
