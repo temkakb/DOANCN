@@ -16,31 +16,41 @@
         android:textColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <RadioGroup
-        android:id="@+id/RG_sigup"
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/group_sigup"
+        app:singleSelection="true"
+        app:checkedButton="@id/student"
         android:layout_width="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/youare"
-        app:layout_constraintVertical_bias=".3"
-        android:layout_height="wrap_content" >
-        <RadioButton
-            android:layout_marginBottom="20dp"
+        app:layout_constraintVertical_bias=".35"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/teacher"
             android:text="@string/teacher"
             android:textSize="24sp"
+            app:iconGravity="top"
+            style="?attr/materialButtonOutlinedStyle"
+            app:icon="@drawable/ic_baseline_work_24"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
-        <RadioButton
+
+        <com.google.android.material.button.MaterialButton
             android:checked="true"
             android:id="@+id/student"
+            app:iconGravity="top"
+            style="?attr/materialButtonOutlinedStyle"
+            app:icon="@drawable/ic_baseline_person_24"
             android:textSize="24sp"
             android:layout_width="wrap_content"
             android:text="@string/student"
             android:layout_height="wrap_content" />
-    </RadioGroup>
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

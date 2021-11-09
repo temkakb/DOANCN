@@ -109,11 +109,16 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/side_nav_bar.xml" value="0.13333333333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/underline_textview.xml" value="0.2203125" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/underline_textview_press.xml" value="0.12760416666666666" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/activity_class.xml" value="0.21666666666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/announcement_item.xml" value="0.21666666666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/card_view.xml" value="0.264" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_home_fragment.xml" value="0.21666666666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_item.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_items.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_itemt.xml" value="0.11145833333333334" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_list_item.xml" value="0.21666666666666667" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/create_class_fragment.xml" value="0.21666666666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/custom_calendar_day.xml" value="0.2517948717948718" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/detail_classroom_dialog.xml" value="0.33458646616541354" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/dialog_qrcode.xml" value="0.264" />
@@ -128,15 +133,20 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_fragment.xml" value="0.22351797862001943" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_register_container.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/nav_header.xml" value="0.13385416666666666" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/people_fragment.xml" value="0.21666666666666667" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/section_item.xml" value="0.21666666666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/signup_fragment.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/subject_items.xml" value="0.4" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/subject_list_item.xml" value="0.21666666666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/teacher_fill_infomation_fragment.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/teacher_fill_infomation_fragment_2.xml" value="0.4" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/today_class_items.xml" value="0.21666666666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment.xml" value="0.2903645833333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment_2.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment_3.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/validate_email_fragment.xml" value="0.4" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/youare_fragment.xml" value="0.176" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/weekcalendar_day.xml" value="0.21666666666666667" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/youare_fragment.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/menu/mymenu.xml" value="0.22604166666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/menu/nav_menu.xml" value="0.4" />
       </map>
