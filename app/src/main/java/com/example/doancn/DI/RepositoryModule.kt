@@ -2,9 +2,11 @@ package com.example.doancn.DI
 
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
+import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.API.IauthApi
 import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.Repository.ClassRepository
+import com.example.doancn.Repository.EnrollmentRepository
 import com.example.doancn.Repository.SubjectsRepository
 import dagger.Module
 import dagger.Provides
@@ -37,4 +39,11 @@ object RepositoryModule {
     fun provideAuthRepository(authapi: IauthApi): AuthRepository {
         return AuthRepository(authapi)
     }
+
+    @Singleton
+    @Provides
+    fun provideEnrollmentRepository(iEnrollmentApi: IEnrollmentApi): EnrollmentRepository {
+        return EnrollmentRepository(iEnrollmentApi)
+    }
+
 }
