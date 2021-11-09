@@ -17,7 +17,7 @@
             app:layout_constraintWidth_percent=".8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintVertical_bias="0.15"
             app:startIconDrawable="@drawable/ic_baseline_wc_24"
             app:helperText="mặc định là giới tính 'khác' *"
             app:helperTextTextColor="@color/red"
