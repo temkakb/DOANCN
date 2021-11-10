@@ -8,24 +8,22 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import com.example.doancn.Fragments.JoinClass.JoinClassViewModel
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
-import com.example.doancn.Repository.EnrollmentRepository
 import kotlinx.android.synthetic.main.class_items.view.*
 import kotlinx.android.synthetic.main.detail_classroom_dialog.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 // noi that vong thau troi xanh
+// clean code : #2
+@ExperimentalCoroutinesApi
 class EnrolmentArrayAdapter(
     context: Context,
     var listclass: List<Classroom>,
-    val token: String,
     val listsubject: Array<String>,
     val optionarraystring: Array<String>,
-    val enrollmentRepository: EnrollmentRepository
+    val joinClassViewModel: JoinClassViewModel
 ) : ArrayAdapter<Classroom>(
     context,
     R.layout.class_items, listclass
@@ -54,7 +52,7 @@ class EnrolmentArrayAdapter(
             switchtoenrolled(view.btn_enroll)
         else
             switchtoenroll(view.btn_enroll)
-        setEventButtonEnrollment(view.btn_enroll, listclass[position])
+        setEventButtonEnrollment(view, listclass[position])
         setEventForView(view, listclass[position]) // set event for view show dialog
         return view
     }
@@ -74,51 +72,25 @@ class EnrolmentArrayAdapter(
         btn.background = (ContextCompat.getDrawable(context, R.drawable.bg_button_enrolled))
     }
 
-    private fun setEventButtonEnrollment(btn: Button, c: Classroom) {
-        btn.setOnClickListener {
-            GlobalScope.launch {
-                val doevent = doEnrollOrRemove(btn, c)
-                if (doevent) {
-                    if (it.btn_enroll.text == context.resources.getString(R.string.sigup)) {
-                        withContext(Dispatchers.Main) { // gan view on main
-                            switchtoenrolled(btn)
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            switchtoenroll(btn)
-                        }
-
-                    }
-                }
-            }
+    private fun setEventButtonEnrollment(view: View, classroom: Classroom) {
+        view.btn_enroll.setOnClickListener {
+            doEnrollOrRemove(view, classroom)
         }
     }
-    private fun setEventButtonDialog(btn: Button,btnview: Button,c:Classroom){
-        btn.setOnClickListener {
-            GlobalScope.launch {
-                doEnrollOrRemove(btn, c)
-                    if(btn.btn_enroll.text==context.resources.getString(R.string.sigup)){
-                        withContext(Dispatchers.Main){
-                            switchtoenrolled(btn)
-                            switchtoenrolled(btnview) // switch button affter dialog
-                        }
-                    }
-                    else{
-                        withContext(Dispatchers.Main)
-                        {
-                            switchtoenroll(btn)
-                            switchtoenroll(btnview)
-                        }
-                    }
 
-            }
+    private fun setEventButtonDialog(viewdialog: View, c: Classroom, viewitem: View) {
+        joinClassViewModel.btnview = viewitem.btn_enroll
+        viewdialog.btn_enroll.setOnClickListener {
+            doEnrollOrRemove(viewdialog, c)
         }
     }
 
     private fun setEventForView(view: View, c: Classroom) {
         view.setOnClickListener {
+            val viewdialog =
+                LayoutInflater.from(context).inflate(R.layout.detail_classroom_dialog, null)
             val dialog = Dialog(context)
-            dialog.setContentView(R.layout.detail_classroom_dialog)
+            dialog.setContentView(viewdialog)
             dialog.about.text = c.about
             dialog.shortdescription.text = c.shortDescription
             dialog.address.text = c.location.address
@@ -134,32 +106,36 @@ class EnrolmentArrayAdapter(
                     c.fee.toString() + "VND" + "\n" + optionarraystring[c.option.paymentOptionId.toInt() - 1]
             }
             dialog.fee.text = fee
-            dialog.cancel_button.setOnClickListener {
-                dialog.dismiss()
-            }
             if (c.enrolled)
                 switchtoenrolled(dialog.btn_enroll)
             else
                 switchtoenroll(dialog.btn_enroll)
-            setEventButtonDialog(dialog.btn_enroll, view.btn_enroll, c)
-            dialog.show()
 
+            dialog.cancel_button.setOnClickListener {
+                joinClassViewModel.btnview = null
+                dialog.dismiss()
+            }
+            setEventButtonDialog(viewdialog, c, view)
+            dialog.show()
         }
     }
 
-    private suspend fun doEnrollOrRemove(btn: Button, c: Classroom): Boolean {
-        if (btn.text.equals(context.getString(R.string.sigup))) {
-            enrollmentRepository.doEnroll(c.classId, token)
-        } else {
-            enrollmentRepository.doDeleteEnrollment(c.classId, token)
-        }
-        return true
+
+    private fun doEnrollOrRemove(view: View, c: Classroom) {
+        joinClassViewModel.view = view
+        if (!c.enrolled)
+            joinClassViewModel.doEnroll(c)
+        else
+            joinClassViewModel.doDeleteEnrollment(c)
+
     }
 
     fun swapDataSet(listclass: List<Classroom>) {
         this.listclass = listclass
         notifyDataSetChanged()
     }
+
+
 }
 
 
