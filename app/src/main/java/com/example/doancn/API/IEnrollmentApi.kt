@@ -23,4 +23,11 @@ interface IEnrollmentApi {
         @Path("id") id: Long,
         @Header("Authorization") token: String
     ): Response<ResponseBody>
+
+    @GET("/enrollments/search")
+    suspend fun doSearch(
+        @Query("keyword") keyword: String,
+        @Header("Authorization") token: String
+    ): Response<List<Classroom>>
+
 }

@@ -52,11 +52,18 @@ class JoinClassFragment : Fragment() {
     private lateinit var txtbeforeLoading: CharSequence
 
 
+    override fun onStart() {
+        observeData()
+        super.onStart()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val bundle = arguments
+        val query = bundle?.getString("searchkey")
         repository = SubjectRepository()
         val view = inflater.inflate(R.layout.fragment_joinclass, container, false)
         layoutmanager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -65,8 +72,11 @@ class JoinClassFragment : Fragment() {
         listoptionname = resources.getStringArray(R.array.option)
         subject = view.RC_subjects
         fusedLocation = LocationServices.getFusedLocationProviderClient(requireActivity())
-        observeData()
-        getClassrooms(null)
+
+        if (query == null)
+            getClassrooms(null)
+        else
+            getClassRoomButSearch(query, view)
         getSubjects()
         return view
     }
@@ -93,7 +103,8 @@ class JoinClassFragment : Fragment() {
                 val geocoder = Geocoder(requireContext(), Locale.getDefault())
                 val listaddress: List<Address> =
                     geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                requireView().city.text = listaddress[0].locality
+                requireView().city.text =
+                    resources.getString(R.string.baseoncity) + listaddress[0].locality
                 joinClassViewModel.getClassRoomToEnroll(listaddress[0].locality, subjectId)
             }
         } else {
@@ -105,6 +116,11 @@ class JoinClassFragment : Fragment() {
                 ), 44
             )
         }
+    }
+
+    private fun getClassRoomButSearch(query: String, view: View) {
+        joinClassViewModel.doSearch(query)
+        view.city.text = "Tìm kiếm khóa học"
     }
 
     private fun observeData() {

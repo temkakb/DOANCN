@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +25,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.doancn.DI.DataState
 import com.example.doancn.Fragments.CreateClass.CreateClassViewModel
-import com.example.doancn.Fragments.JoinClass.JoinClassFragment
+import com.example.doancn.Fragments.JoinClass.JoinClassViewModel
 import com.example.doancn.Models.Classroom
 import com.example.doancn.Models.UserMe
 import com.example.doancn.Models.classModel.ClassQuest
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     private val createClassViewModel: CreateClassViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
+    private val joinClassViewModel: JoinClassViewModel by viewModels()
 
     @Inject
     lateinit var sharedPrefernces: SharedPreferences
@@ -69,14 +71,18 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         nav_view.menu.findItem(R.id.nav_home).isChecked = true
         //navcontroller
         setUpNavigation()
-        // obverse data
-
+        //deep link
+        val data: Uri? = intent?.data
+        data.let {
+            Log.d("tokendeeplink", it.toString())
+        }
         // khai báo UserViewModel
         val model: UserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         if (mainViewModel.token == null) { // CODE CHAY CHO MAU, co gi chu improve nha
             toLoginFragment()
         } else {
+            // obverse data
             obverseData()
             mainViewModel.doValidateToken()
             GlobalScope.launch {
@@ -165,12 +171,18 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val bunlde = Bundle()
-                bunlde.putString("query", query)
-                val joinClassFragment = JoinClassFragment()
-                joinClassFragment.arguments = bunlde
-                actionBar?.setLogo(R.drawable.ic_baseline_add_24)
-                actionBar?.title = "Tham gia lớp học"
+                if (!query.isNullOrEmpty()) {
+                    val bundle = Bundle()
+                    bundle.putString("searchkey", query)
+                    navcontroller.navigateUp()
+                    navcontroller.navigate(R.id.action_nav_home_to_nav_joinclass, bundle)
+
+                } else {
+                    Log.d("yepyepyep", "eweewew")
+                    Toast.makeText(this@MainActivity, "Bạn chưa nhập gì cả", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
                 return false
             }
         })
@@ -282,5 +294,6 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         finish()
 
     }
+
 
 }

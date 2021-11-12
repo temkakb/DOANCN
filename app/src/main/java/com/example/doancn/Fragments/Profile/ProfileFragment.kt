@@ -35,13 +35,13 @@ import com.example.doancn.Retrofit.RetrofitManager
 import com.example.doancn.ViewModels.UserViewModel
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
-import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedbottompicker.TedBottomPicker
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.change_pasword.view.*
 import kotlinx.android.synthetic.main.edit_profile.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.nav_header.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,7 +52,7 @@ import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
-@AndroidEntryPoint
+@ExperimentalCoroutinesApi
 class ProfileFragment : Fragment() {
 
     private var userme: UserMe? = null
