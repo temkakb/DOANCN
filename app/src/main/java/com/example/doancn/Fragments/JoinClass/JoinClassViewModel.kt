@@ -32,6 +32,7 @@ class JoinClassViewModel
 
 
     fun getClassRoomToEnroll(city: String, subjectId: Long?) {
+
         viewModelScope.launch {
             _classrooms.value = DataState.Loading
             _classrooms.value = enrollmentRepository.getclassenrollment(city, subjectId, token!!)
@@ -59,6 +60,13 @@ class JoinClassViewModel
                 is DataState.Error -> classroom.enrolled = true
                 is DataState.Success -> classroom.enrolled = false
             }
+        }
+    }
+
+    fun doSearch(keyword: String) {
+        viewModelScope.launch {
+            _classrooms.value = DataState.Loading
+            _classrooms.value = enrollmentRepository.dosSearch(keyword, token!!)
         }
     }
 }

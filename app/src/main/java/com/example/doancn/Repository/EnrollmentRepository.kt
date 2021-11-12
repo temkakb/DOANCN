@@ -22,6 +22,7 @@ class EnrollmentRepository
 
         val response = enrollmentapi.getclassenrollment(city, subjectId, token)
         if (response.isSuccessful)
+
             return DataState.Success(response.body())
         else
             return DataState.Error(response.errorBody()!!.string().toString())
@@ -42,6 +43,15 @@ class EnrollmentRepository
         if (response.isSuccessful)
             return DataState.Success("Hủy đăng ký thành công")
         else
+            return DataState.Error(response.errorBody()!!.string().toString())
+    }
+
+    suspend fun dosSearch(keyword: String, token: String): DataState<List<Classroom>?> {
+        val response = enrollmentapi.doSearch(keyword, token)
+        if (response.isSuccessful) {
+            return DataState.Success(response.body())
+
+        } else
             return DataState.Error(response.errorBody()!!.string().toString())
     }
 }
