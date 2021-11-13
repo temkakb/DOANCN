@@ -42,12 +42,11 @@ class QrCodeManager(var token: String) {
                     showDialog(context)
                 }
             } catch (e: HttpException) {
-                val jObjError = JSONObject(e.response()?.errorBody()!!.string())
-                val msg = jObjError.get("message")
+
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         context,
-                        msg.toString(),
+                        e.response()?.errorBody()!!.string(),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

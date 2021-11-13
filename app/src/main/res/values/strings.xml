@@ -54,12 +54,17 @@
     <string name="payment_option">Kiểu thanh toán</string>
     <string name="hint_location">Ghim địa chỉ trên bản đồ:</string>
     <string name="adđ_new">Tạo mới</string>
+    <string name="enteremail">Nhập email của bạn ở dưới đây</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="formatted_time">%02d:%02d</string>
     <string name="qrcode_expired_title">QR code đã hết hạn</string>
     <string name="qrcode_expired_msg">Bạn có muốn tạo mới điểm danh?</string>
     <string name="qrcode_expired_yes">Tạo mới</string>
     <string name="qrcode_expired_no">Hủy</string>
+    <string name="entercode">Nhập mã 6 số vừa được gửi đến email của bạn</string>
+    <string name="sended_password_title">Lấy lại mật khẩu thành công</string>
+    <string name="sended_password_body">Mật khẩu mới đã được gửi đến email của bạn</string>
+
     <string-array name="gender_select">
         <item>Nam</item>
         <item>Nữ</item>
@@ -126,5 +131,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_people">Mọi người</string>
     <string name="title_homework">Bài tập</string>
+
 </resources>
 
