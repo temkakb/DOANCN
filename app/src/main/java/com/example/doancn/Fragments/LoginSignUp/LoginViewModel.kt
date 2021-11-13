@@ -20,8 +20,14 @@ class LoginViewModel
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
+    var email: String? = null
     private val _loginstatus = MutableStateFlow<DataState<Map<String, String>?>>(DataState.Empty)
     val loginstatus: StateFlow<DataState<Map<String, String>?>> = _loginstatus
+    private val _forgotPasswordStatus = MutableStateFlow<DataState<String>>(DataState.Empty)
+    val forgotPasswordStatus: StateFlow<DataState<String>> = _forgotPasswordStatus
+    private val _validateCode = MutableStateFlow<DataState<String>>(DataState.Empty)
+    val validateCode: StateFlow<DataState<String>> = _validateCode
+
 
     fun doLogin(account: Account) {
         viewModelScope.launch {  // coroutine scope viewmodel
@@ -30,6 +36,25 @@ class LoginViewModel
             _loginstatus.value = authRepository.login(account)
 
         }
+    }
+
+    fun requestForgotPassword(email: String) {
+        viewModelScope.launch {
+            _forgotPasswordStatus.value = DataState.Loading
+            _forgotPasswordStatus.value = authRepository.forGotPassword(email, null)
+            _forgotPasswordStatus.value = DataState.Empty
+
+        }
+
+    }
+
+    fun validateCode(code: String) {
+        viewModelScope.launch {
+            _validateCode.value = DataState.Loading
+            _validateCode.value = authRepository.forGotPassword(email!!, code)
+            _forgotPasswordStatus.value = DataState.Empty
+        }
+
     }
 
 }

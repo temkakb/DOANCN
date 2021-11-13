@@ -5,7 +5,9 @@ import com.example.doancn.Models.AccountSignUp
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface IauthApi {
     @POST("/auth/login")
@@ -21,4 +23,9 @@ interface IauthApi {
         @Body map: Map<String, String>
     ): Response<ResponseBody>
 
+    @GET("/auth/forgotpassword")
+    suspend fun forGotPassword(
+        @Query("email") email: String,
+        @Query("code") code: String?
+    ): Response<ResponseBody>
 }

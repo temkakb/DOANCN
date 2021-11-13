@@ -35,4 +35,13 @@ class AuthRepository @Inject constructor(
         else
             return DataState.Error(response.errorBody()!!.string().toString())
     }
+
+    suspend fun forGotPassword(email: String, code: String?): DataState<String> {
+        val response = authapi.forGotPassword(email, code)
+        if (response.isSuccessful)
+            return DataState.Success("Thành công")
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
+
+    }
 }

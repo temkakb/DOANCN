@@ -1,15 +1,21 @@
 package com.example.doancn.Fragments.LoginSignUp
 
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -22,9 +28,14 @@ import com.example.doancn.MainActivity
 import com.example.doancn.Models.Account
 import com.example.doancn.R
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.enter_code_verify_dialog.*
+import kotlinx.android.synthetic.main.forgotpassword_dialog.*
+import kotlinx.android.synthetic.main.forgotpassword_dialog.btn_go
+import kotlinx.android.synthetic.main.forgotpassword_dialog.process
 import kotlinx.android.synthetic.main.login_fragment.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import java.util.concurrent.TimeUnit
 
 
 @ExperimentalCoroutinesApi
@@ -32,6 +43,8 @@ import kotlinx.coroutines.flow.collect
 class LoginFragment : Fragment() {
     private lateinit var process: ProgressBar
     lateinit var btnlogin: Button
+    lateinit var forgotpassword: TextView
+    lateinit var email: String
     private val viewModel: LoginViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,10 +54,15 @@ class LoginFragment : Fragment() {
         val view = layoutInflater.inflate(R.layout.login_fragment, container, false)
         btnlogin = view.btnlogin
         process = view.process
+        forgotpassword = view.txt_quenmk
         setEventButtonLogin(view)
         seteventtextchange(view)
-        observeData()
         return view
+    }
+
+    override fun onResume() {
+        observeData()
+        super.onResume()
     }
 
     override fun onAttach(context: Context) {
@@ -68,6 +86,23 @@ class LoginFragment : Fragment() {
 
                 }
             }
+        }
+        forgotpassword.setOnClickListener {
+
+            val dialog = Dialog(requireContext())
+            dialog.setContentView(R.layout.forgotpassword_dialog)
+            dialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            forgotPasswordObserveData(dialog)
+            dialog.show()
+            dialog.btn_go.setOnClickListener {
+                viewModel.email = dialog.email.text.toString()
+                viewModel.requestForgotPassword(viewModel.email!!)
+
+            }
+            dialog.cancel_button.setOnClickListener {
+                dialog.dismiss()
+            }
+
         }
     }
 
@@ -130,6 +165,86 @@ class LoginFragment : Fragment() {
 
                 }
 
+            }
+        }
+
+
+    }
+
+    private fun forgotPasswordObserveData(dialog: Dialog) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.forgotPasswordStatus.collect { it ->
+                when (it) {
+                    is DataState.Loading -> {
+                        dialog.process.visibility = View.VISIBLE
+                        dialog.btn_go.text = null
+                    }
+                    is DataState.Error -> {
+                        dialog.process.visibility = View.GONE
+                        dialog.btn_go.text = resources.getString(R.string.confirm)
+                        Toast.makeText(
+                            requireContext(),
+                            it.data,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DataState.Success -> {
+                        dialog.setContentView(R.layout.enter_code_verify_dialog)
+                        dialog.btn_go.setOnClickListener {
+                            viewModel.validateCode(dialog.code.text.toString())
+                        }
+                        validatePasswordObserveData(dialog)
+                        val countDownTimer = object : CountDownTimer(60000, 1000) {
+                            override fun onTick(millisUntilFinished: Long) {
+                                val timme =
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+                                dialog.btn_countdown.text = timme.toString()
+                            }
+
+                            override fun onFinish() {
+                                dialog.btn_countdown.setIconResource(R.drawable.ic_baseline_settings_backup_restore_5000)
+                                dialog.btn_countdown.isCheckable = true
+                                dialog.btn_countdown.setOnClickListener {
+                                    viewModel.requestForgotPassword(viewModel.email!!)
+                                }
+                            }
+                        }
+                        countDownTimer.start()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun validatePasswordObserveData(dialog: Dialog) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.validateCode.collect {
+                when (it) {
+                    is DataState.Loading -> {
+                        dialog.process.visibility = View.VISIBLE
+                        dialog.btn_go.text = null
+                    }
+                    is DataState.Error -> {
+                        dialog.process.visibility = View.GONE
+                        dialog.btn_go.text = resources.getString(R.string.confirm)
+                        Toast.makeText(
+                            requireContext(),
+                            it.data,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DataState.Success -> {
+                        dialog.dismiss()
+                        val dialogalert = AlertDialog.Builder(context)
+                        dialogalert.setTitle(resources.getString(R.string.sended_password_title))
+                            .setMessage(resources.getString(R.string.sended_password_body))
+                            .setPositiveButton(resources.getString(R.string.confirm)) { dialoginterface, int ->
+                                dialoginterface.dismiss()
+                            }
+                        dialogalert.show()
+
+                    }
+                }
             }
         }
 

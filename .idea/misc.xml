@@ -125,12 +125,14 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/dialog_qrcode.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/dropdown_gender.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/edit_profile.xml" value="0.1" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/enter_code_verify_dialog.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fill_infomation_fragment.xml" value="0.2903645833333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/firstfragment.xml" value="0.1" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/forgotpassword_dialog.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_createclass.xml" value="0.10648148148148148" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_joinclass.xml" value="0.536" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.11510416666666666" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_parent.xml" value="0.1375" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_setting.xml" value="0.10208333333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/homework_fragment.xml" value="0.23229166666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/kho_luu_tru.xml" value="0.264" />

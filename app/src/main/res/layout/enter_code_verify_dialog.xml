@@ -26,37 +26,40 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_gravity="center"
-                android:text="@string/quenmatkhau"
+                android:text="@string/entercode"
                 android:textColor="@color/red" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:text="@string/enteremail" />
+                android:orientation="horizontal"
+                android:layout_height="100dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/email_txtinpitlayout"
-                style="@style/TextInputLayoutStyle"
-                android:layout_width="290dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:counterEnabled="true"
-                app:counterMaxLength="64"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@drawable/ic_baseline_error_24"
-                app:helperTextTextColor="@color/red"
-                app:layout_constraintVertical_bias="0.15"
-                app:startIconDrawable="@drawable/ic_baseline_email_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/email_txtinpitlayout"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="290dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/tkoremail"
-                    android:maxLength="64" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_gravity="center"
+                    app:errorIconDrawable="@drawable/ic_baseline_error_24"
+                    app:startIconDrawable="@drawable/ic_baseline_filter_6_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="6" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_countdown"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -83,12 +86,6 @@
                     android:progressDrawable="@color/white" />
             </RelativeLayout>
 
-            <Button
-                android:id="@+id/cancel_button"
-                android:text="@string/cancel"
-                android:backgroundTint="@color/red"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
