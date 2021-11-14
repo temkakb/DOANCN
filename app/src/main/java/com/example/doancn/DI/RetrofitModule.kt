@@ -6,6 +6,7 @@ import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
 import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.API.IauthApi
+import com.example.doancn.API.ProfileApi.IUserApi
 import com.example.doancn.Retrofit.Urls
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -38,6 +39,14 @@ object RetrofitModule {
         return Retrofit.Builder()
             .baseUrl(Urls.url1)
             .addConverterFactory(GsonConverterFactory.create())
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserApi(retrofit: Retrofit.Builder): IUserApi {
+        return retrofit
+            .build()
+            .create(IUserApi::class.java)
     }
 
     @Singleton

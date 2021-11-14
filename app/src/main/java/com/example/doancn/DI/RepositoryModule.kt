@@ -4,10 +4,8 @@ import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
 import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.API.IauthApi
-import com.example.doancn.Repository.AuthRepository
-import com.example.doancn.Repository.ClassRepository
-import com.example.doancn.Repository.EnrollmentRepository
-import com.example.doancn.Repository.SubjectsRepository
+import com.example.doancn.API.ProfileApi.IUserApi
+import com.example.doancn.Repository.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +15,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+
+    @Singleton
+    @Provides
+    fun provideUserRepository(
+        userApi: IUserApi
+    ): UserRepository {
+        return UserRepository(userApi)
+    }
 
     @Singleton
     @Provides

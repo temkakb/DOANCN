@@ -52,6 +52,7 @@ import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
+
 @ExperimentalCoroutinesApi
 class ProfileFragment : Fragment() {
 
@@ -165,13 +166,12 @@ class ProfileFragment : Fragment() {
                     }else if(newpass != confirmpass){
                         message("Mật khẩu không khớp")
                     }else{
-                        val call: Call<ResponseBody> = RetrofitManager.userapi.updatePassUser("Bearer "+token,userme!!.userId,mapPass)
+                        val call: Call<ResponseBody> = RetrofitManager.userapi.updatePassUser("Bearer $token",userme!!.userId,mapPass)
                         call.enqueue(object : Callback<ResponseBody?> {
                             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
-                                    val mesage : String = response.body()!!.string()
+                                val mesage : String = response.body()!!.string()
                                 if(mesage == "success"){
                                     Toast.makeText(context, "Đổi mật khẩu thành công\nXin mời đăng nhập lại", Toast.LENGTH_LONG).show()
-                                    val main : MainActivity = activity as MainActivity
                                     val intent = Intent(context, LoginRegisterActivity::class.java)
                                     startActivity(intent)
                                     main.finish()
@@ -243,35 +243,34 @@ class ProfileFragment : Fragment() {
                 builder.setView(editProfileLayout)
 
                 builder.setPositiveButton("Thay đổi")
-                { dialogInterface: DialogInterface?, i1: Int ->
+                { _: DialogInterface?, _: Int ->
                     val sharedprefernces = this.context?.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
                     val token : String? = sharedprefernces?.getString("token",null)
-                    val u_name : String = editProfileLayout.update_name.text.toString()
-                    val u_dob : String = editProfileLayout.update_dob.text.toString()
-                    val u_gender : String = editProfileLayout.update_gender.selectedItem.toString()
-                    val u_education_level : String = editProfileLayout.update_education_level.text.toString()
-                    val u_phone : String = editProfileLayout.update_phone.text.toString()
-                    val u_adress : String = editProfileLayout.update_adress.text.toString()
-                    val u_curent_work_place : String = editProfileLayout.update_curent_work_place.text.toString()
+                    val uName : String = editProfileLayout.update_name.text.toString()
+                    val uDob : String = editProfileLayout.update_dob.text.toString()
+                    val uGender : String = editProfileLayout.update_gender.selectedItem.toString()
+                    val uEducationLevel : String = editProfileLayout.update_education_level.text.toString()
+                    val uPhone : String = editProfileLayout.update_phone.text.toString()
+                    val uAdress : String = editProfileLayout.update_adress.text.toString()
+                    val uCurentWorkPlace : String = editProfileLayout.update_curent_work_place.text.toString()
                     val validatePhone  = "^[+]?[0-9]{9,11}$"
-                    val PATTERN: Pattern = Pattern.compile(validatePhone)
-                    if (u_name.isEmpty() || u_dob.isEmpty() || u_gender.isEmpty()
-                        ||u_education_level.isEmpty() || u_phone.isEmpty() || u_adress.isEmpty()
-                        || u_curent_work_place.isEmpty()) {
+                    val pattern: Pattern = Pattern.compile(validatePhone)
+                    if (uName.isEmpty() || uDob.isEmpty() || uGender.isEmpty()
+                        ||uEducationLevel.isEmpty() || uPhone.isEmpty() || uAdress.isEmpty()
+                        || uCurentWorkPlace.isEmpty()) {
                         message("Thay đổi thất bại do bỏ trống thông tin")
-                    } else if(u_name.length > 26 ){
+                    } else if(uName.length > 26 ){
                         message("Thay đổi thất bại do tên quá 26 ký tự")
-                    } else if(!PATTERN.matcher(u_phone).find()){
+                    } else if(!pattern.matcher(uPhone).find()){
                         message("Thay đổi thất bại do không đúng định dạng số điện thoại")
                     }else{
-                        userme!!.name = u_name
-                        userme!!.dob = u_dob
-                        userme!!.address = u_adress
-                        userme!!.currentWorkPlace = u_curent_work_place
-                        userme!!.phoneNumber = u_phone
-                        userme!!.educationLevel = u_education_level
-                        userme!!.address = u_adress
-                        when (u_gender){
+                        userme!!.name = uName
+                        userme!!.dob = uDob
+                        userme!!.address = uAdress
+                        userme!!.currentWorkPlace = uCurentWorkPlace
+                        userme!!.phoneNumber = uPhone
+                        userme!!.educationLevel = uEducationLevel
+                        when (uGender){
                             "Nam" -> {
                                 userme!!.gender.genderID = 1
                                 userme!!.gender.name = "MALE"
@@ -289,9 +288,8 @@ class ProfileFragment : Fragment() {
                             ,userme!!.userId, userme!!)
                         call.enqueue(object : Callback<Unit?> {
                             override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
-                                if (response.isSuccessful()) {
+                                if (response.isSuccessful) {
                                     Toast.makeText(context, "Thay đổi thành công!", Toast.LENGTH_SHORT).show()
-                                    val main : MainActivity = activity as MainActivity
                                     val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
                                     model.user = userme
                                     navController.popBackStack()
@@ -307,19 +305,18 @@ class ProfileFragment : Fragment() {
                 }
 
                 builder.setNegativeButton("cancel")
-                { dialogInterface: DialogInterface, i1: Int -> dialogInterface.dismiss() }
+                { dialogInterface: DialogInterface, _: Int -> dialogInterface.dismiss() }
 
                 val dialog = builder.create()
                 dialog.show()
             }
 
             p_parent.setOnClickListener {
-                val main: MainActivity = activity as MainActivity
                 val actionBar: ActionBar? = main.supportActionBar
                 actionBar?.setDisplayShowHomeEnabled(true)
                 actionBar?.setDisplayUseLogoEnabled(true)
                 actionBar?.setLogo(R.drawable.ic_baseline_profile_ind_24)
-                actionBar?.setTitle("Phụ huynh")
+                actionBar?.title = "Phụ huynh"
                 navController.popBackStack()
                 navController.navigate(R.id.nav_parentFragment)
             }
@@ -394,7 +391,7 @@ class ProfileFragment : Fragment() {
 
     }
 
-    fun message(message: String?) {
+    private fun message(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 

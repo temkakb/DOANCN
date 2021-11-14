@@ -15,8 +15,7 @@ class ShiftOfClassAdapter(context: Context,  objects: ArrayList<Classroom>,selec
     private val time : String = selected
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val o = 0
-        val olong : Long = o.toLong()
+
         val classroom : Classroom? = getItem(position)
         var convertView = convertView
         if (convertView == null)
@@ -35,7 +34,7 @@ class ShiftOfClassAdapter(context: Context,  objects: ArrayList<Classroom>,selec
         for ( shift in classroom.shifts){
             if(shift.dayOfWeek.dowName == time){
                 if (shift.startAt.minus((shift.startAt.div(3600000))
-                        .times(3600000)) != olong)
+                        .times(3600000)) != 0L)
                     if((shift.startAt.minus((shift.startAt.div(3600000))
                             .times(3600000))).div(60000).toInt() < 10){
                         timestart = shift.startAt.div(3600000).toString() +

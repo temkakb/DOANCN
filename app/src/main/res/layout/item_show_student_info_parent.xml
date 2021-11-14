@@ -32,17 +32,17 @@
                     android:layout_height="wrap_content"
                     android:text="Tên phụ huynh : "
                     android:textColor="@color/black"
-                    android:textSize="17sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/parent_name"
+                    android:id="@+id/student_info_parent_name"
                     android:layout_marginStart="1dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tran what ever"
                     android:textColor="@color/black"
-                    android:textSize="17sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -56,17 +56,17 @@
                     android:layout_height="wrap_content"
                     android:text="Số điện thoại : "
                     android:textColor="@color/black"
-                    android:textSize="17sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/parent_phone"
-                    android:layout_marginStart="13dp"
+                    android:id="@+id/student_info_parent_phone"
+                    android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="01687632939"
                     android:textColor="@color/black"
-                    android:textSize="17sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -79,36 +79,20 @@
                     android:layout_height="wrap_content"
                     android:text="Địa chỉ nhà : "
                     android:textColor="@color/black"
-                    android:textSize="17sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/parent_adress"
-                    android:layout_marginStart="29dp"
+                    android:id="@+id/student_info_parent_adress"
+                    android:layout_marginStart="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ở đâu đó tìm về quá khứ của 2 ta em có biết ú u uuuuuuuuuuuuuu"
                     android:textColor="@color/black"
-                    android:textSize="17sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
-
-
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/parent_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:layout_gravity="center"
-            android:background="@drawable/background_delete">
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/delete"/>
-        </LinearLayout>
-
     </LinearLayout>
 
 
