@@ -9,33 +9,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.doancn.HorizontalWeekCalendar
 import com.example.demotranghome.Adapters.CalendarWeekAdapter
 import com.example.demotranghome.Interfaces.DateWatcher
 import com.example.demotranghome.Interfaces.OnDateClickListener
 import com.example.demotranghome.Models.CalendarDay
 import com.example.doancn.Adapters.ShiftOfClassAdapter
+import com.example.doancn.HorizontalWeekCalendar
 import com.example.doancn.MainActivity
+import com.example.doancn.MainViewModel
+import com.example.doancn.Models.*
 import com.example.doancn.R
 import com.example.doancn.Retrofit.RetrofitManager
 import com.example.doancn.ViewModels.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import com.example.doancn.Models.*
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.class_items.view.classname
-import kotlinx.android.synthetic.main.detail_classroom_shift_dialog.view.*
 
-
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var selected: GregorianCalendar? = null
     private var calendarView: HorizontalWeekCalendar? = null
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     private var userme:UserMe? = null
 
@@ -64,6 +67,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val calendar = Calendar.getInstance()
         selected = GregorianCalendar(calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
 
@@ -79,11 +83,27 @@ class HomeFragment : Fragment() {
                 val selectedDay = GregorianCalendar(year, month, day)
                 if (selected!!.compareTo(selectedDay) != 0) {
                     selected = selectedDay
-                    if( userme?.enrollments == null) {
-                        return
-                    }
-                    else{
-                        setEventAdpater()
+                    GlobalScope.launch {
+                        withContext(Dispatchers.Main) {
+                            Log.d("MainActivity", mainViewModel.role.toString())
+                            if (mainViewModel.role == "STUDENT") {
+                                Log.d("ROLE", "Học sinh")
+                                if( userme?.enrollments == null) {
+                                    return@withContext
+                                }
+                                else{
+                                    setStudentEventAdpater()
+                                }
+                            } else if (mainViewModel.role == "TEACHER") {
+                                Log.d("ROLE", "Giáo cmn viên")
+                                if( userme?.classes == null) {
+                                    return@withContext
+                                }
+                                else{
+                                    setTeacherEventAdpater()
+                                }
+                            }
+                        }
                     }
                     val dateformat = SimpleDateFormat("dd/MM/yyyy")
                     Log.i("Ngày",dateformat.format(selected!!.time))
@@ -106,11 +126,27 @@ class HomeFragment : Fragment() {
         Log.i("Ngày",dateformat.format(selected!!.time))
         Log.i("Ngày trong tuần",selected?.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG, Locale.getDefault())!!.uppercase())
 
-        if( userme?.enrollments == null) {
-            return
-        }
-        else{
-            setEventAdpater()
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                Log.d("MainActivity", mainViewModel.role.toString())
+                if (mainViewModel.role == "STUDENT") {
+                    Log.d("ROLE", "Học sinh")
+                    if( userme?.enrollments == null) {
+                        return@withContext
+                    }
+                    else{
+                        setStudentEventAdpater()
+                    }
+                } else if (mainViewModel.role == "TEACHER") {
+                    Log.d("ROLE", "Giáo cmn viên")
+                    if( userme?.classes == null) {
+                        return@withContext
+                    }
+                    else{
+                        setTeacherEventAdpater()
+                    }
+                }
+            }
         }
     }
 
@@ -118,81 +154,89 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if( userme?.enrollments == null) {
-            return
-        }
-        else{
-            setEventAdpater()
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                Log.d("MainActivity", mainViewModel.role.toString())
+                if (mainViewModel.role == "STUDENT") {
+                    Log.d("ROLE", "Học sinh")
+                    if( userme?.enrollments == null) {
+                        return@withContext
+                    }
+                    else{
+                        setStudentEventAdpater()
+                    }
+                } else if (mainViewModel.role == "TEACHER") {
+                    Log.d("ROLE", "Giáo cmn viên")
+                    if( userme?.classes == null) {
+                        return@withContext
+                    }
+                    else{
+                        setTeacherEventAdpater()
+                    }
+                }
+            }
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun setEventAdpater() {
+
+    private fun setStudentEventAdpater() {
+        val main : MainActivity = activity as MainActivity
         val todayClass = TodayClass()
         val selectedDayOfWeek : String = selected?.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG,Locale.getDefault())!!.uppercase()
         val listsubjectname: Array<String> = resources.getStringArray(R.array.Subjects)
         val dailyClass: ArrayList<Classroom>
-
-        for(i in userme!!.enrollments!!) {
+        for (i in userme!!.enrollments!!) {
+            //if(i.accepted)
             todayClass.classrooms.add(i.classroom)
-            }
-
+        }
         dailyClass = todayClass.ClassroomsForDate(selectedDayOfWeek)
 
-        val eventAdapter = ShiftOfClassAdapter(requireContext(),dailyClass
-            ,selectedDayOfWeek,listsubjectname)
-        today_class_listview.adapter = eventAdapter
-        if (dailyClass.count() == 0)
-        {
-            noclassroom.visibility = View.VISIBLE
+        main.runOnUiThread {
+            val eventAdapter = ShiftOfClassAdapter(requireContext(),dailyClass
+                ,selectedDayOfWeek,listsubjectname)
+            today_class_listview.adapter = eventAdapter
+            if (dailyClass.count() == 0)
+            {
+                noclassroom.visibility = View.VISIBLE
+            }
+            else{
+                noclassroom.visibility = View.GONE
+            }
         }
-        else{
-            noclassroom.visibility = View.GONE
+        today_class_listview.setOnItemClickListener { parent, view, position, id ->
+            main.homeToClass(dailyClass[position])
         }
 
-        today_class_listview.setOnItemClickListener { parent, view, position, id ->
-            val o = 0
-            val olong : Long = o.toLong()
-            val dateformat = SimpleDateFormat("dd-MM-yyyy")
-            val i = LayoutInflater.from(context)
-                .inflate(R.layout.detail_classroom_shift_dialog,null)
-            i.shift_of_class_subject.text = listsubjectname[dailyClass[position].subject.subjectId.toInt()].uppercase()
-            i.shift_of_class_teacher.text= dailyClass[position].teacher.name
-            i.shift_of_class_address.text = dailyClass[position].location.address
-            i.shift_of_class_about.text = dailyClass[position].about
-            i.shift_of_class_shortdescription.text = dailyClass[position].shortDescription
-            i.classname.text= dailyClass[position].name
-            i.shift_of_class_studyday.text = dateformat.format(selected!!.time).toString()
-            var durationtime : String
-            for ( shift in dailyClass[position].shifts){
-                if(shift.dayOfWeek.dowName == selectedDayOfWeek){
-                    if(shift.duration.div(60000).toInt() <60 ){
-                        durationtime = shift.duration.div(60000).toString()+" phút"
-                    }else{
-                        if (shift.duration.minus((shift.duration.div(3600000))
-                                .times(3600000)) != olong)
-                            durationtime = shift.duration.div(3600000).toString() +
-                                " tiếng " + (shift.duration.minus((shift.duration.div(3600000))
-                                    .times(3600000))).div(60000).toString() + " phút"
-                        else
-                            durationtime = shift.duration.div(3600000).toString() +
-                                    " tiếng: "
-                    }
-                    i.shift_of_class_time.text = durationtime
-                }else
-                {
-                    continue
-                }
-            }
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setView(i)
-            val dialog = builder.create()
-            val cancel : TextView = i.findViewById(R.id.cancel_button)
-            cancel.setOnClickListener {
-                dialog.dismiss()
-            }
-            dialog.show()
+    }
+
+    private fun setTeacherEventAdpater() {
+        val main : MainActivity = activity as MainActivity
+        val todayClass = TodayClass()
+        val selectedDayOfWeek : String = selected?.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG,Locale.getDefault())!!.uppercase()
+        val listsubjectname: Array<String> = resources.getStringArray(R.array.Subjects)
+        val dailyClass : ArrayList<Classroom>
+        for (i in userme!!.classes!!) {
+            todayClass.classrooms.add(i)
         }
+        dailyClass = todayClass.ClassroomsForDate(selectedDayOfWeek)
+
+
+        main.runOnUiThread {
+            val eventAdapter = ShiftOfClassAdapter(requireContext(),dailyClass
+                ,selectedDayOfWeek,listsubjectname)
+            today_class_listview.adapter = eventAdapter
+            if (dailyClass.count() == 0)
+            {
+                noclassroom.visibility = View.VISIBLE
+            }
+            else{
+                noclassroom.visibility = View.GONE
+            }
+        }
+        today_class_listview.setOnItemClickListener { parent, view, position, id ->
+            main.homeToClass(dailyClass[position])
+        }
+
     }
 
     private fun getMyUser(token: String, model: UserViewModel) {

@@ -1,5 +1,7 @@
 package com.example.doancn.Models
 
+import java.io.Serializable
+
 
 data class UserMe(
     val account: AccountX,
@@ -15,5 +17,7 @@ data class UserMe(
     var name: String,
     var parents: ArrayList<Parent>,
     var phoneNumber: String,
-    val userId: Int
-)
+    val userId: Int,
+    var subjectsQualified : List<Subject>,
+    var classes : ArrayList<Classroom>?
+) : Serializable

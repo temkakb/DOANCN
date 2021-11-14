@@ -265,6 +265,12 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         navcontroller.navigate(R.id.action_nav_myClass_to_classActivity, bundle)
     }
 
+    fun homeToClass(classroom: Classroom) {
+        val bundle = Bundle()
+        bundle.putSerializable("targetClassroom", classroom)
+        startActivity(Intent(this, ClassActivity::class.java).apply { putExtras(bundle) })
+    }
+
 
     private fun obverseData() { // check token valid
         lifecycleScope.launchWhenCreated {

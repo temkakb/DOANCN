@@ -26,12 +26,14 @@ import com.example.doancn.ViewModels.UserViewModel
 import kotlinx.android.synthetic.main.add_parent.view.*
 import kotlinx.android.synthetic.main.edit_parent.view.*
 import kotlinx.android.synthetic.main.fragment_parent.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
 
 
+@ExperimentalCoroutinesApi
 class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
 
     private var userme : UserMe? = null
@@ -224,7 +226,7 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
         })
     }
 
-    fun message(message: String?) {
+    private fun message(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }
