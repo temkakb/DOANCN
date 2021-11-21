@@ -1,30 +1,25 @@
 package com.example.doancn.Adapters
 
 import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
+import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
-import com.example.doancn.Fragments.MyClass.people.PeopleFragment
 import com.example.doancn.Fragments.MyClass.people.PeopleViewModel
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Models.PaymentHistory
 import com.example.doancn.Models.UserMe
 import com.example.doancn.R
-import com.example.doancn.Repository.UserRepository
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.android.synthetic.main.show_payment_history.view.*
+import kotlinx.android.synthetic.main.show_student_info.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.LocalDate
-import java.util.*
-import kotlin.collections.ArrayList
 import java.time.format.DateTimeFormatter
-
-
 
 
 @ExperimentalCoroutinesApi
@@ -32,22 +27,29 @@ class StudentInClassAdapter(
     classroom: Classroom, role: String
     , private val listener: OnItClickListener
     ,peopleViewModel: PeopleViewModel
-    ,token : String
+    ,_token : String
+    ,_context: Context
 )
     : RecyclerView.Adapter<StudentInClassAdapter.StudentInClassViewHolder>() {
     private val _class = classroom
     private val _role = role
-    var myListUser: List<UserMe>? = null
+    private var myListUser: List<UserMe>? = null
     private var now : LocalDate = LocalDate.now()
     private val viewModel = peopleViewModel
-    private val _token = token
+    private val token = _token
+    private val myContext = _context
 
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(list: List<UserMe>?) {
+        val listStudent : ArrayList<UserMe> = ArrayList()
         if (list != null) {
-            myListUser = list
+            for(stu in list)
+                for (enr in stu.enrollments!!)
+                    if(enr.classroom.classId == _class.classId && enr.accepted)
+                        listStudent.add(stu)
         }
+        myListUser = listStudent
         notifyDataSetChanged()
     }
 
@@ -56,8 +58,10 @@ class StudentInClassAdapter(
         return StudentInClassViewHolder(v)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: StudentInClassViewHolder, position: Int) {
         val student = myListUser?.get(position) ?: return
+        var numberPayment : Int = 0
         holder.itemName.text = student.name
         if(_role == "STUDENT" || _class.option.paymentOptionId == 6L){
             holder.itemPaymentDate.visibility = View.GONE
@@ -69,12 +73,46 @@ class StudentInClassAdapter(
             {
                 if(i.classroom.classId == _class.classId)
                 {
+                    numberPayment = i.paymentHistories.count()
                     holder.itemPaymentDate.text = i.nextPaymentAt
                     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
                     val nextPay = LocalDate.parse(i.nextPaymentAt, formatter)
                     if(now.isAfter(nextPay)){
-                        holder.itemStatus.text = "Chưa đóng tiền"
+                        holder.itemStatus.text = R.string.notPay.toString()
                         holder.itemStatus.setBackgroundColor(Color.RED)
+                    }
+                }
+
+            }
+        }
+
+        if(numberPayment > 0) {
+            holder.itemStatus.setOnClickListener {
+                var total : Double = 0.0
+                listener.showPaymentHistory(position)
+                if(_role == "TEACHER"){
+                    val showPaymnetInfoLayout: View = LayoutInflater.from(myContext)
+                        .inflate(R.layout.show_payment_history, null)
+
+                    for (i in student.enrollments!!){
+                        if(i.classroom.classId == _class.classId){
+                            if(i.paymentHistories.count() > 1)
+                                for(a in i.paymentHistories)
+                                    total += a.amount
+                            else
+                                total = i.paymentHistories[0].amount
+                            val paymentHistoryAdapter =
+                                PayementHistoryAdapter(showPaymnetInfoLayout.context,i.paymentHistories)
+                            showPaymnetInfoLayout.list_payment_history.adapter = paymentHistoryAdapter
+                        }
+                    }
+                    showPaymnetInfoLayout.total_amount.text = total.toFloat().toString()
+                    val builder = AlertDialog.Builder(myContext)
+                    builder.setView(showPaymnetInfoLayout)
+                    val dialog = builder.create()
+                    dialog.show()
+                    showPaymnetInfoLayout.cancel_payment_button.setOnClickListener {
+                        dialog.dismiss()
                     }
                 }
             }
@@ -113,7 +151,7 @@ class StudentInClassAdapter(
                                 i.nextPaymentAt = nextPay.plusYears(20000).format(formatters).toString()
                             }
                         }
-                        viewModel.updateStudentPayment(_token, i.enrollmentId)
+                        viewModel.updateStudentPayment(token = token,id = i.enrollmentId,_class.classId)
                     }
                 }
                 notifyDataSetChanged()
@@ -122,7 +160,7 @@ class StudentInClassAdapter(
     }
 
     override fun getItemCount(): Int {
-        return if (myListUser != null) myListUser!!.size else 0
+        return if (myListUser != null) myListUser!!.count() else 0
     }
 
     inner class StudentInClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -132,26 +170,15 @@ class StudentInClassAdapter(
         var itemPay : TextView = itemView.findViewById(R.id.student_pay)
         init {
             itemView.setOnClickListener {
-                /*if (it!!.id == R.id.student_pay) {
-                    val position: Int = absoluteAdapterPosition
-                    if (position != RecyclerView.NO_POSITION)
-                        listener.onPayItemClick(position)
-                }else {*/
-                    val position: Int = absoluteAdapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(position)
-                }
-            }
-            itemPay.setOnClickListener{
                 val position: Int = absoluteAdapterPosition
-                if (position != RecyclerView.NO_POSITION)
-                    listener.onPayItemClick(position)
-
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(position)
+                }
             }
         }
     }
     interface OnItClickListener{
         fun onItemClick(position : Int)
-        fun onPayItemClick(position: Int)
+        fun showPaymentHistory(position: Int)
     }
 }

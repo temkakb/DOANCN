@@ -6,5 +6,6 @@ data class Enrollment (
     val dateCreated: String,
     val enrollmentId: Int,
     var nextPaymentAt: String,
-    val startDate: String
+    val startDate: String,
+    var paymentHistories: List<PaymentHistory>
 )

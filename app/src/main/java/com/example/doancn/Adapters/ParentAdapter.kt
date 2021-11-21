@@ -55,8 +55,6 @@ class ParentAdapter(private val listener: OnItemClickListener)
                 val position: Int = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     listener.onRemoveItemClick(position)
-                    myListParent!!.removeAt(position)
-                    notifyItemRemoved(position)
                 }
             }else {
                 val position: Int = absoluteAdapterPosition

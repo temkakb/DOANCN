@@ -147,15 +147,12 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     }
 
-    private fun getMyUser(token: String, model: UserViewModel) {
-
-        val callSync: Call<UserMe> = RetrofitManager.userapi.getme(token)
-        try {
-            val response: Response<UserMe> = callSync.execute()
+    private suspend fun getMyUser(token: String, model: UserViewModel) {
+            val response: Response<UserMe> = RetrofitManager.userapi.getme(token)
+            if (response.isSuccessful)
             model.user = response.body()
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
+            else
+                Log.i("Lỗi",response.errorBody().toString())
 
     }
 

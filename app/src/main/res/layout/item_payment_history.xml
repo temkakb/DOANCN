@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1">
+        <TableRow>
+            <TextView
+                android:id="@+id/payment_history_date"
+                android:gravity="center"
+                android:text="20/11/2021"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/payment_history_amount"
+                android:text="20000"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+        </TableRow>
+    </TableLayout>
+
+
+</androidx.cardview.widget.CardView>

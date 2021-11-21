@@ -19,6 +19,17 @@
         android:background="?android:attr/listDivider"
         android:layout_below="@id/horizontalCalendar" />
 
+    <ProgressBar
+        android:id="@+id/process_home"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/verticalDivider"
+        android:layout_marginTop="10dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/primaryColor"
+        android:indeterminateTintMode="src_atop"
+        android:progressDrawable="@color/primaryColor" />
+
 
     <LinearLayout
         android:layout_height="wrap_content"

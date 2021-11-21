@@ -29,7 +29,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="X"
+                    android:text="@string/cancelicon"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
