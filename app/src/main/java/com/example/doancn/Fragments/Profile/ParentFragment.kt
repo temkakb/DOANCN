@@ -1,63 +1,90 @@
 package com.example.doancn.Fragments.Profile
 
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doancn.Adapters.ParentAdapter
-import com.example.doancn.MainActivity
+import com.example.doancn.DI.DataState
+import com.example.doancn.MainViewModel
 import com.example.doancn.Models.Parent
-import com.example.doancn.Models.UserMe
 import com.example.doancn.R
-import com.example.doancn.Retrofit.RetrofitManager
-import com.example.doancn.ViewModels.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_parent.view.*
+import kotlinx.android.synthetic.main.change_pasword.view.*
 import kotlinx.android.synthetic.main.edit_parent.view.*
+import kotlinx.android.synthetic.main.edit_profile.view.*
+import kotlinx.android.synthetic.main.fragment_joinclass.view.*
 import kotlinx.android.synthetic.main.fragment_parent.*
+import kotlinx.android.synthetic.main.fragment_parent.view.*
+import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_profile.view.*
+import kotlinx.android.synthetic.main.nav_header.view.*
+import kotlinx.android.synthetic.main.people_fragment.*
+import kotlinx.android.synthetic.main.people_fragment.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.flow.collect
+import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 @ExperimentalCoroutinesApi
+@AndroidEntryPoint
+
 class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
 
-    private var userme : UserMe? = null
     private lateinit var navController: NavController
+    private var parentAdapter: ParentAdapter? = null
 
+    private val parentViewModel: ParentViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
+
+    private var listParent : ArrayList<Parent>? = ArrayList()
+
+    companion object {
+        fun newInstance() = ParentFragment()
+    }
+
+    private lateinit var viewModel: ParentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        getParents(mainViewModel.token.toString())
         return inflater.inflate(R.layout.fragment_parent, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(ParentViewModel::class.java)
+    }
+
+    override fun onStart() {
+        observeData()
+        super.onStart()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController= requireParentFragment().findNavController()
         super.onViewCreated(view, savedInstanceState)
-        val main : MainActivity = activity as MainActivity
-        val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
-        userme = model.user
-        val parentAdapter = ParentAdapter(this)
-        rcv_parent.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-        parentAdapter.setData(getListParent() as ArrayList<Parent>?)
-        rcv_parent.adapter = parentAdapter
+
         add_parent.setOnClickListener {
             val addParentLayout: View = LayoutInflater.from(context)
                 .inflate(R.layout.add_parent, null)
@@ -65,55 +92,28 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
             builder.setView(addParentLayout)
 
             builder.setPositiveButton("Thêm")
-            { dialogInterface: DialogInterface, i1: Int ->
-                val sharedprefernces = this.context?.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-                val token : String? = sharedprefernces?.getString("token",null)
-                val a_p_name : String = addParentLayout.add_parent_name.text.toString()
-                val a_p_phone : String = addParentLayout.add_parent_phone.text.toString()
-                val a_p_address : String = addParentLayout.add_parent_adress.text.toString()
+            { _: DialogInterface, _: Int ->
+                val addParentName : String = addParentLayout.add_parent_name.text.toString()
+                val addParentPhone : String = addParentLayout.add_parent_phone.text.toString()
+                val addParentAddress : String = addParentLayout.add_parent_adress.text.toString()
                 val validatePhone  = "^[+]?[0-9]{9,11}$"
-                val PATTERN: Pattern = Pattern.compile(validatePhone)
-                if (a_p_name.isEmpty() || a_p_phone.isEmpty() || a_p_address.isEmpty()) {
+                val pattern: Pattern = Pattern.compile(validatePhone)
+                if (addParentName.isEmpty() || addParentPhone.isEmpty() || addParentAddress.isEmpty()) {
                     message("Thay đổi thất bại do bỏ trống thông tin")
-                } else if(a_p_name.length > 26 ){
+                } else if(addParentName.length > 26 ){
                     message("Thay đổi thất bại do tên quá 26 ký tự")
-                } else if(!PATTERN.matcher(a_p_phone).find()){
+                } else if(!pattern.matcher(addParentPhone).find()){
                     message("Thay đổi thất bại do không đúng định dạng số điện thoại")
                 }else{
                     val mapNewParent = HashMap<String,String>()
-                    mapNewParent["newParentName"] = a_p_name
-                    mapNewParent["newParentPhone"] = a_p_phone
-                    mapNewParent["newParentAddress"] = a_p_address
-                    val call: Call<Unit> = RetrofitManager.parentapi.addParent("Bearer "+token
-                        ,userme!!.userId,mapNewParent)
-                    call.enqueue(object : Callback<Unit?> {
-                        override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
-                            if(response.isSuccessful){
-                                val main : MainActivity = activity as MainActivity
-                                val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
-                                getParents(token!!,userme!!.userId,model)
-                                main.runOnUiThread {
-                                    val handler = Handler()
-                                    handler.postDelayed({
-                                        Toast.makeText(
-                                            context,
-                                            "Thêm phụ huynh thành công",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        navController.popBackStack()
-                                        navController.navigate(R.id.nav_parentFragment)
-                                    }, 500)
-                                }
-                            }
-                        }
-                        override fun onFailure(call: Call<Unit?>, t: Throwable) {
-                            Log.e("ERROR: ", t.message!!)
-                        }
-                    })
+                    mapNewParent["newParentName"] = addParentName
+                    mapNewParent["newParentPhone"] = addParentPhone
+                    mapNewParent["newParentAddress"] = addParentAddress
+                    parentViewModel.addUserParent(mainViewModel.token.toString(),mapNewParent)
                 }
             }
             builder.setNegativeButton("cancel")
-            { dialogInterface: DialogInterface, i1: Int -> dialogInterface.dismiss() }
+            { dialogInterface: DialogInterface, _: Int -> dialogInterface.dismiss() }
             val dialog = builder.create()
             dialog.show()
         }
@@ -123,107 +123,105 @@ class ParentFragment : Fragment(), ParentAdapter.OnItemClickListener {
     override fun onItemClick(position: Int) {
         val updateParentLayout: View = LayoutInflater.from(context)
             .inflate(R.layout.edit_parent, null)
-        updateParentLayout.update_parent_name.setText(userme!!.parents[position].name)
-        updateParentLayout.update_parent_phone.setText(userme!!.parents[position].phoneNumber)
-        updateParentLayout.update_parent_adress.setText(userme!!.parents[position].address)
+        updateParentLayout.update_parent_name.setText(listParent!![position].name)
+        updateParentLayout.update_parent_phone.setText(listParent!![position].phoneNumber)
+        updateParentLayout.update_parent_adress.setText(listParent!![position].address)
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(updateParentLayout)
 
         builder.setPositiveButton("Thay đổi")
-        { dialogInterface: DialogInterface, i1: Int ->
-            val sharedprefernces = this.context?.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-            val token : String? = sharedprefernces?.getString("token",null)
-            val u_p_name : String = updateParentLayout.update_parent_name.text.toString()
-            val u_p_phone : String = updateParentLayout.update_parent_phone.text.toString()
-            val u_p_address : String = updateParentLayout.update_parent_adress.text.toString()
+        { _: DialogInterface, _: Int ->
+            val updateParentName : String = updateParentLayout.update_parent_name.text.toString()
+            val updateParentPhone : String = updateParentLayout.update_parent_phone.text.toString()
+            val updateParentAddress : String = updateParentLayout.update_parent_adress.text.toString()
             val validatePhone  = "^[+]?[0-9]{9,11}$"
-            val PATTERN: Pattern = Pattern.compile(validatePhone)
-            if (u_p_name.isEmpty() || u_p_phone.isEmpty() || u_p_address.isEmpty()) {
+            val pattern: Pattern = Pattern.compile(validatePhone)
+            if (updateParentName.isEmpty() || updateParentPhone.isEmpty() || updateParentAddress.isEmpty()) {
                 message("Thay đổi thất bại do bỏ trống thông tin")
-            } else if(u_p_name.length > 26 ){
+            } else if(updateParentName.length > 26 ){
                 message("Thay đổi thất bại do tên quá 26 ký tự")
-            } else if(!PATTERN.matcher(u_p_phone).find()){
+            } else if(!pattern.matcher(updateParentPhone).find()){
                 message("Thay đổi thất bại do không đúng định dạng số điện thoại")
             }else{
-                userme!!.parents[position].name = u_p_name
-                userme!!.parents[position].phoneNumber = u_p_phone
-                userme!!.parents[position].address = u_p_address
+                listParent!![position].name = updateParentName
+                listParent!![position].phoneNumber = updateParentPhone
+                listParent!![position].address = updateParentAddress
                 val mapNewParent = HashMap<String,String>()
-                mapNewParent["updateParentName"] = u_p_name
-                mapNewParent["updateParentPhone"] = u_p_phone
-                mapNewParent["updateParentAddress"] = u_p_address
-                val call: Call<Unit> = RetrofitManager.parentapi.updateParent("Bearer "+token
-                    ,userme!!.parents[position].parentId,mapNewParent)
-                call.enqueue(object : Callback<Unit?> {
-                    override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
-                        if(response.isSuccessful){
-                            Toast.makeText(context, "Thay đổi thông tin thành công", Toast.LENGTH_LONG).show()
-                            val main : MainActivity = activity as MainActivity
-                            val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
-                            model.user!!.parents[position] = userme!!.parents[position]
-                            getParents(token!!,model.user!!.userId,model)
-                            navController.popBackStack()
-                            navController.navigate(R.id.nav_parentFragment)
-                        }
-                    }
-                    override fun onFailure(call: Call<Unit?>, t: Throwable) {
-                        Log.e("ERROR: ", t.message!!)
-                    }
-                })
+                mapNewParent["updateParentName"] = updateParentName
+                mapNewParent["updateParentPhone"] = updateParentPhone
+                mapNewParent["updateParentAddress"] = updateParentAddress
+                parentViewModel.updateUserParent(mainViewModel.token.toString()
+                    ,listParent!![position].parentId, mapNewParent)
             }
         }
         builder.setNegativeButton("cancel")
-        { dialogInterface: DialogInterface, i1: Int -> dialogInterface.dismiss() }
+        { dialogInterface: DialogInterface, _: Int -> dialogInterface.dismiss() }
         val dialog = builder.create()
         dialog.show()
     }
 
     //Xóa item trong list
     override fun onRemoveItemClick(position: Int) {
-        val sharedprefernces = this.context?.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-        val token : String? = sharedprefernces?.getString("token",null)
-        val call: Call<Unit> = RetrofitManager.parentapi.deleteParent("Bearer "+token
-            ,userme!!.userId,userme!!.parents[position].parentId)
-        call.enqueue(object : Callback<Unit?> {
-            override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
-                if(response.isSuccessful){
-                    Toast.makeText(context,"Đã xóa phụ huynh  ${userme!!.parents[position].name}"
-                        ,Toast.LENGTH_LONG).show()
-                    val main : MainActivity = activity as MainActivity
-                    val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
-                    model.user!!.parents.removeAt(position)
-                    navController.popBackStack()
-                    navController.navigate(R.id.nav_parentFragment)
+        parentViewModel.deleteUserParent(mainViewModel.token.toString(),listParent!![position])
+    }
+
+    private fun observeData() {
+
+        lifecycleScope.launchWhenCreated {
+            parentViewModel.parents.collect {
+                when (it) {
+                    is DataState.Loading -> {
+                        requireView().noParents.visibility = View.GONE
+                        requireView().process_parent.visibility = View.VISIBLE
+                    }
+                    is DataState.Success -> {
+                        requireView().process_parent.visibility = View.GONE
+                        if (it.data.isNullOrEmpty() || it.data.isEmpty()) {
+                            requireView().noParents.visibility = View.VISIBLE
+                            requireView().rcv_parent.adapter = null
+                            parentAdapter = null
+                        } else {
+                            requireView().noParents.visibility = View.GONE
+                            if (parentAdapter == null) {
+                                listParent = it.data as ArrayList<Parent>?
+                                requireView().rcv_parent.layoutManager = LinearLayoutManager(context
+                                    ,RecyclerView.VERTICAL,false)
+                                parentAdapter = ParentAdapter(this@ParentFragment)
+                                parentAdapter!!.setData(listParent)
+                                requireView().rcv_parent.adapter = parentAdapter
+                            } else {
+                                listParent = it.data as ArrayList<Parent>?
+                                parentAdapter!!.setData(listParent)
+                            }
+                        }
+                    }
+                    is DataState.Error -> {
+                        requireView().process_parent.visibility = View.INVISIBLE
+                        Toast.makeText(requireContext(), it.data, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
-            override fun onFailure(call: Call<Unit?>, t: Throwable) {
-                Log.e("ERROR: ", t.message!!)
+        }
+
+        lifecycleScope.launchWhenCreated {
+            parentViewModel.changing.collect {
+                when (it) {
+                    is DataState.Success -> {
+                        Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                    }
+                    is DataState.Error -> {
+                        Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
-        })
+        }
     }
 
 
-    private fun getListParent(): List<Parent>? {
-        val list = ArrayList<Parent>()
-        list.addAll(userme!!.parents)
-        return list
-    }
 
     //Lấy phụ huynh
-    private fun getParents(token : String, id : Int , model: UserViewModel){
-
-        val callSync : Call<List<Parent>> = RetrofitManager.parentapi.getUserParent("Bearer $token",id)
-        callSync.enqueue(object : Callback<List<Parent>?> {
-            override fun onResponse(call: Call<List<Parent>?>, response: Response<List<Parent>?>) {
-                if(response.isSuccessful){
-                    model.user!!.parents = response.body() as ArrayList<Parent>
-                    userme!!.parents = response.body() as ArrayList<Parent>
-                }
-            }
-            override fun onFailure(call: Call<List<Parent>?>, t: Throwable) {
-                Log.e("ERROR: ", t.message!!)
-            }
-        })
+    private fun getParents(token : String){
+        parentViewModel.getUserParents(token)
     }
 
     private fun message(message: String?) {

@@ -6,6 +6,7 @@ import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
 import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.API.IauthApi
+import com.example.doancn.API.ProfileApi.IParentApi
 import com.example.doancn.API.ProfileApi.IUserApi
 import com.example.doancn.Retrofit.Urls
 import com.google.gson.Gson
@@ -47,6 +48,14 @@ object RetrofitModule {
         return retrofit
             .build()
             .create(IUserApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideParentApi(retrofit: Retrofit.Builder): IParentApi {
+        return retrofit
+            .build()
+            .create(IParentApi::class.java)
     }
 
     @Singleton
