@@ -131,6 +131,10 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_people">Mọi người</string>
     <string name="title_homework">Bài tập</string>
+    <string name="newhomework">Tạo mới bài tập</string>
+    <string name="deadline">chọn deadline</string>
+    <string name="choose_file">chọn file</string>
+
 
 </resources>
 

@@ -3,6 +3,7 @@ package com.example.doancn.Repository
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Models.HomeWorkX
 import com.example.doancn.Models.classModel.ClassQuest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -43,6 +44,15 @@ class ClassRepository @Inject constructor(
             }
         } catch (e: java.lang.Exception) {
             DataState.Error(e.message.toString())
+        }
+    }
+    suspend fun  getHomeWorks (token : String, id : Long) : DataState<List<HomeWorkX>?>{
+        val response = classApi.getHomeWork(id,token)
+        if (response.isSuccessful){
+             return DataState.Success(response.body())
+        }
+        else{
+         return   DataState.Error(response.errorBody().toString())
         }
     }
 }
