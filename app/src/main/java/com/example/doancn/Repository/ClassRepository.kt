@@ -4,6 +4,7 @@ import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Classroom
 import com.example.doancn.Models.HomeWorkX
+import com.example.doancn.Models.SubmissionX
 import com.example.doancn.Models.classModel.ClassQuest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -54,5 +55,15 @@ class ClassRepository @Inject constructor(
         else{
          return   DataState.Error(response.errorBody().toString())
         }
+    }
+    suspend fun getSubmissions (id: Long, homeworkId :Long,token : String) : DataState<List<SubmissionX>?>{
+        val response = classApi.getSubmissions(id,homeworkId,token )
+        if (response.isSuccessful){
+            return DataState.Success(response.body())
+        }
+        else{
+            return   DataState.Error(response.errorBody().toString())
+        }
+
     }
 }

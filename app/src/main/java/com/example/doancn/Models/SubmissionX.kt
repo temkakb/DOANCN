@@ -1,11 +1,10 @@
 package com.example.doancn.Models
 
-import java.io.Serializable
-
-data class HomeWorkX(
+data class SubmissionX(
     val dateCreated: String,
-    val deadline: String,
     val fileId: Int,
+    val late: Boolean,
     val name: String,
+    val student : User,
     val sizeInByte: Int
-) : Serializable
+)

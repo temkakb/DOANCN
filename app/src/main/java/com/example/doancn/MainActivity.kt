@@ -27,6 +27,7 @@ import com.example.doancn.DI.DataState
 import com.example.doancn.Fragments.CreateClass.CreateClassViewModel
 import com.example.doancn.Fragments.JoinClass.JoinClassViewModel
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Models.HomeWorkX
 import com.example.doancn.Models.UserMe
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.Retrofit.RetrofitManager
@@ -264,6 +265,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         bundle.putSerializable("targetClassroom", classroom)
         navcontroller.navigate(R.id.action_nav_myClass_to_classActivity, bundle)
     }
+
 
     fun homeToClass(classroom: Classroom) {
         val bundle = Bundle()

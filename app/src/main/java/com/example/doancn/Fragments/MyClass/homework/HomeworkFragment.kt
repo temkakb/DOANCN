@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.doancn.Adapters.HomeWorkAdapter
 import com.example.doancn.ClassViewModel
@@ -56,6 +58,8 @@ class HomeworkFragment : Fragment() {
     private var time: String=" 00:00"
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     private lateinit var dialog: Dialog
+    private lateinit var navcontroller : NavController
+
 
     private var uri : Uri? = null
      val PICK_PDF_FILE = 2
@@ -63,23 +67,29 @@ class HomeworkFragment : Fragment() {
         fun newInstance() = HomeworkFragment()
     }
 
-    override fun onStart() {
-        obverseData()
-        super.onStart()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val navControler = findNavController()
+        navcontroller = findNavController()
         val view = inflater.inflate(R.layout.homework_fragment, container, false)
+        obverseData()
         setDisplayByRole(view)
-        viewModel.getData(classviewmodel.classroom.value!!.classId)
-        view.btn_add_homework.setOnClickListener { openDialog() }
+
         return view
 
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.getData(classviewmodel.classroom.value!!.classId)
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+
+
+
+
 
 
     private fun setDisplayByRole(view: View) {
@@ -88,9 +98,13 @@ class HomeworkFragment : Fragment() {
 
         } else if (mainViewModel.role.equals("TEACHER")) {
             view.btn_add_homework.visibility = View.VISIBLE
+            view.btn_add_homework.setOnClickListener { openDialog() }
         }
     }
+
+
     private  fun obverseData(){
+
         lifecycleScope.launchWhenCreated {
             viewModel.homeworks.collect {
                 when(it){
@@ -98,12 +112,14 @@ class HomeworkFragment : Fragment() {
                         requireView().process.visibility=View.VISIBLE
                     }
                     is DataState.Success ->{
+
                         if (homeWorkAdapter==null) {
-                            homeWorkAdapter = HomeWorkAdapter(requireContext(), it.data!!)
-                            requireView().listview.adapter = homeWorkAdapter
+                            Log.d("thanhcong","KO NULL")
+                            homeWorkAdapter = HomeWorkAdapter(requireContext(), it.data!!,navcontroller)
                         }else{
                             homeWorkAdapter!!.swapDataSet(it.data!!)
                         }
+                        requireView().listview.adapter = homeWorkAdapter
                         requireView().process.visibility=View.GONE
 
                     }

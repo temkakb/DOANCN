@@ -13,7 +13,11 @@
         android:id="@+id/navigation_homework"
         android:name="com.example.doancn.Fragments.MyClass.homework.HomeworkFragment"
         android:label="homework_fragment"
-        tools:layout="@layout/homework_fragment" />
+        tools:layout="@layout/homework_fragment" >
+        <action
+            android:id="@+id/action_navigation_homework_to_submissionFragment"
+            app:destination="@id/submissionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_people"
         android:name="com.example.doancn.Fragments.MyClass.people.PeopleFragment"
@@ -24,4 +28,12 @@
         android:name="com.example.doancn.Fragments.MyClass.more.ItemListDialogFragment"
         android:label="fragment_item_list_dialog_list_dialog"
         tools:layout="@layout/fragment_item_list_dialog_list_dialog" />
+    <fragment
+        android:id="@+id/submissionFragment"
+        android:name="com.example.doancn.Fragments.MyClass.homework.SubmissionFragment"
+        android:label="SubmissionFragment" >
+        <action
+            android:id="@+id/action_submissionFragment_to_navigation_homework"
+            app:destination="@id/navigation_homework" />
+    </fragment>
 </navigation>

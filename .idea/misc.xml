@@ -120,7 +120,7 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_items.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_itemt.xml" value="0.11145833333333334" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/class_list_item.xml" value="0.21666666666666667" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/create_class_fragment.xml" value="0.4" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/create_class_fragment.xml" value="0.3125" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/create_homework_dialog.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/create_homework_fragment.xml" value="0.136" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/custom_calendar_day.xml" value="0.2517948717948718" />
@@ -133,6 +133,8 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/firstfragment.xml" value="0.1" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/forgotpassword_dialog.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_createclass.xml" value="0.10648148148148148" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.2" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.176" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_joinclass.xml" value="0.536" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.11510416666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_parent.xml" value="0.1375" />
@@ -140,18 +142,19 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/homework_fragment.xml" value="0.264" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/homework_item.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/item_show_student_info_parent.xml" value="0.536" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/kho_luu_tru.xml" value="0.264" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/kho_luu_tru.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_fragment.xml" value="0.22351797862001943" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/login_register_container.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/my_class_room_fragment.xml" value="0.22864583333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/nav_header.xml" value="0.13385416666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/people_fragment.xml" value="0.21666666666666667" />
-        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/section_item.xml" value="0.21666666666666667" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/section_item.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/show_student_info.xml" value="0.15572916666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/signup_fragment.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/single_button_layout.xml" value="0.23229166666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/subject_items.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/subject_list_item.xml" value="0.21666666666666667" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/submission_fragment.xml" value="0.121875" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/teacher_fill_infomation_fragment.xml" value="0.2" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/teacher_fill_infomation_fragment_2.xml" value="0.4" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/today_class_items.xml" value="0.21666666666666667" />

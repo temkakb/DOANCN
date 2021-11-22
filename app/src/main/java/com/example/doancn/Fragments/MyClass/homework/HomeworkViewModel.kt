@@ -28,7 +28,7 @@ class HomeworkViewModel
 )
     : ViewModel() {
     val SENDING_HOMEWORK = 6969
-    val ALLOWCATE =2600000
+    val ALLOWCATE =2600
     private val _homeworks = MutableStateFlow<DataState<List<HomeWorkX>?>>(DataState.Empty)
     val homeworks: StateFlow<DataState<List<HomeWorkX>?>> = _homeworks
 
@@ -37,16 +37,19 @@ class HomeworkViewModel
 
     fun getData (classid :Long){
         viewModelScope.launch {
+            Log.d("wwfff","yesss")
             _homeworks.value = DataState.Loading
             _homeworks.value= classRepository.getHomeWorks(token!!,
                 classid)
+            _homeworks.value=DataState.Empty
         }
     }
 
     fun postHomeWork (deadline: String,filename: String , file: ByteArray,classid: Long){
         viewModelScope.launch {
             Thread {
-                var buffer: ByteBuffer = ByteBuffer.allocate(ALLOWCATE)
+                Log.d("filename",filename)
+                val buffer: ByteBuffer = ByteBuffer.allocate(ALLOWCATE)
                 var buffer2: ByteBuffer = ByteBuffer.allocate(50)
                 val deadLineBytes = deadline.toByteArray()
                 val fileNameBytes =filename.toByteArray()
@@ -54,6 +57,7 @@ class HomeworkViewModel
                 _postHomeWorkStatus.value=DataState.Loading
                 val hA = InetSocketAddress(Urls.url2, 6969)
                 val client= SocketChannel.open(hA)
+                // send header
                 buffer.putInt(SENDING_HOMEWORK)
                 buffer.putLong(classid)
                 buffer.putInt(tokenBytes.size)
@@ -62,19 +66,32 @@ class HomeworkViewModel
                 buffer.put(deadLineBytes)
                 buffer.putInt(fileNameBytes.size)
                 buffer.put(fileNameBytes)
-                buffer.put(file)
+                buffer.putInt(file.size)
+                Log.d("bytesize",file.size.toString())
                 buffer.flip()
                 client.write(buffer)
-                val readbyte = client.read(buffer2)
+                // read response
+                client.read(buffer2)
                 buffer2.flip()
-                Log.d("filelengh",file.size.toString())
-                var bytearray = ByteArray(buffer2.remaining());
+                var bytearray = ByteArray(buffer2.remaining())
                 buffer2.get(bytearray)
-                val smg = String(bytearray)
-                if(smg.equals("Thêm bài tập thành công"))
-                _postHomeWorkStatus.value=DataState.Success(smg)
+                var smg = String(bytearray)
+                if(smg.equals("Xác thực thành công")) {
+                    val data = ByteBuffer.wrap(file)
+                    while (data.hasRemaining()){
+                        client.write(data)
+                    }
+                    buffer2= ByteBuffer.allocate(50)
+                    client.read(buffer2)
+                    buffer2.flip()
+                    bytearray = ByteArray(buffer2.remaining())
+                    buffer2.get(bytearray)
+                    smg= String(bytearray)
+                    _postHomeWorkStatus.value=DataState.Success(smg)
+                }
                 else
                     _postHomeWorkStatus.value=DataState.Error(smg)
+
 
             }.start()
 
