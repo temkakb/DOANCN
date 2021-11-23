@@ -132,8 +132,11 @@
     <string name="title_people">Mọi người</string>
     <string name="title_homework">Bài tập</string>
     <string name="newhomework">Tạo mới bài tập</string>
-    <string name="deadline">chọn deadline</string>
-    <string name="choose_file">chọn file</string>
+    <string name="deadline">Chọn thời hạn</string>
+    <string name="choose_file">Chọn file</string>
+    <string name="yoursubmission">Bài tập về nhà của bạn</string>
+    <string name="cancel_submit">Hủy gửi</string>
+    <string name="pls_wait">Xin chờ</string>
 
 
 </resources>

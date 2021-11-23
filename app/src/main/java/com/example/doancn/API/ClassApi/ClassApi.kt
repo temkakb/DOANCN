@@ -22,8 +22,11 @@ interface ClassApi {
 
     @GET("/classes/{id}/homework")
     suspend fun getHomeWork (@Path("id") id : Long, @Header("Authorization") token : String) : Response<List<HomeWorkX>>
-    @GET("/classes/{id}/homework/{homeworkId}")
+    @GET("/classes/{id}/homework/{homeworkId}/submissions")
     suspend fun getSubmissions(@Path("id") id : Long, @Path("homeworkId") homeworkId :Long, @Header("Authorization") token : String)
     : Response<List<SubmissionX>>
+    @GET("/classes/{id}/homework/{homeworkId}/submission")
+    suspend fun getSubmission (@Path("id") id : Long, @Path("homeworkId") homeworkId :Long, @Header("Authorization") token : String)
+    : Response<SubmissionX>
 
 }

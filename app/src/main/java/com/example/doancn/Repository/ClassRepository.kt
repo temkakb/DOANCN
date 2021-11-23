@@ -9,6 +9,7 @@ import com.example.doancn.Models.classModel.ClassQuest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.io.EOFException
 import javax.inject.Inject
 
 class ClassRepository @Inject constructor(
@@ -64,6 +65,22 @@ class ClassRepository @Inject constructor(
         else{
             return   DataState.Error(response.errorBody().toString())
         }
+
+    }
+    suspend fun getSubmission (id : Long, homeworkId: Long, token : String) : DataState<SubmissionX?>{
+
+        try {
+            val response = classApi.getSubmission(id, homeworkId, token)
+            if (response.isSuccessful)
+
+                return DataState.Success(response.body())
+
+            else
+                return  DataState.Error(response.errorBody().toString())
+
+    }catch (e : EOFException){
+        return DataState.Success(null)
+    }
 
     }
 }

@@ -35,9 +35,9 @@ class HomeworkViewModel
     private val _postHomeWorkStatus = MutableStateFlow<DataState<String>>(DataState.Empty)
     val postHomeWorkStatus: StateFlow<DataState<String>> = _postHomeWorkStatus
 
+
     fun getData (classid :Long){
         viewModelScope.launch {
-            Log.d("wwfff","yesss")
             _homeworks.value = DataState.Loading
             _homeworks.value= classRepository.getHomeWorks(token!!,
                 classid)
@@ -92,10 +92,13 @@ class HomeworkViewModel
                 else
                     _postHomeWorkStatus.value=DataState.Error(smg)
 
-
             }.start()
 
         }
+    }
+    fun setEmpty(){
+        _postHomeWorkStatus.value=DataState.Empty
+
     }
 
 

@@ -41,13 +41,13 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/deadline"
+                android:id="@+id/by"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_toRightOf="@id/image"
+                android:layout_toEndOf="@id/image"
                 android:maxWidth="180dp"
                 android:text="wwww"
                 android:textSize="12sp" />
@@ -56,14 +56,44 @@
                 android:id="@+id/size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/deadline"
+                android:layout_below="@id/time"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_toRightOf="@id/image"
+                android:layout_toEndOf="@id/image"
                 android:maxWidth="180dp"
                 android:text="wwww"
                 android:textSize="12sp" />
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/by"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/image"
+                android:layout_marginTop="10dp"
+                android:text="www"
+                android:gravity="center"
+                android:maxWidth="180dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:layout_toStartOf="@id/size"
+                android:gravity="center"
+                android:maxWidth="180dp"
+                android:textStyle="bold"
+                android:text="Đúng hạn"
+                android:layout_marginBottom="10dp"
+                android:textSize="15sp" />
+
+
+
 
             <LinearLayout
                 android:id="@+id/detail"

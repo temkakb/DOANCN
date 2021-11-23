@@ -27,6 +27,7 @@ import com.example.doancn.Adapters.HomeWorkAdapter
 import com.example.doancn.ClassViewModel
 import com.example.doancn.DI.DataState
 import com.example.doancn.MainViewModel
+import com.example.doancn.Models.SubmissionX
 import com.example.doancn.R
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -35,7 +36,12 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.create_homework_dialog.*
+import kotlinx.android.synthetic.main.create_homework_dialog.cancel_button
+import kotlinx.android.synthetic.main.create_homework_dialog.file
 import kotlinx.android.synthetic.main.homework_fragment.view.*
+import kotlinx.android.synthetic.main.homework_item.view.*
+import kotlinx.android.synthetic.main.submission_dialog.*
+import kotlinx.android.synthetic.main.submission_item.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import java.time.Instant
@@ -47,22 +53,24 @@ import java.time.format.DateTimeFormatter
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeworkFragment : Fragment() {
-    private val mainViewModel: MainViewModel by viewModels()
-    private val viewModel: HomeworkViewModel by viewModels()
-    private val classviewmodel: ClassViewModel by activityViewModels()
-    private var homeWorkAdapter : HomeWorkAdapter? =null
-    private var filename : String? =null
+    val mainViewModel: MainViewModel by viewModels()
+    val viewModel: HomeworkViewModel by viewModels()
+    val classviewmodel: ClassViewModel by activityViewModels()
+    val submissionViewModel: SubmissionViewModel by viewModels()
+    private var homeWorkAdapter: HomeWorkAdapter? = null
+    private var filename: String? = null
     private var dateStart: LocalDate? = null
-    private var file : ByteArray? = null
-    private var date : String? =null
-    private var time: String=" 00:00"
+    private var file: ByteArray? = null
+    private var date: String? = null
+    private var time: String = " 00:00"
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     private lateinit var dialog: Dialog
-    private lateinit var navcontroller : NavController
+    private lateinit var navcontroller: NavController
 
 
-    private var uri : Uri? = null
-     val PICK_PDF_FILE = 2
+    private var uri: Uri? = null
+    val PICK_PDF_FILE = 2
+
     companion object {
         fun newInstance() = HomeworkFragment()
     }
@@ -75,7 +83,9 @@ class HomeworkFragment : Fragment() {
         navcontroller = findNavController()
         val view = inflater.inflate(R.layout.homework_fragment, container, false)
         obverseData()
+        obverseSubmission()
         setDisplayByRole(view)
+        obversePostHomeWorkStatus()
 
         return view
 
@@ -85,11 +95,6 @@ class HomeworkFragment : Fragment() {
         viewModel.getData(classviewmodel.classroom.value!!.classId)
         super.onViewCreated(view, savedInstanceState)
     }
-
-
-
-
-
 
 
     private fun setDisplayByRole(view: View) {
@@ -103,59 +108,67 @@ class HomeworkFragment : Fragment() {
     }
 
 
-    private  fun obverseData(){
+    private fun obverseData() {
 
         lifecycleScope.launchWhenCreated {
             viewModel.homeworks.collect {
-                when(it){
+                when (it) {
                     is DataState.Loading -> {
-                        requireView().process.visibility=View.VISIBLE
+                        requireView().process.visibility = View.VISIBLE
                     }
-                    is DataState.Success ->{
+                    is DataState.Success -> {
 
-                        if (homeWorkAdapter==null) {
-                            Log.d("thanhcong","KO NULL")
-                            homeWorkAdapter = HomeWorkAdapter(requireContext(), it.data!!,navcontroller)
-                        }else{
+                        if (homeWorkAdapter == null) {
+                            Log.d("thanhcong", "KO NULL")
+                            homeWorkAdapter = HomeWorkAdapter(
+                                requireContext(),
+                                it.data!!,
+                                navcontroller,
+                                mainViewModel.role!!,
+                                this@HomeworkFragment
+                            )
+                        } else {
                             homeWorkAdapter!!.swapDataSet(it.data!!)
                         }
                         requireView().listview.adapter = homeWorkAdapter
-                        requireView().process.visibility=View.GONE
+                        requireView().process.visibility = View.GONE
 
                     }
-                    is DataState.Error -> {Toast.makeText(requireContext(),it.data,Toast.LENGTH_LONG).show()}
+                    is DataState.Error -> {
+                        Toast.makeText(requireContext(), it.data, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
     }
 
-    private fun openDialog(){
-       dialog = Dialog(requireContext())
+    @SuppressLint("SetTextI18n")
+    private fun openDialog() {
+        dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.create_homework_dialog)
         dialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.cancel_button.setOnClickListener {
+            clearData()
             dialog.dismiss()
-
         }
         dialog.file.setOnClickListener {
             openFile()
         }
         dialog.btn_confirm.setOnClickListener {
 
-            if(date==null|| time==null|| file==null ){
-                Toast.makeText(requireContext(),"Chưa điền đủ thông tin",Toast.LENGTH_SHORT).show()
-            }else
-            {
+            if (date == null || file == null) {
+                Toast.makeText(requireContext(), "Chưa điền đủ thông tin", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
 
-                obversePostHomeWorkStatus()
-                val deadline = date+time
-                viewModel.postHomeWork(deadline, filename!!, file!!,
-                    classviewmodel.classroom.value!!.classId)
+
+                val deadline = date + time
+                viewModel.postHomeWork(
+                    deadline, filename!!, file!!,
+                    classviewmodel.classroom.value!!.classId
+                )
             }
         }
-
-
-
         dialog.btn_pick_date.setOnClickListener {
             val constraintsBuilder =
                 CalendarConstraints.Builder()
@@ -170,14 +183,18 @@ class HomeworkFragment : Fragment() {
                 dateStart =
                     Instant.ofEpochMilli(datePicker.selection!!).atZone(ZoneId.systemDefault())
                         .toLocalDate()
-                date=formatter.format(dateStart)
-                dialog.txt_datetime.setText(date+time)
+                date = formatter.format(dateStart)
+                dialog.txt_datetime.setText(date + time)
             }
             datePicker.show(requireFragmentManager(), "date picker")
         }
         dialog.btn_pick_hour.setOnClickListener {
-            if(date==null) Toast.makeText(requireContext(),"Bạn phải chọn ngày trước",Toast.LENGTH_SHORT).show()
-            else{
+            if (date == null) Toast.makeText(
+                requireContext(),
+                "Bạn phải chọn ngày trước",
+                Toast.LENGTH_SHORT
+            ).show()
+            else {
                 val isSystem24Hour = DateFormat.is24HourFormat(requireContext())
                 val clockFormat = if (isSystem24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H
                 val picker =
@@ -187,12 +204,12 @@ class HomeworkFragment : Fragment() {
                         .build()
                 picker.show(requireFragmentManager(), "tag")
                 picker.addOnPositiveButtonClickListener {
-                  if (picker.hour<10) time=" "+"0"+picker.hour
-                  else time=" "+picker.hour
-                    if(picker.minute<10) time=time+":"+"0"+picker.minute
-                    else time=time+":"+picker.minute
+                    if (picker.hour < 10) time = " " + "0" + picker.hour
+                    else time = " " + picker.hour
+                    if (picker.minute < 10) time = time + ":" + "0" + picker.minute
+                    else time = time + ":" + picker.minute
 
-                    dialog.txt_datetime.setText(date+time)
+                    dialog.txt_datetime.setText(date + time)
 
                 }
             }
@@ -212,20 +229,42 @@ class HomeworkFragment : Fragment() {
 
         startActivityForResult(intent, PICK_PDF_FILE)
     }
+
     override fun onActivityResult(
-        requestCode: Int, resultCode: Int, resultData: Intent?) {
+        requestCode: Int, resultCode: Int, resultData: Intent?
+    ) {
         if (requestCode == PICK_PDF_FILE
-            && resultCode == Activity.RESULT_OK) {
+            && resultCode == Activity.RESULT_OK
+        ) {
             resultData?.data?.also { uri ->
-                this.uri=uri
-               filename = getFileName(uri)
-                file=readBytes(requireContext(),uri)
-                dialog.file.text=filename
+                this.uri = uri
+                filename = getFileName(uri)
+                file = readBytes(requireContext(), uri)
+
+                try {
+                    dialog.filename.setText(filename)
+                } catch (ex: NullPointerException) {
+
+                }
+                try {
+                    dialog.filename2.setText(filename)
+                } catch (ex: NullPointerException) {
+                }
 
 
             }
         }
     }
+
+    private fun clearData() {
+
+        filename = null
+        dateStart = null
+        file  = null
+        date  = null
+        time = " 00:00"
+    }
+
     private fun readBytes(context: Context, uri: Uri): ByteArray? =
         context.contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }
 
@@ -234,9 +273,10 @@ class HomeworkFragment : Fragment() {
     fun getFileName(uri: Uri): String? {
         var result: String? = null
         if (uri.scheme == "content") {
-            val cursor: Cursor = requireContext().contentResolver.query(uri, null, null, null, null)!!
+            val cursor: Cursor =
+                requireContext().contentResolver.query(uri, null, null, null, null)!!
             try {
-                if (cursor != null && cursor.moveToFirst()) {
+                if (cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                 }
             } finally {
@@ -252,20 +292,108 @@ class HomeworkFragment : Fragment() {
         }
         return result
     }
-    private  fun obversePostHomeWorkStatus (){
+
+    private fun obversePostHomeWorkStatus() {
         lifecycleScope.launchWhenCreated {
             viewModel.postHomeWorkStatus.collect {
-                when(it){
-                    is  DataState.Loading ->{}
-                    is DataState.Success ->{
-                        viewModel.getData(classviewmodel.classroom.value!!.classId)
-                        Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+                when (it) {
+                    is DataState.Loading -> {
+                        dialog.process.visibility=View.VISIBLE
+                        dialog.btn_confirm.text=resources.getString(R.string.pls_wait)
                     }
-                    is DataState.Error-> {Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()}
+                    is DataState.Success -> {
+                        dialog.process.visibility=View.GONE
+                        dialog.btn_confirm.text= resources.getString(R.string.confirm)
+                        viewModel.getData(classviewmodel.classroom.value!!.classId)
+                        Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                        viewModel.setEmpty()
+                    }
+                    is DataState.Error -> {
+                        dialog.process.visibility=View.GONE
+                        dialog.btn_confirm.text= resources.getString(R.string.confirm)
+                        Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                        viewModel.setEmpty()
+                    }
                 }
             }
         }
+    }
 
+    private fun openDiaLogHaveSubmission(submission: SubmissionX) {
+        dialog = Dialog(requireContext())
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.submission_dialog, null)
+        dialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setContentView(view)
+        val index: Int = submission.name.lastIndexOf('.')
+        val type: String = submission.name.substring(index + 1)
+        dialog.noSubmission.visibility = View.GONE
+        dialog.submission.visibility = View.VISIBLE
+        dialog.name.text = submission.name
+        dialog.by.text = submission.student.name
+        if (submission.sizeInByte < 1024)
+            dialog.size.text = "dung lượng: " + submission.sizeInByte.toString() + " Byte"
+        else
+            if (submission.sizeInByte > 1048576)
+                dialog.size.text =
+                    "dung lượng: " + (submission.sizeInByte / 1048576).toString() + " Mb"
+            else
+                dialog.size.text =
+                    "dung lượng: " + (submission.sizeInByte / 1024).toString() + " Kb"
+        dialog.time.text = "Nộp lúc: " + submission.dateCreated
+        HomeWorkAdapter.setImageViewByType(type, view)
+        if (submission.late) {
+            dialog.status.text = "Trễ"
+            dialog.status.setTextColor(resources.getColor(R.color.red))
+        } else {
+            dialog.status.text = "Đúng hạn"
+            dialog.status.setTextColor(resources.getColor(R.color.green))
+        }
+        dialog.btn_confirm_or_cancel.text = resources.getString(R.string.cancel_submit)
+        dialog.cancel_button.setOnClickListener {
+            clearData()
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun openDialogNoSubmission() {
+        dialog = Dialog(requireContext())
+        dialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setContentView(R.layout.submission_dialog)
+        dialog.submission.visibility = View.GONE
+        dialog.noSubmission.visibility = View.VISIBLE
+        dialog.btn_confirm_or_cancel.text = resources.getString(R.string.confirm)
+        dialog.cancel_button.setOnClickListener {
+            clearData()
+            dialog.dismiss()
+        }
+        dialog.file.setOnClickListener {
+            openFile()
+        }
+        dialog.show()
+    }
+
+    private fun obverseSubmission() {
+        lifecycleScope.launchWhenCreated {
+            submissionViewModel.submission.collect {
+                when (it) {
+                    is DataState.Loading -> {
+                        Toast.makeText(requireContext(), "Đang tải", Toast.LENGTH_SHORT).show()
+                    }
+                    is DataState.Success -> {
+                        if (it.data != null) {
+                            openDiaLogHaveSubmission(it.data)
+
+                        } else {
+                            openDialogNoSubmission()
+                        }
+                    }
+                    is DataState.Error -> {
+                        Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
 

@@ -79,13 +79,37 @@
 
 
             </RelativeLayout>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/file"
-                android:layout_width="300dp"
-                app:icon="@drawable/ic_baseline_attach_file_24"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/file"
+                    android:layout_width="50dp"
+                    app:icon="@drawable/ic_baseline_attach_file_24"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentStart="true"
+                    app:iconGravity="top"
+                    android:layout_marginTop="10dp"
+                    />
+                <EditText
+                    android:id="@+id/filename2"
+                    android:text="@string/choose_file"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/file"
+                    android:layout_centerInParent="true"
+                    android:enabled="false"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/process"
+                android:visibility="gone"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/choose_file" />
+                android:indeterminate="true" />
             <Button
                 android:id="@+id/btn_confirm"
                 android:layout_width="150dp"
