@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,6 +85,7 @@ class HomeworkFragment : Fragment() {
         obverseSubmission()
         setDisplayByRole(view)
         obversePostHomeWorkStatus()
+        obverseStatusRequest()
 
         return view
 
@@ -119,7 +119,6 @@ class HomeworkFragment : Fragment() {
                     is DataState.Success -> {
 
                         if (homeWorkAdapter == null) {
-                            Log.d("thanhcong", "KO NULL")
                             homeWorkAdapter = HomeWorkAdapter(
                                 requireContext(),
                                 it.data!!,
@@ -223,7 +222,7 @@ class HomeworkFragment : Fragment() {
     private fun openFile() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/pdf"
+            type = "application/*"
 
         }
 
@@ -292,6 +291,34 @@ class HomeworkFragment : Fragment() {
         }
         return result
     }
+    private fun obverseStatusRequest(){
+        lifecycleScope.launchWhenCreated {
+            submissionViewModel.statusRequest.collect {
+                when(it){
+                    is DataState.Loading->{
+                        dialog.process_submission.visibility= View.VISIBLE
+                        dialog.btn_confirm_or_cancel.text =resources.getString(R.string.pls_wait)
+                    }
+                    is DataState.Success-> {
+                        dialog.dismiss()
+                        clearData()
+                        submissionViewModel.setEmptyStatus()
+                        submissionViewModel.getSubmission(classviewmodel.classroom.value!!.classId, // re call submission
+                            viewModel.homeWork.value!!.fileId)
+                        Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    is DataState.Error -> {
+                        dialog.btn_confirm_or_cancel.text =resources.getString(R.string.confirm)
+                        dialog.process_submission.visibility= View.GONE
+                        submissionViewModel.setEmptyStatus()
+                        Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 
     private fun obversePostHomeWorkStatus() {
         lifecycleScope.launchWhenCreated {
@@ -304,15 +331,16 @@ class HomeworkFragment : Fragment() {
                     is DataState.Success -> {
                         dialog.process.visibility=View.GONE
                         dialog.btn_confirm.text= resources.getString(R.string.confirm)
+                        clearData()
                         viewModel.getData(classviewmodel.classroom.value!!.classId)
                         Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
-                        viewModel.setEmpty()
+                        viewModel.setEmptyHomeWorkStatus()
                     }
                     is DataState.Error -> {
                         dialog.process.visibility=View.GONE
                         dialog.btn_confirm.text= resources.getString(R.string.confirm)
                         Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
-                        viewModel.setEmpty()
+                        viewModel.setEmptyHomeWorkStatus()
                     }
                 }
             }
@@ -353,6 +381,7 @@ class HomeworkFragment : Fragment() {
             clearData()
             dialog.dismiss()
         }
+
         dialog.show()
     }
 
@@ -370,6 +399,17 @@ class HomeworkFragment : Fragment() {
         dialog.file.setOnClickListener {
             openFile()
         }
+        dialog.btn_confirm_or_cancel.setOnClickListener {
+        if(file==null || filename==null) {
+            Toast.makeText(requireContext(),"Chưa chọn bài tập",Toast.LENGTH_SHORT).show()
+
+        }else {
+            submissionViewModel.postSubmission(
+                classviewmodel.classroom.value!!.classId,
+                viewModel.homeWork.value!!.fileId, filename!!, file!!
+            )
+        }
+        }
         dialog.show()
     }
 
@@ -377,9 +417,7 @@ class HomeworkFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             submissionViewModel.submission.collect {
                 when (it) {
-                    is DataState.Loading -> {
-                        Toast.makeText(requireContext(), "Đang tải", Toast.LENGTH_SHORT).show()
-                    }
+
                     is DataState.Success -> {
                         if (it.data != null) {
                             openDiaLogHaveSubmission(it.data)

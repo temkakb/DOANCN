@@ -1,6 +1,7 @@
 package com.example.doancn.Fragments.MyClass.homework
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doancn.DI.DataState
@@ -34,6 +35,8 @@ class HomeworkViewModel
 
     private val _postHomeWorkStatus = MutableStateFlow<DataState<String>>(DataState.Empty)
     val postHomeWorkStatus: StateFlow<DataState<String>> = _postHomeWorkStatus
+    private val _homeWork = MutableLiveData<HomeWorkX>()
+    val homeWork: LiveData<HomeWorkX> get() = _homeWork
 
 
     fun getData (classid :Long){
@@ -48,7 +51,6 @@ class HomeworkViewModel
     fun postHomeWork (deadline: String,filename: String , file: ByteArray,classid: Long){
         viewModelScope.launch {
             Thread {
-                Log.d("filename",filename)
                 val buffer: ByteBuffer = ByteBuffer.allocate(ALLOWCATE)
                 var buffer2: ByteBuffer = ByteBuffer.allocate(50)
                 val deadLineBytes = deadline.toByteArray()
@@ -67,7 +69,6 @@ class HomeworkViewModel
                 buffer.putInt(fileNameBytes.size)
                 buffer.put(fileNameBytes)
                 buffer.putInt(file.size)
-                Log.d("bytesize",file.size.toString())
                 buffer.flip()
                 client.write(buffer)
                 // read response
@@ -96,10 +97,16 @@ class HomeworkViewModel
 
         }
     }
-    fun setEmpty(){
+    fun setEmptyHomeWorkStatus(){
         _postHomeWorkStatus.value=DataState.Empty
 
     }
+
+    fun selectitem (homeWorkX: HomeWorkX){
+        _homeWork.value=homeWorkX
+    }
+
+
 
 
 

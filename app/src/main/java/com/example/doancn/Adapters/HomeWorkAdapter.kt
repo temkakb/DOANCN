@@ -42,6 +42,7 @@ class HomeWorkAdapter @ExperimentalCoroutinesApi constructor(context: Context, v
         }
         else if (role.equals("STUDENT")){
             view.setOnClickListener {
+                homeWorkFragment.viewModel.selectitem(listhomework[position])
                homeWorkFragment.submissionViewModel.getSubmission(
                    homeWorkFragment.classviewmodel.classroom.value!!.classId,
                listhomework[position].fileId)
