@@ -39,6 +39,7 @@ class Urls {
     companion object {
         const val url1 ="http://10.0.2.2:8081/"
         const val url2="10.0.2.2"
+        const val port=6969
     }
 }
 

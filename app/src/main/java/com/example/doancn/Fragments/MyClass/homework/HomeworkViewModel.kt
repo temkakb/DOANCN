@@ -1,5 +1,9 @@
 package com.example.doancn.Fragments.MyClass.homework
 
+import android.content.Context
+import android.net.Uri
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +17,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.IOException
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -29,14 +35,22 @@ class HomeworkViewModel
 )
     : ViewModel() {
     val SENDING_HOMEWORK = 6969
-    val ALLOWCATE =2600
+    val TEACHER_DOWNLOAD_HOMEWORK = 1000
+    val STUDENT_DOWNLOAD_HOMEWORK = 1020
+    val ALLOWCATE =4000
     private val _homeworks = MutableStateFlow<DataState<List<HomeWorkX>?>>(DataState.Empty)
     val homeworks: StateFlow<DataState<List<HomeWorkX>?>> = _homeworks
-
     private val _postHomeWorkStatus = MutableStateFlow<DataState<String>>(DataState.Empty)
     val postHomeWorkStatus: StateFlow<DataState<String>> = _postHomeWorkStatus
+    private val _deleteHomeWorkStatus = MutableStateFlow<DataState<String>>(DataState.Empty)
+    val deleteHomeWorkStatus: StateFlow<DataState<String>> = _deleteHomeWorkStatus
     private val _homeWork = MutableLiveData<HomeWorkX>()
     val homeWork: LiveData<HomeWorkX> get() = _homeWork
+    private val _view = MutableLiveData<View>()
+    val view: LiveData<View> get() = _view
+    private val _downloadStatus = MutableStateFlow<DataState<String>>(DataState.Empty)
+    val downloadStatus: StateFlow<DataState<String>> = _downloadStatus
+
 
 
     fun getData (classid :Long){
@@ -45,6 +59,14 @@ class HomeworkViewModel
             _homeworks.value= classRepository.getHomeWorks(token!!,
                 classid)
             _homeworks.value=DataState.Empty
+        }
+    }
+
+    fun deleteHomeWork(id:Long,homeWorkId: Long){
+        viewModelScope.launch {
+        _deleteHomeWorkStatus.value=DataState.Loading
+            _deleteHomeWorkStatus.value=classRepository.deleteHomeWork(id,homeWorkId, token!!)
+            _deleteHomeWorkStatus.value=DataState.Empty
         }
     }
 
@@ -57,7 +79,7 @@ class HomeworkViewModel
                 val fileNameBytes =filename.toByteArray()
                 val tokenBytes = token!!.substring(7).toByteArray()
                 _postHomeWorkStatus.value=DataState.Loading
-                val hA = InetSocketAddress(Urls.url2, 6969)
+                val hA = InetSocketAddress(Urls.url2,  Urls.port)
                 val client= SocketChannel.open(hA)
                 // send header
                 buffer.putInt(SENDING_HOMEWORK)
@@ -97,13 +119,113 @@ class HomeworkViewModel
 
         }
     }
+
+    fun teacherDownLoadHomeWork(classid: Long,uri : Uri,context: Context){
+            viewModelScope.launch {
+                Thread {
+                    _downloadStatus.value = DataState.Loading
+                    val buffer: ByteBuffer = ByteBuffer.allocate(ALLOWCATE)
+                    val buffer2: ByteBuffer = ByteBuffer.allocate(homeWork.value!!.sizeInByte)
+                    val tokenBytes = token!!.substring(7).toByteArray()
+                    val hA = InetSocketAddress(Urls.url2, Urls.port)
+                    val client = SocketChannel.open(hA)
+                    buffer.putInt(TEACHER_DOWNLOAD_HOMEWORK)
+                    buffer.putLong(classid)
+                    buffer.putInt(tokenBytes.size)
+                    buffer.put(tokenBytes)
+                    buffer.putLong(homeWork.value!!.fileId)
+                    buffer.flip()
+                    client.write(buffer)
+                    buffer2.clear()
+                    try {
+                        while (buffer2.hasRemaining()) {
+                            client.read(buffer2)
+                        }
+                        client.close()
+
+                    } catch (ex: IOException) {
+                        client.close()
+                        _downloadStatus.value = DataState.Error("Tải thất bại")
+                    }
+
+                    val file = ByteArray(homeWork.value!!.sizeInByte)
+                    buffer2.flip()
+                    buffer2.get(file)
+
+
+
+                  val out = context.contentResolver.openOutputStream(uri)
+                    out!!.write(file)
+                    out.close()
+
+
+                    _downloadStatus.value = DataState.Success("Tải thành công")
+
+                }.start()
+            }
+
+    }
+    fun studentDownLoadHomeWork (classid: Long,uri : Uri,context: Context){
+        viewModelScope.launch {
+            Thread {
+                _downloadStatus.value = DataState.Loading
+                val buffer: ByteBuffer = ByteBuffer.allocate(ALLOWCATE)
+                val buffer2: ByteBuffer = ByteBuffer.allocate(homeWork.value!!.sizeInByte)
+                val tokenBytes = token!!.substring(7).toByteArray()
+                val hA = InetSocketAddress(Urls.url2, Urls.port)
+                val client = SocketChannel.open(hA)
+                buffer.putInt(STUDENT_DOWNLOAD_HOMEWORK)
+                buffer.putLong(classid)
+                buffer.putInt(tokenBytes.size)
+                buffer.put(tokenBytes)
+                buffer.putLong(homeWork.value!!.fileId)
+                buffer.flip()
+                client.write(buffer)
+                buffer2.clear()
+                try {
+                    while (buffer2.hasRemaining()) {
+                        client.read(buffer2)
+                    }
+                    client.close()
+
+                } catch (ex: IOException) {
+                    client.close()
+                    _downloadStatus.value = DataState.Error("Tải thất bại")
+                }
+
+                val file = ByteArray(homeWork.value!!.sizeInByte)
+                buffer2.flip()
+                buffer2.get(file)
+                val checkfile = File(uri.path)
+                if (checkfile.exists()){
+                    Log.d("exsit","yessss")
+                }
+                val out = context.contentResolver.openOutputStream(uri)
+                out!!.write(file)
+                out.close()
+                _downloadStatus.value = DataState.Success("Tải thành công")
+
+            }.start()
+        }
+    }
     fun setEmptyHomeWorkStatus(){
-        _postHomeWorkStatus.value=DataState.Empty
+        viewModelScope.launch {
+            _postHomeWorkStatus.value=DataState.Empty
+        }
+    }
+    fun setEmptyDownLoadStatus(){
+        viewModelScope.launch {
+            _downloadStatus.value=DataState.Empty
+        }
 
     }
 
     fun selectitem (homeWorkX: HomeWorkX){
+
         _homeWork.value=homeWorkX
+    }
+    fun setView (view: View){
+        _view.value=view
     }
 
 

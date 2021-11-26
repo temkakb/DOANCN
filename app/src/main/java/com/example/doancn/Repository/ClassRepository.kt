@@ -83,4 +83,18 @@ class ClassRepository @Inject constructor(
     }
 
     }
+    suspend fun deleteSubmission(id: Long, submissionId : Long, token:String) : DataState<String>{
+        val response = classApi.deleteSubmission(id,submissionId,token)
+        if(response.isSuccessful)
+            return  DataState.Success("Hủy gửi thành công")
+        else
+            return  DataState.Error(response.errorBody().toString())
+    }
+    suspend fun deleteHomeWork (id: Long, homeWorkId: Long, token:String) : DataState<String>{
+        val response = classApi.deleteHomeWork(id,homeWorkId,token)
+        if(response.isSuccessful)
+            return  DataState.Success("Xóa thành công")
+        else
+            return  DataState.Error(response.errorBody().toString())
+    }
 }

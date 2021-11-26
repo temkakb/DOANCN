@@ -82,17 +82,17 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/file"
                     android:layout_width="50dp"
-                    app:icon="@drawable/ic_baseline_attach_file_24"
                     android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="10dp"
-                    android:layout_alignParentStart="true"
-                    app:iconGravity="top"
                     android:layout_marginTop="10dp"
-                    />
+                    app:icon="@drawable/ic_baseline_attach_file_24"
+                    app:iconGravity="top" />
                 <EditText
                     android:id="@+id/filename2"
                     android:text="@string/choose_file"

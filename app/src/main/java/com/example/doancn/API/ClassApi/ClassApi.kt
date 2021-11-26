@@ -29,4 +29,11 @@ interface ClassApi {
     suspend fun getSubmission (@Path("id") id : Long, @Path("homeworkId") homeworkId :Long, @Header("Authorization") token : String)
     : Response<SubmissionX>
 
+    @DELETE("/classes/{id}/submission/{submissionId}")
+    suspend fun deleteSubmission(@Path("id") id: Long, @Path("submissionId") submissionId : Long, @Header("Authorization") token : String)
+    : Response<ResponseBody>
+
+    @DELETE("/classes/{id}/homework/{homeWorkId}")
+    suspend fun deleteHomeWork(@Path("id") id : Long, @Path("homeWorkId") homeworkId: Long,@Header("Authorization") token : String)
+    : Response<ResponseBody>
 }

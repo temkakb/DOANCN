@@ -137,6 +137,8 @@
     <string name="yoursubmission">Bài tập về nhà của bạn</string>
     <string name="cancel_submit">Hủy gửi</string>
     <string name="pls_wait">Xin chờ</string>
+    <string name="downloading">Đang tải</string>
+    <string name="download">tải về</string>
 
 
 </resources>

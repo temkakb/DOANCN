@@ -49,6 +49,12 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 
+
+
+
+
+
+
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeworkFragment : Fragment() {
@@ -56,6 +62,8 @@ class HomeworkFragment : Fragment() {
     val viewModel: HomeworkViewModel by viewModels()
     val classviewmodel: ClassViewModel by activityViewModels()
     val submissionViewModel: SubmissionViewModel by viewModels()
+    val TEACHER_CREATE_FILE = 1
+    val STUDENT_CREATE_FILE = 3
     private var homeWorkAdapter: HomeWorkAdapter? = null
     private var filename: String? = null
     private var dateStart: LocalDate? = null
@@ -65,6 +73,7 @@ class HomeworkFragment : Fragment() {
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     private lateinit var dialog: Dialog
     private lateinit var navcontroller: NavController
+    private  val number =1000*1000;
 
 
     private var uri: Uri? = null
@@ -86,6 +95,7 @@ class HomeworkFragment : Fragment() {
         setDisplayByRole(view)
         obversePostHomeWorkStatus()
         obverseStatusRequest()
+        obverseDownloadStatus()
 
         return view
 
@@ -159,8 +169,6 @@ class HomeworkFragment : Fragment() {
                 Toast.makeText(requireContext(), "Chưa điền đủ thông tin", Toast.LENGTH_SHORT)
                     .show()
             } else {
-
-
                 val deadline = date + time
                 viewModel.postHomeWork(
                     deadline, filename!!, file!!,
@@ -224,9 +232,23 @@ class HomeworkFragment : Fragment() {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "application/*"
 
+
+        }
+        startActivityForResult(intent, PICK_PDF_FILE)
+    }
+    fun createFile() {
+        val rnds = (0..number).random()
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+            putExtra(Intent.EXTRA_TITLE, rnds.toString()+"-"+viewModel.homeWork.value!!.name)
+        }
+        if (mainViewModel.role.equals("STUDENT")) {
+            startActivityForResult(intent, STUDENT_CREATE_FILE)
+        }else if (mainViewModel.role.equals("TEACHER")) {
+            startActivityForResult(intent, TEACHER_CREATE_FILE)
         }
 
-        startActivityForResult(intent, PICK_PDF_FILE)
     }
 
     override fun onActivityResult(
@@ -253,6 +275,17 @@ class HomeworkFragment : Fragment() {
 
             }
         }
+        else if (requestCode==TEACHER_CREATE_FILE && resultCode == Activity.RESULT_OK){
+            resultData?.data?.also { uri ->
+             viewModel.teacherDownLoadHomeWork(classviewmodel.classroom.value!!.classId,uri,requireContext())
+            }
+        }
+        else if(requestCode==STUDENT_CREATE_FILE && resultCode==Activity.RESULT_OK){
+            resultData?.data?.also { uri ->
+            viewModel.studentDownLoadHomeWork(classviewmodel.classroom.value!!.classId,uri,requireContext())
+            }
+        }
+
     }
 
     private fun clearData() {
@@ -291,6 +324,28 @@ class HomeworkFragment : Fragment() {
         }
         return result
     }
+
+    private fun obverseDownloadStatus (){
+        lifecycleScope.launchWhenCreated {
+            viewModel.downloadStatus.collect {
+                when(it) {
+                    is DataState.Loading -> {
+                    viewModel.view.value!!.process_homework_item.visibility=View.VISIBLE
+                    }
+                    is DataState.Success-> {
+                        viewModel.view.value!!.process_homework_item.visibility=View.GONE
+                        Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+                        viewModel.setEmptyDownLoadStatus()
+                    }
+                    is  DataState.Error-> {
+                        viewModel.view.value!!.process_homework_item.visibility=View.GONE
+                        Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+                        viewModel.setEmptyDownLoadStatus()
+                    }
+                }
+            }
+        }
+    }
     private fun obverseStatusRequest(){
         lifecycleScope.launchWhenCreated {
             submissionViewModel.statusRequest.collect {
@@ -303,8 +358,15 @@ class HomeworkFragment : Fragment() {
                         dialog.dismiss()
                         clearData()
                         submissionViewModel.setEmptyStatus()
-                        submissionViewModel.getSubmission(classviewmodel.classroom.value!!.classId, // re call submission
-                            viewModel.homeWork.value!!.fileId)
+                        if(it.data.equals("Hủy gửi thành công")){
+                            openDialogNoSubmission()
+                        }
+                        else {
+                            submissionViewModel.getSubmission(
+                                classviewmodel.classroom.value!!.classId, // re call submission
+                                viewModel.homeWork.value!!.fileId
+                            )
+                        }
                         Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
 
                     }
@@ -381,6 +443,11 @@ class HomeworkFragment : Fragment() {
             clearData()
             dialog.dismiss()
         }
+        dialog.btn_confirm_or_cancel.setOnClickListener {
+
+            submissionViewModel.deleteSubmission(classviewmodel.classroom.value!!.classId,
+                submissionViewModel.submissionSelected.value!!.fileId)
+        }
 
         dialog.show()
     }
@@ -420,6 +487,7 @@ class HomeworkFragment : Fragment() {
 
                     is DataState.Success -> {
                         if (it.data != null) {
+                            submissionViewModel.setSubmissionSelected(it.data)
                             openDiaLogHaveSubmission(it.data)
 
                         } else {
@@ -433,6 +501,7 @@ class HomeworkFragment : Fragment() {
             }
         }
     }
+
 
 
 }

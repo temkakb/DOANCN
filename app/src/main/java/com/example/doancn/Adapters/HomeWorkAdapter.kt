@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.homework_item.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-class HomeWorkAdapter @ExperimentalCoroutinesApi constructor(context: Context, var listhomework : List<HomeWorkX>, val navController: NavController, val role: String, val homeWorkFragment : HomeworkFragment) : ArrayAdapter<HomeWorkX>(context, R.layout.homework_item) {
+class HomeWorkAdapter @ExperimentalCoroutinesApi constructor( context: Context, var listhomework : List<HomeWorkX>, val navController: NavController, val role: String, val homeWorkFragment : HomeworkFragment) : ArrayAdapter<HomeWorkX>(context, R.layout.homework_item) {
 
 
     @SuppressLint("ViewHolder", "SetTextI18n", "InflateParams")
@@ -35,10 +35,24 @@ class HomeWorkAdapter @ExperimentalCoroutinesApi constructor(context: Context, v
         else
                 view.size.text="dung lượng: "+(listhomework[position].sizeInByte/1024).toString()+" Kb"
 
+
+        view.btn_download.setOnClickListener {
+            homeWorkFragment.viewModel.selectitem(listhomework[position])
+            homeWorkFragment.viewModel.setView(view)
+            homeWorkFragment.createFile()
+        }
         if (role.equals("TEACHER")) {
+
             view.setOnClickListener {
                 toSubmission(listhomework[position])
             }
+            view.setOnLongClickListener {
+                val bundle = Bundle()
+                bundle.putSerializable("targetHomework",listhomework[position])
+                navController.navigate(R.id.action_navigation_homework_to_bottomSheetHomeWorkFragment,bundle)
+                return@setOnLongClickListener true
+            }
+
         }
         else if (role.equals("STUDENT")){
             view.setOnClickListener {
@@ -82,4 +96,7 @@ class HomeWorkAdapter @ExperimentalCoroutinesApi constructor(context: Context, v
         bundle.putSerializable("targetHomework",homework)
      navController.navigate(R.id.action_navigation_homework_to_submissionFragment,bundle)
     }
-}
+
+
+
+    }

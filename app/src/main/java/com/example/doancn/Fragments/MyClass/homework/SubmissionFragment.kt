@@ -30,9 +30,6 @@ class SubmissionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.submission_fragment, container, false)
-
-
-
         return view;
     }
 

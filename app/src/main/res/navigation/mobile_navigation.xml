@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_navigation_homework_to_submissionFragment"
             app:destination="@id/submissionFragment" />
+        <action
+            android:id="@+id/action_navigation_homework_to_bottomSheetHomeWorkFragment"
+            app:destination="@id/bottomSheetHomeWorkFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_people"
@@ -36,4 +39,12 @@
             android:id="@+id/action_submissionFragment_to_navigation_homework"
             app:destination="@id/navigation_homework" />
     </fragment>
+    <dialog
+        android:id="@+id/bottomSheetHomeWorkFragment"
+        android:name="com.example.doancn.Fragments.MyClass.homework.BottomSheetHomeWorkFragment"
+        android:label="BottomSheetHomeWorkFragment" >
+        <action
+            android:id="@+id/action_bottomSheetHomeWorkFragment_to_navigation_homework"
+            app:destination="@id/navigation_homework" />
+    </dialog>
 </navigation>
