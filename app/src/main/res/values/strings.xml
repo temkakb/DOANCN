@@ -1,4 +1,5 @@
 <resources>
+    <string name="no_info">Chưa bổ sung thông tin</string>
     <string name="app_name">DOANCN</string>
     <string name="Male">Nam</string>
     <string name="Female">Nữ</string>
@@ -43,8 +44,11 @@
     <string name="crwp">Nơi học tập hiện tại</string>
     <string name="ecl">Trình độ học vấn</string>
     <string name="notPay">Chưa đóng tiền</string>
+    <string name="paid">Đã đóng tiền</string>
     <string name="PAYMENTHISTORY">LỊCH SỬ ĐÓNG TIỀN</string>
-    <string name="paydate">Ngày đóng tiền</string>
+    <string name="paymenthistory">Lịch sử đóng tiền</string>
+    <string name="paydate">Ngày đóng tiền tiếp theo</string>
+    <string name="pay">Đóng tiền</string>
     <string name="amount">Số tiền</string>
     <string name="total">Tổng:</string>
     <string name="totalamoun">imageteacher</string>

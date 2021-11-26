@@ -127,9 +127,13 @@ class ProfileFragment : Fragment() {
                             profile_name.text = userme!!.name
                             profile_email.text = userme!!.account.email
                             profile_dob.text = userme!!.dob
+                            if(userme!!.educationLevel != null)
                             profile_education_level.text = userme!!.educationLevel
+                            if(userme!!.currentWorkPlace != null)
                             profile_curent_work_place.text = userme!!.currentWorkPlace
+                            if(userme!!.phoneNumber != null)
                             profile_phone.text = userme!!.phoneNumber
+                            if(userme!!.address != null)
                             profile_adress.text = userme!!.address
                             when (userme!!.gender.genderID) {
                                 3 -> {
@@ -160,7 +164,15 @@ class ProfileFragment : Fragment() {
                             if (userme!!.image != null) {
                                 val imgDecode: ByteArray = Base64.getDecoder().decode(userme!!.image)
                                 val bmp = BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
-                                profile_img.setImageBitmap(bmp)
+
+                                val ivWidth: Int = profile_img.width
+                                val ivHeight: Int = profile_img.height
+
+                                Log.i("ivWidth",ivWidth.toString())
+                                Log.i("ivHeight",ivHeight.toString())
+
+                                val newbitMap = Bitmap.createScaledBitmap(bmp, ivWidth, ivHeight, true)
+                                profile_img.setImageBitmap(newbitMap)
                             }
 
                             //Chọn hình để đổi hình ảnh

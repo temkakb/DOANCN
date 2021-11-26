@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/cancel_payment_button"
+        android:id="@+id/cancel_attendance_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -42,32 +43,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             tools:listitem="@layout/item_attendanced_student"/>
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:stretchColumns="1">
-            <TableRow tools:ignore="UselessParent">
-                <TextView
-                    android:gravity="center"
-                    android:paddingLeft="50dp"
-                    android:paddingRight="50dp"
-                    android:text="@string/numberofmissingstudents"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/total_missing_student"
-                    android:layout_gravity="center"
-                    android:paddingLeft="50dp"
-                    android:paddingRight="50dp"
-                    android:text=""
-                    android:textColor="@color/red"
-                    android:textStyle="bold" />
-            </TableRow>
-        </TableLayout>
     </LinearLayout>
 
 </RelativeLayout>

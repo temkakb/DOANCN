@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doancn.DI.DataState
-import com.example.doancn.Models.PaymentHistory
 import com.example.doancn.Models.UserMe
 import com.example.doancn.Repository.ClassRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,9 +22,6 @@ class PeopleViewModel
 ) : ViewModel() {
     private val _users = MutableStateFlow<DataState<List<UserMe>?>>(DataState.Empty)
     val users: StateFlow<DataState<List<UserMe>?>> = _users
-
-    private val _userPaymentHistories = MutableStateFlow<DataState<List<PaymentHistory>?>>(DataState.Empty)
-    val userPaymentHistories: StateFlow<DataState<List<PaymentHistory>?>> = _userPaymentHistories
 
     private val _paystatus: MutableLiveData<PayEvent<String>> = MutableLiveData()
     val paystatus: LiveData<PayEvent<String>>
