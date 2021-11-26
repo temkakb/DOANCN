@@ -31,6 +31,9 @@ import com.example.doancn.Models.UserMe
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.Retrofit.RetrofitManager
 import com.example.doancn.ViewModels.UserViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -46,6 +49,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), IMainActivity {
 
+    private lateinit var mGoogleSignInClient : GoogleSignInClient
     private lateinit var navcontroller: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -76,6 +80,15 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         data.let {
             Log.d("tokendeeplink", it.toString())
         }
+
+        //Google
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("108237023578-64dd4m9o65bhbb4vmbqlth1r8s53uo7u.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
         // khai báo UserViewModel
         val model: UserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
@@ -222,6 +235,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             }
             if (destination.id == R.id.nav_logout) {
                 sharedPrefernces.edit().clear().commit()
+                mGoogleSignInClient.signOut()
                 toLoginFragment()
             }
         }

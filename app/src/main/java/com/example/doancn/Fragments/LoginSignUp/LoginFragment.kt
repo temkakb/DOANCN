@@ -4,7 +4,10 @@ package com.example.doancn.Fragments.LoginSignUp
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -27,15 +30,31 @@ import com.example.doancn.Fragments.LoginSignUp.SigupFragment.Companion.validate
 import com.example.doancn.MainActivity
 import com.example.doancn.Models.Account
 import com.example.doancn.R
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.android.material.button.MaterialButtonToggleGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.enter_code_verify_dialog.*
 import kotlinx.android.synthetic.main.forgotpassword_dialog.*
 import kotlinx.android.synthetic.main.forgotpassword_dialog.btn_go
 import kotlinx.android.synthetic.main.forgotpassword_dialog.process
+import kotlinx.android.synthetic.main.google_signin_youare.view.*
+import kotlinx.android.synthetic.main.login_fragment.*
 import kotlinx.android.synthetic.main.login_fragment.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.net.URL
+import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.HashMap
 
 
 @ExperimentalCoroutinesApi
@@ -46,6 +65,10 @@ class LoginFragment : Fragment() {
     lateinit var forgotpassword: TextView
     lateinit var email: String
     private val viewModel: LoginViewModel by viewModels()
+    private var account : GoogleSignInAccount? = null
+    private lateinit var mGoogleSignInClient : GoogleSignInClient
+    private var alertDialog: AlertDialog? = null
+    private val RcSignin = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,6 +81,49 @@ class LoginFragment : Fragment() {
         setEventButtonLogin(view)
         seteventtextchange(view)
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("108237023578-7m8i6c36u0n10donvfo4h4185qi46fb0.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+
+        mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+        sign_in_button_google.setOnClickListener {
+            signIn()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RcSignin) {
+            val task : Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            account = completedTask.getResult(ApiException::class.java)
+            val idToken = account!!.idToken
+            Log.i("google token",idToken!!.toString())
+            Log.i("name",account!!.displayName!!.toString())
+            val mapGoogle = HashMap<String,String>()
+            mapGoogle["googletoken"] = idToken
+            viewModel.doGoogleLogin(mapGoogle)
+            /*val intent = Intent(context, TestLoginGoogle::class.java)
+            requireContext().startActivity(intent)*/
+        } catch (e: ApiException) {
+            Log.w("Error", "signInResult:failed code=" + e.statusCode)
+        }
+    }
+    private fun signIn() {
+        val signInIntent: Intent = mGoogleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RcSignin)
     }
 
     override fun onResume() {
@@ -153,9 +219,16 @@ class LoginFragment : Fragment() {
 
                     }
                     is DataState.Error -> {
-                        process.visibility = View.INVISIBLE
-                        btnlogin.text = resources.getString(R.string.login)
-                        Toast.makeText(requireContext(), event.data, Toast.LENGTH_SHORT).show()
+                        if(event.data == "Tài khoản chưa đăng ký"){
+                            process.visibility = View.INVISIBLE
+                            btnlogin.text = resources.getString(R.string.login)
+                            Toast.makeText(requireContext(), event.data, Toast.LENGTH_LONG).show()
+                            doGoogleSignin()
+                        }else {
+                            process.visibility = View.INVISIBLE
+                            btnlogin.text = resources.getString(R.string.login)
+                            Toast.makeText(requireContext(), event.data, Toast.LENGTH_SHORT).show()
+                        }
                     }
                     is DataState.Loading -> {
 
@@ -250,6 +323,98 @@ class LoginFragment : Fragment() {
 
     }
 
+    private fun doGoogleSignin(){
+        if( alertDialog != null && alertDialog!!.isShowing){
+            return
+        }
+        val map = HashMap<String,String>()
+        map["googletoken"] = account!!.idToken!!
+        lateinit var toggleGroup: MaterialButtonToggleGroup
+        val createGoogleAccountLayout: View = LayoutInflater.from(context)
+            .inflate(R.layout.google_signin_youare, null)
+        var role : String? = null
+        toggleGroup = createGoogleAccountLayout.group_google_sigup
+        toggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.teacher -> {
+                        Log.i("Hello","Hello teacher")
+                        role = "TEACHER"
+                    }
+                    R.id.student -> {
+                        Log.i("Hello","Hello student")
+                        role = "STUDENT"
+                    }
+                }
+            }
+        }
+        Log.i("mRole",role.toString())
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(createGoogleAccountLayout)
+
+        builder.setPositiveButton("OK")
+        { _: DialogInterface?, _: Int ->
+            map["mId"] = account!!.id!!
+            val thread = Thread{
+                val bitmap = loadBitmap(account!!.photoUrl!!.toString())
+                val stream = ByteArrayOutputStream()
+                if (bitmap != null) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    val image = stream.toByteArray()
+                    val imageBase64 : String = Base64.getEncoder().encodeToString(image)
+                    map["GoogleAccountImage"] = imageBase64
+                }
+            }
+            thread.start()
+            thread.join()
+            if(role == null){
+                role = "STUDENT"
+            }
+            map["mRole"] = role!!
+
+            Log.i("id token",map["googletoken"].toString())
+            Log.i("role",map["mRole"].toString())
+            Log.i("img",map["GoogleAccountImage"].toString())
+            viewModel.doSigupGoogle(map)
+        }
+        builder.setNegativeButton("Hủy")
+        { dialogInterface: DialogInterface, _: Int -> dialogInterface.dismiss() }
+
+        alertDialog = builder.create()
+        alertDialog!!.show()
+    }
+
+    fun loadBitmap(url: String?): Bitmap? {
+        var bm: Bitmap? = null
+        var `is`: InputStream? = null
+        var bis: BufferedInputStream? = null
+        try {
+            val conn = URL(url).openConnection()
+            conn.connect()
+            `is` = conn.getInputStream()
+            bis = BufferedInputStream(`is`, 8192)
+            bm = BitmapFactory.decodeStream(bis)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            if (`is` != null) {
+                try {
+                    `is`.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        return bm
+    }
 
 }
 

@@ -338,7 +338,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text=""
+                    android:text="@string/no_info"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -369,7 +369,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text=""
+                    android:text="@string/no_info"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -399,7 +399,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text=""
+                    android:text="@string/no_info"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -429,7 +429,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text=""
+                    android:text="@string/no_info"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 

@@ -44,4 +44,21 @@ class AuthRepository @Inject constructor(
             return DataState.Error(response.errorBody()!!.string().toString())
 
     }
+
+    suspend fun doGoogleLogin(map: Map<String, String>): DataState<Map<String, String>?>{
+        val response = authapi.googleLogin(map)
+        val result = response.body()
+        if (response.isSuccessful)
+            return DataState.Success(result)
+        else return DataState.Error(response.errorBody()!!.string().toString())
+    }
+
+    suspend fun doGoogleSignup(map: Map<String, String>): DataState<Map<String, String>?> {
+        val response = authapi.googleSignup(map)
+        val result = response.body()
+        if (response.isSuccessful)
+            return DataState.Success(result)
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
+    }
 }

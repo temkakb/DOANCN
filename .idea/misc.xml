@@ -57,6 +57,8 @@
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/menu/mymenu.xml" value="0.23854166666666668" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/menu/nav_menu.xml" value="0.23645833333333333" />
         <entry key="..\:/New folder (2)/DOANCN/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1125" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/drawable/background_edit.xml" value="0.1712962962962963" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/drawable/background_green_retangle.xml" value="0.1712962962962963" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/drawable/bg_button.xml" value="0.2074074074074074" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/drawable/circle.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/drawable/circle_border.xml" value="0.1" />
@@ -75,27 +77,33 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/edit_profile.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_createclass.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.2" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_joinclass.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_parent.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/fragment_setting.xml" value="0.2" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/google_signin_youare.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/item_attendanced_student.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/item_parent.xml" value="0.17685185185185184" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/item_payment_history.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/item_show_student_info_parent.xml" value="0.15555555555555556" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/kho_luu_tru.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/login_fragment.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/login_register_container.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/nav_header.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/people_fragment.xml" value="0.22" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/people_item.xml" value="0.17685185185185184" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/people_item.xml" value="0.22" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/section_item.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/show_attendanced_students.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/show_payment_history.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/show_student_info.xml" value="0.17685185185185184" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/show_student_info.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/signup_fragment.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment_2.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/user_fill_infomation_fragment_3.xml" value="0.2" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/layout/youare_fragment.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/menu/mymenu.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/menu/nav_menu.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.11388888888888889" />

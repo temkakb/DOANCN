@@ -13,17 +13,4 @@ class AttendanceRepository {
     {
         RetrofitManager.attendanceapi.doAttendance(classId,qrId,token)
     }
-    suspend fun getAttendancedStudents(sectionId: Long, token:String):DataState<List<UserMe>>{
-        val response = RetrofitManager.attendanceapi.getAttendancedStudentsOfSection(token,sectionId)
-        val result = response.body()
-        return try {
-            if (response.isSuccessful && result != null) {
-                DataState.Success(result)
-            } else {
-                DataState.Error(response.errorBody().toString())
-            }
-        } catch (e: java.lang.Exception) {
-            DataState.Error(e.message.toString())
-        }
-    }
 }

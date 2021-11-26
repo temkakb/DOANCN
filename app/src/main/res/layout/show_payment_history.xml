@@ -64,34 +64,9 @@
             android:id="@+id/list_payment_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
             tools:listitem="@layout/item_payment_history" />
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:stretchColumns="1">
-            <TableRow tools:ignore="UselessParent">
-                <TextView
-                    android:gravity="center"
-                    android:paddingLeft="50dp"
-                    android:paddingRight="50dp"
-                    android:text="@string/total"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/total_amount"
-                    android:layout_gravity="center"
-                    android:paddingLeft="50dp"
-                    android:paddingRight="50dp"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </TableRow>
-        </TableLayout>
     </LinearLayout>
 
 </RelativeLayout>
