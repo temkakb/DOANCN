@@ -1,16 +1,57 @@
 package com.example.doancn.Repository
 
+import com.example.doancn.API.IEnrollmentApi
+import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Classroom
-import com.example.doancn.Retrofit.RetrofitManager
+import javax.inject.Inject
 
-class EnrollmentRepository {
-    suspend fun getclassenrollment (city: String, subjectId: Long?,token: String): List<Classroom>{
-        return  RetrofitManager.enrollmentapi.getclassenrollment(city,subjectId,token)
+class EnrollmentRepository
+@Inject constructor(
+    private val enrollmentapi: IEnrollmentApi
+) {
+//    companion object {
+//        const val ENROLL_SUCCESS: Int = 0
+//        const val CANCEL_ENROLL_SUCCESS: Int = 1
+//    }
+
+    suspend fun getclassenrollment(
+        city: String,
+        subjectId: Long?,
+        token: String
+    ): DataState<List<Classroom>?> {
+
+        val response = enrollmentapi.getclassenrollment(city, subjectId, token)
+        if (response.isSuccessful)
+
+            return DataState.Success(response.body())
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
+
     }
-    suspend fun doEnroll (id: Long, token: String) {
-        RetrofitManager.enrollmentapi.doEnroll(id,token)
+
+
+    suspend fun doEnroll(id: Long, token: String): DataState<String> {
+        val response = enrollmentapi.doEnroll(id, token)
+        if (response.isSuccessful)
+            return DataState.Success("Đăng ký thành công")
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
     }
-    suspend fun doDeleteEnrollment(id: Long,token: String){
-        RetrofitManager.enrollmentapi.doDeleteEnrollment(id,token)
+
+    suspend fun doDeleteEnrollment(id: Long, token: String): DataState<String> {
+        val response = enrollmentapi.doDeleteEnrollment(id, token)
+        if (response.isSuccessful)
+            return DataState.Success("Hủy đăng ký thành công")
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
+    }
+
+    suspend fun dosSearch(keyword: String, token: String): DataState<List<Classroom>?> {
+        val response = enrollmentapi.doSearch(keyword, token)
+        if (response.isSuccessful) {
+            return DataState.Success(response.body())
+
+        } else
+            return DataState.Error(response.errorBody()!!.string().toString())
     }
 }

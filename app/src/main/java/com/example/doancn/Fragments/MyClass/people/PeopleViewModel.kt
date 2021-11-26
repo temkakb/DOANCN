@@ -1,29 +1,63 @@
 package com.example.doancn.Fragments.MyClass.people
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doancn.DI.DataState
-import com.example.doancn.Fragments.MyClass.people.PeopleViewModel.GetListStudentEvent.*
-import com.example.doancn.Models.User
+import com.example.doancn.Models.UserMe
 import com.example.doancn.Repository.ClassRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
-
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class PeopleViewModel
 @Inject constructor(
     private val classRepository: ClassRepository,
-    @Named("auth_token") private val token: String?
+    @Named("auth_token")
+    private val token: String?
 ) : ViewModel() {
+    private val _users = MutableStateFlow<DataState<List<UserMe>?>>(DataState.Empty)
+    val users: StateFlow<DataState<List<UserMe>?>> = _users
+
+    private val _paystatus: MutableLiveData<PayEvent<String>> = MutableLiveData()
+    val paystatus: LiveData<PayEvent<String>>
+        get() = _paystatus
+
+    fun getUserOfClass(token: String, id: Long) {
+        viewModelScope.launch {
+            _users.value = DataState.Loading
+            _users.value = classRepository.getUserOfClass(token, id)
+        }
+    }
+
+    fun updateStudentPayment(token: String, id: Int, classId: Long) {
+        viewModelScope.launch {
+            val s: Flow<DataState<String>> = classRepository.updateStudentPayment(token, id)
+            s.onEach {
+                when (it) {
+                    is DataState.Success -> {
+                        _users.value = classRepository.getUserOfClass(token, classId)
+                        _paystatus.value = PayEvent.Success(it.data)
+                    }
+                    is DataState.Error -> {
+                        _paystatus.value = PayEvent.Error(it.data)
+                    }
+                    is DataState.Loading -> {
+                        _paystatus.value = PayEvent.Loading
+                    }
+                    else -> Log.d("TAG", "No data")
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
     sealed class GetListStudentEvent<out R>() {
         data class Success<out T>(val data: T) : GetListStudentEvent<T>()
         data class Error(val data: String) : GetListStudentEvent<Nothing>()
@@ -33,24 +67,10 @@ class PeopleViewModel
 
     }
 
-    private val _studentList =
-        MutableStateFlow<GetListStudentEvent<List<User>>>(
-            Empty(ArrayList())
-        )
-    val studentList: StateFlow<GetListStudentEvent<List<User>>> = _studentList
-    fun getStudentList(classId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _studentList.value = Loading
-            delay(1000)
-            when (val listStudent = classRepository.getListStudent(token!!, classId)) {
-                is DataState.Success -> {
-                    _studentList.value = Success(listStudent.data)
-
-                }
-                is DataState.Error -> {
-                    _studentList.value = Error(listStudent.data)
-                }
-            }
-        }
+    sealed class PayEvent<out R>() {
+        data class Success<out T>(val data: T) : PayEvent<T>()
+        data class Error(val data: String) : PayEvent<Nothing>()
+        object Loading : PayEvent<Nothing>()
     }
+
 }

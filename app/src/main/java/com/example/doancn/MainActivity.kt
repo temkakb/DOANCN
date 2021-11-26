@@ -4,11 +4,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
@@ -16,38 +18,46 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.doancn.DI.DataState
 import com.example.doancn.Fragments.CreateClass.CreateClassViewModel
-import com.example.doancn.Fragments.JoinClass.JoinClassFragment
+import com.example.doancn.Fragments.JoinClass.JoinClassViewModel
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Models.HomeWorkX
 import com.example.doancn.Models.UserMe
 import com.example.doancn.Models.classModel.ClassQuest
-import com.example.doancn.Repository.AuthRepository
 import com.example.doancn.Retrofit.RetrofitManager
 import com.example.doancn.ViewModels.UserViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashMap
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), IMainActivity {
 
+    private lateinit var mGoogleSignInClient : GoogleSignInClient
     private lateinit var navcontroller: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
 
     private val createClassViewModel: CreateClassViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
+    private val joinClassViewModel: JoinClassViewModel by viewModels()
 
     @Inject
     lateinit var sharedPrefernces: SharedPreferences
@@ -67,68 +77,79 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         nav_view.menu.findItem(R.id.nav_home).isChecked = true
         //navcontroller
         setUpNavigation()
+        //deep link
+        val data: Uri? = intent?.data
+        data.let {
+            Log.d("tokendeeplink", it.toString())
+        }
+
+        //Google
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("108237023578-64dd4m9o65bhbb4vmbqlth1r8s53uo7u.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
         // khai báo UserViewModel
         val model: UserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+
         if (mainViewModel.token == null) { // CODE CHAY CHO MAU, co gi chu improve nha
             toLoginFragment()
         } else {
+            // obverse data
+            obverseData()
+            mainViewModel.doValidateToken()
             GlobalScope.launch {
-                try {
-                    val myToken = mainViewModel.token!!.substring(7)
-                    val auth = AuthRepository()
-                    val map = HashMap<String, String>()
-                    map["token"] = myToken
-                    Log.i("MyToken", myToken)
-                    auth.validate(map)
-                    getMyUser(myToken, model)
-                    if (model.user != null) {
-                        Log.i("Username", model.user!!.name)
-                        runOnUiThread {
-                            val header: View = nav_view.getHeaderView(0)
-                            header.user_name.text = model.user!!.name
-                            header.user_email.text = model.user!!.account.email
-                            if (model.user!!.image != null) {
-                                val imgDecode: ByteArray =
-                                    Base64.getDecoder().decode(model.user!!.image)
-                                val bmp =
-                                    BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
-                                header.user_image.setImageBitmap(bmp)
-                            } else {
-                                when (model.user!!.gender.genderID) {
-                                    1 -> {
-                                        header.user_image.setImageResource(R.drawable.man)
-                                    }
-                                    2 -> {
-                                        header.user_image.setImageResource(R.drawable.femal)
-                                    }
-                                    3 -> {
-                                        header.user_image.setImageResource(R.drawable.orther)
-                                    }
-                                }
-                            }
 
+                getMyUser(mainViewModel.token!!, model)
+                if (model.user != null) {
+                    Log.i("Username", model.user!!.name)
+                    runOnUiThread {
+                        val header: View = nav_view.getHeaderView(0)
+                        header.user_name.text = model.user!!.name
+                        header.user_email.text = model.user!!.account.email
+                        if (model.user!!.image != null) {
+                            val imgDecode: ByteArray =
+                                Base64.getDecoder().decode(model.user!!.image)
+                            val bmp =
+                                BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
+                            header.user_image.setImageBitmap(bmp)
+                        } else {
+                            when (model.user!!.gender.genderID) {
+                                1 -> {
+                                    header.user_image.setImageResource(R.drawable.man)
+                                }
+                                2 -> {
+                                    header.user_image.setImageResource(R.drawable.femal)
+                                }
+                                3 -> {
+                                    header.user_image.setImageResource(R.drawable.orther)
+                                }
+
+                            }
                         }
                     }
-                    withContext(Dispatchers.Main) {
-                        Log.d("MainActivity", mainViewModel.role!!)
-                        if (mainViewModel.role == "STUDENT") {
-                            runOnUiThread {
-                                val navmenu: Menu = nav_view.menu
-                                navmenu.findItem(R.id.nav_createclass).isVisible = false
-                                navmenu.findItem(R.id.nav_joinclass).isVisible = true
-                            }
-                        } else if (mainViewModel.role == "TEACHER") {
-                            runOnUiThread {
-                                val navmenu: Menu = nav_view.menu
-                                navmenu.findItem(R.id.nav_joinclass).isVisible = false
-                                navmenu.findItem(R.id.nav_createclass).isVisible = true
-                            }
-                        }
-                    }
-                } catch (e: retrofit2.HttpException) {// token ko hop lecatch
-                    sharedPrefernces.edit().clear().apply()
-                    toLoginFragment()
                 }
+
+                withContext(Dispatchers.Main) {
+                    Log.d("MainActivity", mainViewModel.role!!)
+                    if (mainViewModel.role == "STUDENT") {
+                        runOnUiThread {
+                            val navmenu: Menu = nav_view.menu
+                            navmenu.findItem(R.id.nav_createclass).isVisible = false
+                            navmenu.findItem(R.id.nav_joinclass).isVisible = true
+                        }
+                    } else if (mainViewModel.role == "TEACHER") {
+                        runOnUiThread {
+                            val navmenu: Menu = nav_view.menu
+                            navmenu.findItem(R.id.nav_joinclass).isVisible = false
+                            navmenu.findItem(R.id.nav_createclass).isVisible = true
+                        }
+                    }
+
+                }
+
             }
         }
         /***-----------------xem co token duoi sharedpre pho` ran ko. neu co thi validate thu-------------------- ***/
@@ -151,15 +172,12 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         super.onResume()
     }
 
-    private fun getMyUser(token: String, model: UserViewModel) {
-
-        val callSync: Call<UserMe> = RetrofitManager.userapi.getme("Bearer $token")
-        try {
-            val response: Response<UserMe> = callSync.execute()
+    private suspend fun getMyUser(token: String, model: UserViewModel) {
+            val response: Response<UserMe> = RetrofitManager.userapi.getme(token)
+            if (response.isSuccessful)
             model.user = response.body()
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
+            else
+                Log.i("Lỗi",response.errorBody().toString())
 
     }
 
@@ -175,12 +193,18 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val bunlde = Bundle()
-                bunlde.putString("query", query)
-                val joinClassFragment = JoinClassFragment()
-                joinClassFragment.arguments = bunlde
-                actionBar?.setLogo(R.drawable.ic_baseline_add_24)
-                actionBar?.title = "Tham gia lớp học"
+                if (!query.isNullOrEmpty()) {
+                    val bundle = Bundle()
+                    bundle.putString("searchkey", query)
+                    navcontroller.navigateUp()
+                    navcontroller.navigate(R.id.action_nav_home_to_nav_joinclass, bundle)
+
+                } else {
+                    Log.d("yepyepyep", "eweewew")
+                    Toast.makeText(this@MainActivity, "Bạn chưa nhập gì cả", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
                 return false
             }
         })
@@ -222,8 +246,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 actionBar?.title = "Cài đặt"
             }
             if (destination.id == R.id.nav_logout) {
-                val edit = sharedPrefernces.edit()
-                edit.apply { remove("token") }.apply()
+                sharedPrefernces.edit().clear().commit()
+                mGoogleSignInClient.signOut()
                 toLoginFragment()
             }
         }
@@ -264,10 +288,42 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         navcontroller.navigate(R.id.action_nav_myClass_to_classActivity, bundle)
     }
 
+
+    fun homeToClass(classroom: Classroom) {
+        val bundle = Bundle()
+        bundle.putSerializable("targetClassroom", classroom)
+        startActivity(Intent(this, ClassActivity::class.java).apply { putExtras(bundle) })
+    }
+
+
+    private fun obverseData() { // check token valid
+        lifecycleScope.launchWhenCreated {
+            mainViewModel.validatetoken.collect { datastate ->
+                when (datastate) {
+                    is DataState.Success -> Toast.makeText(
+                        this@MainActivity,
+                        datastate.data,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    is DataState.Error -> {
+                        Toast.makeText(this@MainActivity, datastate.data, Toast.LENGTH_SHORT).show()
+
+                        sharedPrefernces.edit().clear().commit()
+                        toLoginFragment()
+                    }
+                }
+            }
+        }
+
+
+    }
+
     private fun toLoginFragment() {
         val intent = Intent(this, LoginRegisterActivity::class.java)
         startActivity(intent)
         finish()
+
     }
+
 
 }

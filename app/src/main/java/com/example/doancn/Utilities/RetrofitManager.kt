@@ -1,9 +1,5 @@
 package com.example.doancn.Retrofit
 
-import com.example.doancn.API.IEnrollmentApi
-import com.example.doancn.API.ISubjectApi
-import com.example.doancn.API.Iapiexample
-import com.example.doancn.API.IauthApi
 import com.example.doancn.API.*
 import com.example.doancn.API.ProfileApi.IParentApi
 import com.example.doancn.API.ProfileApi.IUserApi
@@ -42,6 +38,8 @@ object RetrofitManager {
 class Urls {
     companion object {
         const val url1 ="http://10.0.2.2:8081/"
+        const val url2="10.0.2.2"
+        const val port=6969
     }
 }
 

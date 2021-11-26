@@ -1,6 +1,8 @@
 package com.example.doancn.API
 
 import com.example.doancn.Models.QrCodeX
+import com.example.doancn.Models.UserMe
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path

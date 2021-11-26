@@ -10,4 +10,5 @@ class User() : Serializable {
     lateinit var educationLevel: String
     lateinit var dob: String
     var image: String = ""
+
 }

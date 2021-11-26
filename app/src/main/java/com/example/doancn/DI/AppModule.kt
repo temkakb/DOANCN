@@ -1,6 +1,8 @@
 package com.example.doancn.DI
 
 import android.content.SharedPreferences
+import com.example.doancn.Models.AccountSignUp
+import com.example.doancn.Models.User
 import com.example.doancn.Utilities.QrCodeManager
 import com.example.doancn.Utilities.TokenManager
 import dagger.Module
@@ -34,10 +36,16 @@ object AppModule {
     @ActivityRetainedScoped
     @Provides
     @Named("auth_token")
+
     fun provideToken(sharedPreferences: SharedPreferences): String? {
         if (sharedPreferences.contains("token")) {
             return "Bearer " + sharedPreferences.getString("token", null)
         }
         return null
+
     }
+
+    @ActivityRetainedScoped
+    @Provides
+    fun provideAccountSignUp() = AccountSignUp(User())
 }

@@ -6,4 +6,45 @@
     tools:context=".Fragments.MyClass.homework.HomeworkFragment">
 
 
+    <LinearLayout
+        android:id="@+id/homework_layout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10"
+        android:layout_marginBottom="60dp"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/listview"
+
+            android:layout_weight="9"
+            android:layout_width="match_parent"
+            android:divider="@null"
+            tools:listitem="@layout/homework_item"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/process"
+            android:indeterminate="true"
+            android:layout_marginBottom="10dp"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/primaryColor"
+            android:progressDrawable="@color/primaryColor"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_homework"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="@string/newhomework"
+            android:textColor="@color/gray"
+            android:layout_margin="5dp"
+            android:background="@drawable/dotted" />
+
+
+    </LinearLayout>
+
+
 </FrameLayout>

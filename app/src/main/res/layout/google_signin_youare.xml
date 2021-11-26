@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/youare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/youare"
+        android:textSize="30sp"
+        app:layout_constraintVertical_bias=".2"
+        app:layout_constraintHorizontal_bias=".2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/group_google_sigup"
+        app:singleSelection="true"
+        app:checkedButton="@id/student"
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/youare"
+        app:layout_constraintVertical_bias=".35"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/teacher"
+            android:text="@string/teacher"
+            android:textSize="20sp"
+            app:iconGravity="top"
+            style="?attr/materialButtonOutlinedStyle"
+            app:icon="@drawable/ic_baseline_work_24"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:checked="true"
+            android:id="@+id/student"
+            app:iconGravity="top"
+            style="?attr/materialButtonOutlinedStyle"
+            app:icon="@drawable/ic_baseline_person_24"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:text="@string/student"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

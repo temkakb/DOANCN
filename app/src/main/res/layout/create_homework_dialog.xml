@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_width="380dp"
+        android:layout_height="400dp"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center"
+                android:text="@string/newhomework"
+                android:textStyle="bold"
+                android:textColor="@color/primaryTextColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:text="@string/deadline" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/datetime"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="290dp"
+                android:hint="Thời hạn"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:enabled="false"
+                app:helperTextTextColor="@color/red"
+                app:layout_constraintVertical_bias="0.15"
+            >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_datetime"
+                    android:inputType="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:maxLength="64" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_pick_date"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/pick_date" />
+
+                <Button
+                    android:id="@+id/btn_pick_hour"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/pick_time" />
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/file"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    app:icon="@drawable/ic_baseline_attach_file_24"
+                    app:iconGravity="top" />
+                <EditText
+                    android:id="@+id/filename2"
+                    android:text="@string/choose_file"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/file"
+                    android:layout_centerInParent="true"
+                    android:enabled="false"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/process"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/confirm" />
+            <Button
+                android:id="@+id/cancel_button"
+                android:text="@string/cancel"
+                android:backgroundTint="@color/red"
+                android:layout_width="150dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

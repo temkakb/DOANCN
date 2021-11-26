@@ -1,4 +1,5 @@
 <resources>
+    <string name="no_info">Chưa bổ sung thông tin</string>
     <string name="app_name">DOANCN</string>
     <string name="Male">Nam</string>
     <string name="Female">Nữ</string>
@@ -28,9 +29,32 @@
     <string name="search">Tìm kiếm khóa học</string>
     <string name="enrolled">Đã đăng ký</string>
     <string name="finishsigup">Đăng ký hoàn tất. Xin hãy click vào đường link đã được gửi đến email của bạn (bạn có 15 phút để xác thực tài khoản đăng ký)</string>
-    <string name="baseoncity">Dựa trên nơi bạn sống:</string>
-    <string name="noclassroom">Opps!! Không tìm thấy khóa học nào</string>
+    <string name="baseoncity">Địa chỉ hiện tại:\u0020</string>
+    <string name="noclassroom">Opps!! Không tìm thấy lớp học nào</string>
     <string name="noclasstoday">Hôm nay không có lớp học nào</string>
+    <string name="nostudentinclass">Không có học sinh nào trong lớp</string>
+    <string name="noparent">Chưa thêm thông tin phụ huynh</string>
+    <string name="parenttitle">THÔNG TIN PHỤ HUYNH</string>
+    <string name="addparent">Thêm phụ huynh</string>
+    <string name="changeinfo">Thay đổi \nthông tin</string>
+    <string name="parent">Phụ huynh</string>
+    <string name="changepass">Đổi \nmật khẩu</string>
+    <string name="Email">Email</string>
+    <string name="dob">Ngày sinh</string>
+    <string name="crwp">Nơi học tập hiện tại</string>
+    <string name="ecl">Trình độ học vấn</string>
+    <string name="notPay">Chưa đóng tiền</string>
+    <string name="paid">Đã đóng tiền</string>
+    <string name="PAYMENTHISTORY">LỊCH SỬ ĐÓNG TIỀN</string>
+    <string name="paymenthistory">Lịch sử đóng tiền</string>
+    <string name="paydate">Ngày đóng tiền tiếp theo</string>
+    <string name="pay">Đóng tiền</string>
+    <string name="amount">Số tiền</string>
+    <string name="total">Tổng:</string>
+    <string name="totalamoun">imageteacher</string>
+    <string name="cancelicon">X</string>
+    <string name="ATTENDANCEDSTUDENTS">DANH SÁCH ĐIỂM DANH</string>
+    <string name="numberofmissingstudents">Vắng</string>
     <string name="imageteacher">imageteacher</string>
     <string name="numberattendance">Số người đăng ký</string>
     <string name="startday">Ngày bắt đầu</string>
@@ -54,12 +78,17 @@
     <string name="payment_option">Kiểu thanh toán</string>
     <string name="hint_location">Ghim địa chỉ trên bản đồ:</string>
     <string name="adđ_new">Tạo mới</string>
+    <string name="enteremail">Nhập email của bạn ở dưới đây</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="formatted_time">%02d:%02d</string>
     <string name="qrcode_expired_title">QR code đã hết hạn</string>
     <string name="qrcode_expired_msg">Bạn có muốn tạo mới điểm danh?</string>
     <string name="qrcode_expired_yes">Tạo mới</string>
     <string name="qrcode_expired_no">Hủy</string>
+    <string name="entercode">Nhập mã 6 số vừa được gửi đến email của bạn</string>
+    <string name="sended_password_title">Lấy lại mật khẩu thành công</string>
+    <string name="sended_password_body">Mật khẩu mới đã được gửi đến email của bạn</string>
+
     <string-array name="gender_select">
         <item>Nam</item>
         <item>Nữ</item>
@@ -79,6 +108,7 @@
         <item>Hóa Học</item>
         <item>Triết Học</item>
         <item>Công Nghệ Thông Tin</item>
+        <item>Khác</item>
     </string-array>
     <string-array name="Dow">
         <item>MONDAY</item>
@@ -96,6 +126,19 @@
         <item>Năm</item>
         <item>Trả trước</item>
         <item>Miễn phí</item>
+        <item>khác</item>
+    </string-array>
+    <string-array name="enrollment_subjects">
+        <item>Tất cả</item>
+        <item>Toán</item>
+        <item>Lý</item>
+        <item>Văn</item>
+        <item>Ngoại Ngữ</item>
+        <item>Sinh Học</item>
+        <item>Hóa Học</item>
+        <item>Triết Học</item>
+        <item>Công Nghệ Thông Tin</item>
+        <item>Khác</item>
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="fab_content_desc">Vị trí của tôi</string>
@@ -121,11 +164,23 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_people">Mọi người</string>
     <string name="title_homework">Bài tập</string>
+
     <string name="i_m_danh">Điểm danh</string>
     <string name="setting">Cài Đặt</string>
     <string name="agree">Đồng ý</string>
     <string name="disagree">Hủy bỏ</string>
     <string name="update">Cập nhật</string>
     <string name="backToClass">Trở về lớp học</string>
+
+    <string name="newhomework">Tạo mới bài tập</string>
+    <string name="deadline">Chọn thời hạn</string>
+    <string name="choose_file">Chọn file</string>
+    <string name="yoursubmission">Bài tập về nhà của bạn</string>
+    <string name="cancel_submit">Hủy gửi</string>
+    <string name="pls_wait">Xin chờ</string>
+    <string name="downloading">Đang tải</string>
+    <string name="download">tải về</string>
+
+
 </resources>
 

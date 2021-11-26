@@ -61,5 +61,6 @@
         android:id="@+id/rcview"
         android:layout_width="match_parent"
         tools:listitem="@layout/section_item"
+
         android:layout_height="wrap_content"/>
 </LinearLayout>

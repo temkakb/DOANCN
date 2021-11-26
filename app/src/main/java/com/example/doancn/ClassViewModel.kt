@@ -72,6 +72,7 @@ constructor(
         qrCodeManager.doAttendace(classId = 2L, qr, token!!, context)
     }
 
+
     fun deleteCurrentClass() {
         viewModelScope.launch(Dispatchers.IO) {
             _deleteState.value = Loading
@@ -104,4 +105,5 @@ constructor(
             }
         }
     }
+
 }

@@ -154,7 +154,7 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
             }
         }
     }
-
+    
     @SuppressLint("NotifyDataSetChanged")
     private fun observeDeleteState() {
         lifecycleScope.launchWhenCreated {
