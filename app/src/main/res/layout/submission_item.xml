@@ -104,6 +104,7 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_download"
                     android:layout_width="match_parent"
                     app:iconGravity="textStart"
                     android:textSize="10sp"

@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.example.doancn.Fragments.MyClass.homework.SubmissionFragment
 import com.example.doancn.Models.SubmissionX
 import com.example.doancn.R
 import kotlinx.android.synthetic.main.submission_item.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-class SubmissionAdapter(context: Context,var listsubmission : List<SubmissionX>) : ArrayAdapter<SubmissionX>(context,
+class SubmissionAdapter(context: Context,var listsubmission : List<SubmissionX>,val submissionFragment: SubmissionFragment) : ArrayAdapter<SubmissionX>(context,
     R.layout.submission_item ) {
 
     @SuppressLint("ViewHolder", "InflateParams", "SetTextI18n")
@@ -39,6 +40,10 @@ class SubmissionAdapter(context: Context,var listsubmission : List<SubmissionX>)
             view.status.setTextColor(context.resources.getColor(R.color.green))
         }
         view.time.text= "Nộp lúc: "+listsubmission[position].dateCreated
+        view.btn_download.setOnClickListener {
+            submissionFragment.viewModel.setSubmissionSelected(listsubmission[position])
+            submissionFragment.createFile()
+        }
         HomeWorkAdapter.setImageViewByType(type,view)
         return  view
     }

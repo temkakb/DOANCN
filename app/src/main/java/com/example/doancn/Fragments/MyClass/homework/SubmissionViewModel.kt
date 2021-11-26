@@ -46,6 +46,8 @@ class SubmissionViewModel
     val submissionSelected: LiveData<SubmissionX> get() = _submissionSelected
     private val _downloadStatus = MutableStateFlow<DataState<String>>(DataState.Empty)
     val downloadStatus: StateFlow<DataState<String>> = _downloadStatus
+    private val _submissionDownLoad = MutableLiveData<SubmissionX>()
+    val submissionDownLoad: LiveData<SubmissionX> get() = _submissionDownLoad
 
 
     fun getData(id: Long,homeworkId : Long){
@@ -116,7 +118,7 @@ class SubmissionViewModel
         }
     }
 
-    fun teacherDownloadSubmission (id: Long, classId: Long,homeWork :HomeWorkX, submissionX: SubmissionX, uri : Uri, context: Context){
+    fun teacherDownloadSubmission ( classId: Long,homeWork :HomeWorkX, submissionX: SubmissionX, uri : Uri, context: Context){
         viewModelScope.launch {
             Thread {
                 _downloadStatus.value = DataState.Loading
@@ -163,6 +165,10 @@ class SubmissionViewModel
         _statusRequest.value=DataState.Empty
     }
     fun setSubmissionSelected(submissionX: SubmissionX){
+        _submissionSelected.value=submissionX;
+    }
+
+    fun setSubmissionDownload(submissionX: SubmissionX){
         _submissionSelected.value=submissionX;
     }
 
