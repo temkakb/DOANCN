@@ -1,20 +1,47 @@
 package com.example.doancn.Repository
 
-import com.example.doancn.API.IauthApi
 import com.example.doancn.API.ProfileApi.IUserApi
 import com.example.doancn.DI.DataState
-import com.example.doancn.Models.Classroom
 import com.example.doancn.Models.UserMe
-import retrofit2.Response
+import com.example.doancn.ViewModels.UserViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserRepository@Inject constructor(
     private val userapi: IUserApi
 ) {
-    suspend fun getUserOfClass(token: String, id: Long): DataState<List<UserMe>> {
+
+    suspend fun updateimg(token: String, map: Map<String, String>):DataState<String>{
+        val response = userapi.updateImgUser(token,map)
+        if (response.isSuccessful)
+            return DataState.Success("Đổi hình ảnh thành công")
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
+    }
+
+    suspend fun updatePassUser(token: String, map: Map<String, String>):DataState<String>{
+        val response = userapi.updatePassUser(token,map)
+        val result = response.body()
+        if (response.isSuccessful)
+            return DataState.Success(result!!.string())
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
+    }
+
+    suspend fun updateuser(token: String, user: UserMe):DataState<String>{
+        val response = userapi.updateUser(token,user)
+        if (response.isSuccessful)
+            return DataState.Success("Thay đổi thành công")
+        else
+            return DataState.Error(response.errorBody()!!.string().toString())
+    }
+
+
+    suspend fun getme(token: String) : DataState<UserMe>{
+        val response = userapi.getme(token)
+        val result = response.body()
         return try {
-            val response = userapi.getUserOfClass(token,id)
-            val result = response.body()
             if (response.isSuccessful && result != null) {
                 DataState.Success(result)
             } else {
@@ -25,7 +52,5 @@ class UserRepository@Inject constructor(
         }
     }
 
-    fun updateStudentPayment(token: String, id: Int): Response<Unit>{
-        return userapi.updateUserPayment(token,id)
-    }
+
 }

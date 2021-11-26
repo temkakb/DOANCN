@@ -28,4 +28,14 @@ interface IauthApi {
         @Query("email") email: String,
         @Query("code") code: String?
     ): Response<ResponseBody>
+
+    @POST("/auth/google/login")
+    suspend fun googleLogin(
+        @Body map: Map<String, String>
+    ): Response<Map<String, String>>
+
+    @POST("/auth/google/signup")
+    suspend fun googleSignup(
+        @Body map: Map<String, String>
+    ): Response<Map<String, String>>
 }

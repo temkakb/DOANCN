@@ -1,31 +1,48 @@
 package com.example.doancn.Models
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import kotlin.collections.ArrayList
+
 class TodayClass() {
 
     var classrooms: ArrayList<Classroom> = ArrayList()
 
-    fun ClassroomsForDate(date: String?): ArrayList<Classroom> {
+    fun ClassroomsForDate(date: String?, selected: String): ArrayList<Classroom> {
         val todayClass : ArrayList<Classroom> = ArrayList()
         for (classroom in classrooms) {
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            val startDay = LocalDate.parse(classroom.startDate, formatter)
+            val selectDay = LocalDate.parse(selected,formatter)
             for(shift in classroom.shifts)
             {
-                if (shift.dayOfWeek.dowName == date) todayClass.add(classroom)
+                if (shift.dayOfWeek.dowName == date
+                    && (startDay.isBefore(selectDay)
+                            || startDay.isEqual(selectDay)))
+
+                                todayClass.add(classroom)
             }
+            if(todayClass.count() > 1)
+            todayClass.sortBy { i -> i.shifts[0].startAt }
         }
         return todayClass
     }
 
-    // Chưa biết sort sao cho hợp lý Sort này lỗi bà rồi :(((
-    fun sortTodayClass(todayClass : ArrayList<Classroom>, date: String) : ArrayList<Classroom>{
-        if(todayClass.count() > 1)
-        {
-            for (classroom1 in todayClass) {
-                for(shift1 in classroom1.shifts)
-                {
-                    if (shift1.dayOfWeek.dowName != date)  classroom1.shifts.remove(shift1)
-                }
+    fun TeacherClassroomsForDate(date: String?,selected: String): ArrayList<Classroom> {
+        val todayClass : ArrayList<Classroom> = ArrayList()
+        for (classroom in classrooms) {
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            val startDay = LocalDate.parse(classroom.startDate, formatter)
+            val selectDay = LocalDate.parse(selected,formatter)
+            for(shift in classroom.shifts)
+            {
+                if (shift.dayOfWeek.dowName == date
+                    && (startDay.isBefore(selectDay)
+                            || startDay.isEqual(selectDay)))
+                    todayClass.add(classroom)
             }
-            todayClass.sortBy { classroom -> classroom.shifts[0].startAt }
+            if(todayClass.count() > 1)
+            todayClass.sortBy { i -> i.shifts[0].startAt }
         }
         return todayClass
     }

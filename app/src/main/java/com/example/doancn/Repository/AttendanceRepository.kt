@@ -1,6 +1,8 @@
 package com.example.doancn.Repository
 
+import com.example.doancn.DI.DataState
 import com.example.doancn.Models.QrCodeX
+import com.example.doancn.Models.UserMe
 import com.example.doancn.Retrofit.RetrofitManager
 
 class AttendanceRepository {

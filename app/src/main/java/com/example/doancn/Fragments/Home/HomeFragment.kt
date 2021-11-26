@@ -1,34 +1,40 @@
 package com.example.doancn.Fragments.Home
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.demotranghome.Adapters.CalendarWeekAdapter
 import com.example.demotranghome.Interfaces.DateWatcher
 import com.example.demotranghome.Interfaces.OnDateClickListener
 import com.example.demotranghome.Models.CalendarDay
 import com.example.doancn.Adapters.ShiftOfClassAdapter
+import com.example.doancn.DI.DataState
+import com.example.doancn.Fragments.MyClass.people.PeopleFragment
 import com.example.doancn.HorizontalWeekCalendar
 import com.example.doancn.MainActivity
 import com.example.doancn.MainViewModel
 import com.example.doancn.Models.*
 import com.example.doancn.R
-import com.example.doancn.Retrofit.RetrofitManager
 import com.example.doancn.ViewModels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_joinclass.view.*
+import kotlinx.android.synthetic.main.people_fragment.*
+import kotlinx.android.synthetic.main.people_fragment.view.*
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.flow.collect
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,9 +44,15 @@ class HomeFragment : Fragment() {
     private var selected: GregorianCalendar? = null
     private var calendarView: HorizontalWeekCalendar? = null
 
-    private val mainViewModel: MainViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private var userme:UserMe? = null
+    companion object {
+        fun newInstance() = PeopleFragment()
+    }
+
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,18 +61,14 @@ class HomeFragment : Fragment() {
     ): View? {
         val main : MainActivity = activity as MainActivity
         val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
-        val sharedprefernces = main.getSharedPreferences("tokenstorage", Context.MODE_PRIVATE)
-        val token: String? = sharedprefernces.getString("token", null)
-        val thread = Thread {
-            try {
-                getMyUser(token!!,model)
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
-        }
-        thread.start()
-        thread.join()
+        getMyUser(mainViewModel.token.toString(),model)
         return inflater.inflate(R.layout.fragment_home,container,false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -125,29 +133,7 @@ class HomeFragment : Fragment() {
         val dateformat = SimpleDateFormat("dd/MM/yyyy")
         Log.i("Ngày",dateformat.format(selected!!.time))
         Log.i("Ngày trong tuần",selected?.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG, Locale.getDefault())!!.uppercase())
-
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                Log.d("MainActivity", mainViewModel.role.toString())
-                if (mainViewModel.role == "STUDENT") {
-                    Log.d("ROLE", "Học sinh")
-                    if( userme?.enrollments == null) {
-                        return@withContext
-                    }
-                    else{
-                        setStudentEventAdpater()
-                    }
-                } else if (mainViewModel.role == "TEACHER") {
-                    Log.d("ROLE", "Giáo cmn viên")
-                    if( userme?.classes == null) {
-                        return@withContext
-                    }
-                    else{
-                        setTeacherEventAdpater()
-                    }
-                }
-            }
-        }
+        observeData()
     }
 
 
@@ -158,7 +144,6 @@ class HomeFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 Log.d("MainActivity", mainViewModel.role.toString())
                 if (mainViewModel.role == "STUDENT") {
-                    Log.d("ROLE", "Học sinh")
                     if( userme?.enrollments == null) {
                         return@withContext
                     }
@@ -166,7 +151,6 @@ class HomeFragment : Fragment() {
                         setStudentEventAdpater()
                     }
                 } else if (mainViewModel.role == "TEACHER") {
-                    Log.d("ROLE", "Giáo cmn viên")
                     if( userme?.classes == null) {
                         return@withContext
                     }
@@ -178,18 +162,60 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun observeData() {
+        lifecycleScope.launchWhenCreated {
+            homeViewModel.user.collect {
+                when (it) {
+                    is DataState.Loading -> {
+                        requireView().process_home.visibility = View.VISIBLE
+                    }
+                    is DataState.Success -> {
+                        requireView().process_home.visibility = View.GONE
+                                Log.d("MainActivity", mainViewModel.role.toString())
+                                if (mainViewModel.role == "STUDENT") {
+                                    Log.d("ROLE", "Học sinh")
+                                    if( userme?.enrollments == null) {
+                                        return@collect
+                                    }
+                                    else{
+                                        setStudentEventAdpater()
+                                    }
+                                } else if (mainViewModel.role == "TEACHER") {
+                                    Log.d("ROLE", "Giáo cmn viên")
+                                    if( userme?.classes == null) {
+                                        return@collect
+                                    }
+                                    else{
+                                        setTeacherEventAdpater()
+                                    }
+                                }
 
+                    }
+                    is DataState.Error -> {
+                        requireView().process_home.visibility = View.INVISIBLE
+                        Toast.makeText(requireContext(), it.data, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    @SuppressLint("SimpleDateFormat")
     private fun setStudentEventAdpater() {
         val main : MainActivity = activity as MainActivity
         val todayClass = TodayClass()
         val selectedDayOfWeek : String = selected?.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG,Locale.getDefault())!!.uppercase()
-        val listsubjectname: Array<String> = resources.getStringArray(R.array.Subjects)
-        val dailyClass: ArrayList<Classroom>
+        val listsubjectname: Array<String> = resources.getStringArray(R.array.enrollment_subjects)
+        val dateformat = SimpleDateFormat("dd/MM/yyyy")
+        val selectDay = dateformat.format(selected!!.time).toString()
         for (i in userme!!.enrollments!!) {
-            //if(i.accepted)
+            if(i.accepted)
             todayClass.classrooms.add(i.classroom)
         }
-        dailyClass = todayClass.ClassroomsForDate(selectedDayOfWeek)
+        val dailyClass: ArrayList<Classroom> =
+            todayClass.ClassroomsForDate(selectedDayOfWeek,selectDay)
 
         main.runOnUiThread {
             val eventAdapter = ShiftOfClassAdapter(requireContext(),dailyClass
@@ -209,16 +235,19 @@ class HomeFragment : Fragment() {
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun setTeacherEventAdpater() {
         val main : MainActivity = activity as MainActivity
         val todayClass = TodayClass()
         val selectedDayOfWeek : String = selected?.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG,Locale.getDefault())!!.uppercase()
-        val listsubjectname: Array<String> = resources.getStringArray(R.array.Subjects)
-        val dailyClass : ArrayList<Classroom>
+        val dateformat = SimpleDateFormat("dd/MM/yyyy")
+        val selectDay = dateformat.format(selected!!.time).toString()
+        val listsubjectname: Array<String> = resources.getStringArray(R.array.enrollment_subjects)
         for (i in userme!!.classes!!) {
             todayClass.classrooms.add(i)
         }
-        dailyClass = todayClass.ClassroomsForDate(selectedDayOfWeek)
+        val dailyClass : ArrayList<Classroom> =
+            todayClass.TeacherClassroomsForDate(selectedDayOfWeek,selectDay)
 
 
         main.runOnUiThread {
@@ -240,16 +269,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun getMyUser(token: String, model: UserViewModel) {
-
-        val callSync: Call<UserMe> = RetrofitManager.userapi.getme("Bearer $token")
-        try {
-            val response: Response<UserMe> = callSync.execute()
-            model.user = response.body()
-            userme = model.user
-        } catch (ex: Exception) {
-            ex.printStackTrace()
+        homeViewModel.getUserMe(token)
+        lifecycleScope.launchWhenCreated {
+            homeViewModel.user.collect{
+                if(it is DataState.Success){
+                    userme = it.data
+                    model.user = it.data
+                }
+            }
         }
-
     }
 
 }

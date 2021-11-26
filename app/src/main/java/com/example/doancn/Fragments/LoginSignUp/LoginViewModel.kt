@@ -29,6 +29,21 @@ class LoginViewModel
     val validateCode: StateFlow<DataState<String>> = _validateCode
 
 
+    fun doGoogleLogin(map: Map<String,String>) {
+        viewModelScope.launch {
+            _loginstatus.value = DataState.Loading
+            _loginstatus.value = authRepository.doGoogleLogin(map)
+
+        }
+    }
+
+    fun doSigupGoogle(map: Map<String, String>) {
+        viewModelScope.launch {
+            _loginstatus.value = DataState.Loading
+            _loginstatus.value = authRepository.doGoogleSignup(map)
+        }
+    }
+
     fun doLogin(account: Account) {
         viewModelScope.launch {  // coroutine scope viewmodel
 

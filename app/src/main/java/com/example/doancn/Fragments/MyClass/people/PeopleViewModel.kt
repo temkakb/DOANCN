@@ -1,16 +1,16 @@
 package com.example.doancn.Fragments.MyClass.people
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.UserMe
-import com.example.doancn.Repository.UserRepository
+import com.example.doancn.Repository.ClassRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,29 +18,46 @@ import javax.inject.Inject
 @HiltViewModel
 class PeopleViewModel
 @Inject constructor(
-    private val userRepository: UserRepository
+    private val classRepository: ClassRepository
 ) : ViewModel() {
     private val _users = MutableStateFlow<DataState<List<UserMe>?>>(DataState.Empty)
     val users: StateFlow<DataState<List<UserMe>?>> = _users
 
-    private val statusMessage = MutableLiveData<String>()
-
-    val message : LiveData<String>
-        get() = statusMessage
+    private val _paystatus: MutableLiveData<PayEvent<String>> = MutableLiveData()
+    val paystatus: LiveData<PayEvent<String>>
+        get() = _paystatus
 
     fun getUserOfClass(token: String, id: Long){
         viewModelScope.launch {
             _users.value = DataState.Loading
-            _users.value = userRepository.getUserOfClass(token,id)
+            _users.value = classRepository.getUserOfClass(token,id)
         }
     }
 
-    fun updateStudentPayment(token: String, id: Int){
-        val response = userRepository.updateStudentPayment(token, id)
-        if(response.isSuccessful){
-            statusMessage.value = "Cập nhật thành công"
+    fun updateStudentPayment(token: String, id: Int,classId: Long){
+        viewModelScope.launch {
+            val s: Flow<DataState<String>> = classRepository.updateStudentPayment(token, id)
+            s.onEach {
+                when (it) {
+                    is DataState.Success -> {
+                        _users.value = classRepository.getUserOfClass(token,classId)
+                        _paystatus.value = PayEvent.Success(it.data)
+                    }
+                    is DataState.Error -> {
+                        _paystatus.value = PayEvent.Error(it.data)
+                    }
+                    is DataState.Loading -> {
+                        _paystatus.value = PayEvent.Loading
+                    }
+                    else -> Log.d("TAG", "No data")
+                }
+            }.launchIn(viewModelScope)
         }
-        else
-            statusMessage.value = response.errorBody().toString()
+    }
+
+    sealed class PayEvent<out R>() {
+        data class Success<out T>(val data: T) : PayEvent<T>()
+        data class Error(val data: String) : PayEvent<Nothing>()
+        object Loading : PayEvent<Nothing>()
     }
 }

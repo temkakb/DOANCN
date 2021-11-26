@@ -3,8 +3,12 @@ package com.example.doancn.Repository
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Classroom
+
 import com.example.doancn.Models.HomeWorkX
 import com.example.doancn.Models.SubmissionX
+
+import com.example.doancn.Models.UserMe
+
 import com.example.doancn.Models.classModel.ClassQuest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -48,6 +52,7 @@ class ClassRepository @Inject constructor(
             DataState.Error(e.message.toString())
         }
     }
+
     suspend fun  getHomeWorks (token : String, id : Long) : DataState<List<HomeWorkX>?>{
         val response = classApi.getHomeWork(id,token)
         if (response.isSuccessful){
@@ -90,11 +95,47 @@ class ClassRepository @Inject constructor(
         else
             return  DataState.Error(response.errorBody().toString())
     }
-    suspend fun deleteHomeWork (id: Long, homeWorkId: Long, token:String) : DataState<String>{
-        val response = classApi.deleteHomeWork(id,homeWorkId,token)
-        if(response.isSuccessful)
-            return  DataState.Success("Xóa thành công")
+    suspend fun deleteHomeWork (id: Long, homeWorkId: Long, token:String) : DataState<String> {
+        val response = classApi.deleteHomeWork(id, homeWorkId, token)
+        if (response.isSuccessful)
+            return DataState.Success("Xóa thành công")
         else
-            return  DataState.Error(response.errorBody().toString())
+            return DataState.Error(response.errorBody().toString())
+    }
+
+
+    suspend fun getUserOfClass(token: String, id: Long): DataState<List<UserMe>> {
+        return try {
+            val response = classApi.getUserOfClass(token,id)
+            val result = response.body()
+        return if (response.isSuccessful && result != null) {
+            DataState.Success(result)
+        } else {
+            DataState.Error(response.errorBody().toString())
+        }
+        } catch (e: java.lang.Exception) {
+            DataState.Error(e.message.toString())
+        }
+    }
+
+    suspend fun updateStudentPayment(token: String, id: Int): Flow<DataState<String>>{
+        return flow {
+            try {
+                var dataState: DataState<String> = DataState.Loading
+                emit(dataState)
+                val response = classApi.updateUserPayment(token,id)
+                if (response.isSuccessful)
+                    dataState = DataState.Success("Đóng tiền thành công")
+                else if (response.code() == 400) {
+                    val error = response.errorBody()?.string().toString()
+                    dataState = DataState.Error(error)
+                }
+                delay(1000)
+                this@flow.emit(dataState)
+            } catch (e: Exception) {
+                DataState.Error(e.message.toString())
+            }
+        }
+
     }
 }

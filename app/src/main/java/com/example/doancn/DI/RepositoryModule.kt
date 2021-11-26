@@ -4,6 +4,7 @@ import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
 import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.API.IauthApi
+import com.example.doancn.API.ProfileApi.IParentApi
 import com.example.doancn.API.ProfileApi.IUserApi
 import com.example.doancn.Repository.*
 import dagger.Module
@@ -22,6 +23,14 @@ object RepositoryModule {
         userApi: IUserApi
     ): UserRepository {
         return UserRepository(userApi)
+    }
+
+    @Singleton
+    @Provides
+    fun provideParentRepository(
+        parentApi: IParentApi
+    ): ParentRepository {
+        return ParentRepository(parentApi)
     }
 
     @Singleton
