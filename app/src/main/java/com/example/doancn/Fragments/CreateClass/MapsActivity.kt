@@ -26,7 +26,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mPlacesClient: PlacesClient? = null
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
     private var mLastKnownLocation: Location? = null
-    private val DEFAULT_ZOOM = 18F
+    private val DEFAULT_ZOOM = 17F
     private lateinit var apiKey: String
 
     val vietnam = LatLng(13.079471745664604, 109.30418718606234)

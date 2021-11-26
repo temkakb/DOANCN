@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:paddingTop="@dimen/list_item_spacing_half"
-    android:paddingBottom="@dimen/list_item_spacing_half"
+    android:paddingTop="@dimen/list_item_spacing"
+    android:paddingBottom="32dp"
     tools:context=".Fragments.MyClass.more.ItemListDialogFragment"
     tools:listitem="@layout/fragment_item_list_dialog_list_dialog_item" />

@@ -23,5 +23,26 @@
         android:id="@+id/navigation_bottom_sheet"
         android:name="com.example.doancn.Fragments.MyClass.more.ItemListDialogFragment"
         android:label="fragment_item_list_dialog_list_dialog"
-        tools:layout="@layout/fragment_item_list_dialog_list_dialog" />
+        tools:layout="@layout/fragment_item_list_dialog_list_dialog">
+        <action
+            android:id="@+id/action_navigation_bottom_sheet_to_updateFragment"
+            app:destination="@id/updateFragment" />
+        <action
+            android:id="@+id/action_navigation_bottom_sheet_to_sectionFragment"
+            app:destination="@id/sectionFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.example.doancn.Fragments.MyClass.more.UpdateFragment"
+        android:label="fragment_update"
+        tools:layout="@layout/fragment_update">
+        <action
+            android:id="@+id/action_updateFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/sectionFragment"
+        android:name="com.example.doancn.Fragments.MyClass.more.SectionFragment"
+        android:label="fragment_section"
+        tools:layout="@layout/fragment_section" />
 </navigation>

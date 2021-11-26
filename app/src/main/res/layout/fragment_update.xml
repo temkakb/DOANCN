@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.CreateClass.CreateClassFragment">
+    tools:context=".Fragments.MyClass.more.UpdateFragment"
+    android:paddingTop="?attr/actionBarSize">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scrollView"
@@ -75,14 +76,13 @@
                 app:helperTextTextColor="@color/red">
 
                 <AutoCompleteTextView
+                    android:id="@+id/subject_AutoCompleteTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <!--     Date Start-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/createCLass_dateStart_textInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -109,6 +109,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,16 +122,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="4dp"
-
-                >
+                android:layout_margin="4dp">
 
                 <Button
                     android:id="@+id/buttonMonday"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-
                     android:text="2" />
 
                 <Button
@@ -175,7 +173,6 @@
                     android:layout_height="wrap_content"
                     android:text="CN" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/createCLass_timeStart_TextInputLayout"
@@ -308,11 +305,11 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/create_class_btn"
+                    android:id="@+id/update_class_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="@string/adđ_new"
+                    android:text="@string/update"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -321,10 +318,10 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/create_class_btn"
+                    android:layout_toStartOf="@id/update_class_btn"
                     android:text="@string/cancel"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/create_class_btn" />
+                    app:layout_constraintEnd_toStartOf="@+id/update_class_btn" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -333,26 +330,5 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
-    <LinearLayout
-        android:id="@+id/Create_class_progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="invisible">
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="Tiến hành tạo lớp"
-            android:textSize="24sp" />
-    </LinearLayout>
 
 </FrameLayout>

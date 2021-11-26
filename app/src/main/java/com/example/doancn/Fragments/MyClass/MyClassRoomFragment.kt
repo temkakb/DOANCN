@@ -43,11 +43,14 @@ class MyClassRoomFragment : Fragment() {
     ): View? {
         _binding = MyClassRoomFragmentBinding.inflate(inflater, container, false)
         recyclerView = binding.myClass
-        Log.d("MyClassRoomFragment", recyclerView.toString())
         initRecyclerView()
-        viewModel.getClassList()
         observeData()
         return binding.root
+    }
+
+    override fun onResume() {
+        viewModel.getClassList()
+        super.onResume()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -56,10 +59,10 @@ class MyClassRoomFragment : Fragment() {
             viewModel.classList.collect { event ->
                 when (event) {
                     is MyClassRoomViewModel.GetClassEvent.Success -> {
-                        // Toast.makeText(requireContext(), "data received", Toast.LENGTH_SHORT).show()
                         binding.loadClassProgressBar.visibility = View.INVISIBLE
                         listItems.clear();
-                        listItems.addAll(event.data);
+                        listItems.addAll(event.data)
+                        binding.myClass.visibility = View.VISIBLE
                         Log.d("observeData", listItems.toString())
                         adapter.notifyDataSetChanged()
 
@@ -76,6 +79,7 @@ class MyClassRoomFragment : Fragment() {
                     }
                     is MyClassRoomViewModel.GetClassEvent.Loading -> {
                         binding.loadClassProgressBar.visibility = View.VISIBLE
+                        binding.myClass.visibility = View.INVISIBLE
                         Toast.makeText(requireContext(), "data loading", Toast.LENGTH_SHORT).show()
                     }
                 }

@@ -1,8 +1,10 @@
 package com.example.doancn.Repository
 
+import android.util.Log
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Models.User
 import com.example.doancn.Models.classModel.ClassQuest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -38,6 +40,54 @@ class ClassRepository @Inject constructor(
             val result = response.body()
             if (response.isSuccessful && result != null) {
                 DataState.Success(result)
+            } else {
+                DataState.Error(response.errorBody().toString())
+            }
+        } catch (e: java.lang.Exception) {
+            DataState.Error(e.message.toString())
+        }
+    }
+
+    suspend fun getListStudent(token: String, classId: Long): DataState<List<User>> {
+        return try {
+            val response = classApi.getListStudent(token, classId)
+            val result = response.body()
+
+            if (response.isSuccessful && result != null) {
+                DataState.Success(result)
+            } else {
+                DataState.Error(response.errorBody().toString())
+            }
+        } catch (e: java.lang.Exception) {
+            DataState.Error(e.message.toString())
+        }
+    }
+
+    suspend fun deleteClass(classId: Long, token: String): DataState<String> {
+        return try {
+
+            val response = classApi.deleteClass(token, classId)
+            if (response.isSuccessful) {
+                DataState.Success(response.body().toString())
+            } else {
+                DataState.Error(response.errorBody().toString())
+
+            }
+        } catch (e: java.lang.Exception) {
+            Log.d("deleteClass E", e.message.toString())
+            DataState.Error(e.message.toString())
+        }
+    }
+
+    suspend fun updateClass(
+        classId: Long,
+        classRoom: ClassQuest,
+        token: String
+    ): DataState<Classroom> {
+        return try {
+            val response = classApi.updateClass(token, classId = classId, classroom = classRoom)
+            if (response.isSuccessful) {
+                DataState.Success(response.body()!!)
             } else {
                 DataState.Error(response.errorBody().toString())
             }

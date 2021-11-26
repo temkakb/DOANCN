@@ -80,6 +80,15 @@
         <item>Triết Học</item>
         <item>Công Nghệ Thông Tin</item>
     </string-array>
+    <string-array name="Dow">
+        <item>MONDAY</item>
+        <item>TUESDAY</item>
+        <item>WEDNESDAY</item>
+        <item>THURSDAY</item>
+        <item>FRIDAY</item>
+        <item>SATURDAY</item>
+        <item>SUNDAY</item>
+    </string-array>
     <string-array name="option">
         <item>Tuần</item>
         <item>Tháng</item>
@@ -112,5 +121,11 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_people">Mọi người</string>
     <string name="title_homework">Bài tập</string>
+    <string name="i_m_danh">Điểm danh</string>
+    <string name="setting">Cài Đặt</string>
+    <string name="agree">Đồng ý</string>
+    <string name="disagree">Hủy bỏ</string>
+    <string name="update">Cập nhật</string>
+    <string name="backToClass">Trở về lớp học</string>
 </resources>
 

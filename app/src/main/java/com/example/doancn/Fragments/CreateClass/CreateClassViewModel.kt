@@ -35,9 +35,14 @@ constructor(
         mutableSelectedItem.value = item
     }
 
+
     private val _createClassResponse: MutableLiveData<CreateClassEvent<String>> = MutableLiveData()
     val createClassResponse: LiveData<CreateClassEvent<String>>
         get() = _createClassResponse
+
+    fun resetResponse() {
+        _createClassResponse.value = CreateClassEvent.Empty
+    }
 
     fun createClassroom(classRoom: ClassQuest) {
         viewModelScope.launch {
@@ -65,6 +70,7 @@ sealed class CreateClassEvent<out R>() {
     data class Success<out T>(val data: T) : CreateClassEvent<T>()
     data class Error(val data: String) : CreateClassEvent<Nothing>()
     object Loading : CreateClassEvent<Nothing>()
+    object Empty : CreateClassEvent<Nothing>()
 }
 
 

@@ -35,6 +35,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 
 @ExperimentalCoroutinesApi
@@ -47,7 +48,6 @@ class CreateClassFragment : Fragment() {
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: Int = 1
 
-    @ExperimentalCoroutinesApi
     private val viewModel: CreateClassViewModel by activityViewModels()
     private var _binding: CreateClassFragmentBinding? = null
     private val binding get() = _binding!!
@@ -307,10 +307,10 @@ class CreateClassFragment : Fragment() {
                 R.id.buttonSunday -> setUpPickDow("SUNDAY", isChecked)
             }
         }
-        val pickTimeButton = binding.createCLassPickTimeBtn
-        pickTimeButton.setOnClickListener {
+        binding.createCLassTimeStartTextInputLayout.setEndIconOnClickListener {
             val isSystem24Hour = DateFormat.is24HourFormat(requireContext())
-            val clockFormat = if (isSystem24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H
+            val clockFormat =
+                if (isSystem24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H
             val picker =
                 MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -318,7 +318,7 @@ class CreateClassFragment : Fragment() {
                     .build()
             picker.show(requireFragmentManager(), "tag")
             picker.addOnPositiveButtonClickListener {
-                binding.createCLassTimeStart.setText("${picker.hour}h:${picker.minute}m")
+                binding.createCLassTimeStart.setText("${picker.hour}h:${picker.minute}ph")
                 startAt = picker.hour * 3600000 + (picker.minute.toDouble() * 60000)
             }
         }
@@ -334,8 +334,7 @@ class CreateClassFragment : Fragment() {
     }
 
     private fun setupDatePicker() {
-        val button = binding.createCLassPickDateBtn
-        button.setOnClickListener {
+        binding.createCLassDateStartTextInputLayout.setEndIconOnClickListener {
             val constraintsBuilder =
                 CalendarConstraints.Builder()
                     .setValidator(DateValidatorPointForward.now())
@@ -348,8 +347,10 @@ class CreateClassFragment : Fragment() {
             datePicker.addOnPositiveButtonClickListener {
                 dateStart =
                     Instant.ofEpochMilli(datePicker.selection!!).atZone(ZoneId.systemDefault())
-                        .toLocalDate();
-                binding.createCLassDateStart.setText(dateStart.toString())
+                        .toLocalDate()
+                val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                val formattedString: String = dateStart!!.format(formatter)
+                binding.createCLassDateStart.setText(formattedString)
             }
 
             datePicker.show(requireFragmentManager(), "date picker")

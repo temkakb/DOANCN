@@ -3,6 +3,7 @@ package com.example.doancn.Fragments.MyClass
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doancn.DI.DataState
+import com.example.doancn.Fragments.MyClass.MyClassRoomViewModel.GetClassEvent.*
 import com.example.doancn.Models.Classroom
 import com.example.doancn.Repository.ClassRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,21 +31,21 @@ class MyClassRoomViewModel
     }
 
     private val _classList =
-        MutableStateFlow<GetClassEvent<List<Classroom>>>(GetClassEvent.Empty(ArrayList()))
+        MutableStateFlow<GetClassEvent<List<Classroom>>>(Empty(ArrayList()))
     val classList: StateFlow<GetClassEvent<List<Classroom>>> = _classList
 
 
     fun getClassList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _classList.value = GetClassEvent.Loading
+            _classList.value = Loading
             delay(1000)
             when (val listClassroom = classRepository.getListClass(token!!)) {
                 is DataState.Success -> {
-                    _classList.value = GetClassEvent.Success(listClassroom.data)
+                    _classList.value = Success(listClassroom.data)
 
                 }
                 is DataState.Error -> {
-                    _classList.value = GetClassEvent.Error(listClassroom.data)
+                    _classList.value = Error(listClassroom.data)
                 }
             }
         }
