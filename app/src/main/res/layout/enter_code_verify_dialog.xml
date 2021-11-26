@@ -66,12 +66,12 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:layout_centerInParent="true"
                     android:id="@+id/btn_go"
-                    android:text="@string/confirm"
-                    android:layout_marginTop="10dp"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/confirm" />
 
                 <ProgressBar
                     android:id="@+id/process"

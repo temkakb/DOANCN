@@ -262,6 +262,7 @@ class LoginFragment : Fragment() {
                         ).show()
                     }
                     is DataState.Success -> {
+                        dialog.process.visibility = View.GONE
                         dialog.setContentView(R.layout.enter_code_verify_dialog)
                         dialog.btn_go.setOnClickListener {
                             viewModel.validateCode(dialog.code.text.toString())

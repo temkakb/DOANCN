@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_width="380dp"
+        android:layout_height="400dp"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center"
+                android:text="@string/yoursubmission"
+                android:textStyle="bold"
+                android:textColor="@color/primaryTextColor" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/submission"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                app:cardCornerRadius="5dp"
+                android:layout_height="wrap_content" >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/image"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingEnd="10dp">
+
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toRightOf="@id/image"
+                        android:maxWidth="180dp"
+                        android:text="Điểm danh  1wwwwwwwwwwwwwwwwwwwwwww7"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/by"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/name"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/image"
+                        android:maxWidth="180dp"
+                        android:text="wwww"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/time"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toEndOf="@id/image"
+                        android:maxWidth="180dp"
+                        android:text="wwww"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/by"
+                        android:layout_marginStart="10dp"
+                        android:layout_toRightOf="@id/image"
+                        android:layout_marginTop="10dp"
+                        android:text="www"
+                        android:gravity="center"
+                        android:maxWidth="180dp"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/image"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="15dp"
+                        android:layout_toStartOf="@id/size"
+                        android:gravity="center"
+                        android:maxWidth="180dp"
+                        android:textStyle="bold"
+                        android:text="Đúng hạn"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="15sp" />
+
+
+
+
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+            <RelativeLayout
+                android:id="@+id/noSubmission"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/file"
+                    android:layout_width="50dp"
+                    app:icon="@drawable/ic_baseline_attach_file_24"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentStart="true"
+                    app:iconGravity="top"
+                    android:layout_marginTop="10dp"
+                    />
+                <EditText
+                    android:id="@+id/filename"
+                    android:text="@string/choose_file"
+                    android:enabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="10dp"
+                   android:layout_toEndOf="@id/file"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/process_submission"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+            <Button
+                android:id="@+id/btn_confirm_or_cancel"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/confirm" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:text="@string/cancel"
+                android:backgroundTint="@color/red"
+                android:layout_width="150dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

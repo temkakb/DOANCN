@@ -31,4 +31,5 @@ constructor(
     fun doAttendance(qr: String, context: Context) {
         qrCodeManager.doAttendace(classId = 2L, qr, token!!, context)
     }
+
 }

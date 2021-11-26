@@ -98,8 +98,8 @@ class JoinClassFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            fusedLocation.lastLocation.addOnCompleteListener { task ->
-                val location: Location = task.result
+            fusedLocation.lastLocation.addOnSuccessListener { location ->
+                val location: Location = location
                 val geocoder = Geocoder(requireContext(), Locale.getDefault())
                 val listaddress: List<Address> =
                     geocoder.getFromLocation(location.latitude, location.longitude, 1)
