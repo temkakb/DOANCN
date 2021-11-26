@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         //Action bar
         setSupportActionBar(mToolbar)
         val toogle =
@@ -158,7 +159,17 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         actionBar?.setDisplayUseLogoEnabled(true)
         actionBar?.setLogo(R.drawable.ic_baseline_home_24)
         actionBar?.title = "Trang chủ"
+        intent.getBooleanExtra("backToListClass", false).let {
+            if (it) {
+                navcontroller.navigate(R.id.action_nav_home_to_myClassRoomFragment)
+            }
+        }
+    }
 
+
+    override fun onResume() {
+
+        super.onResume()
     }
 
     private suspend fun getMyUser(token: String, model: UserViewModel) {

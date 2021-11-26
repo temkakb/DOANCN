@@ -30,7 +30,7 @@ object RetrofitModule {
     fun provideGsonBuilder(): Gson {
         return GsonBuilder()
             .setPrettyPrinting()
-            .excludeFieldsWithoutExposeAnnotation()
+            .setLenient()
             .create()
     }
 

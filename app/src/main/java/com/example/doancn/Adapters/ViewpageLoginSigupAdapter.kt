@@ -10,14 +10,18 @@ class ViewpageLoginSigupAdapter(support: FragmentManager) : FragmentStatePagerAd
     support,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) {
+
     val listname = arrayOf("Đăng Nhập", "Đăng Ký")
     val listframent = arrayOf(LoginFragment(), SigupFragment())
+
     override fun getCount(): Int {
         return listframent.size
     }
 
     override fun getItem(position: Int): Fragment {
+
         return listframent[position]
+
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

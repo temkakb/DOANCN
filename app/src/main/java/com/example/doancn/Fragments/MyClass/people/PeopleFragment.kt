@@ -54,10 +54,10 @@ import kotlin.collections.ArrayList
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
-    private val mainViewModel : MainViewModel by activityViewModels()
+class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val classViewModel: ClassViewModel by activityViewModels()
-    private var listStudent : ArrayList<UserMe> = ArrayList()
+    private var listStudent: ArrayList<UserMe> = ArrayList()
     private var studentInClassAdapter: StudentInClassAdapter? = null
     private var classroom: Classroom? = null
     private val peopleViewModel: PeopleViewModel by viewModels()
@@ -92,23 +92,21 @@ class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(classroom == null)
-        {
-            Toast.makeText(context,"Null class bà rồi",Toast.LENGTH_SHORT).show()
-        }else{
+        if (classroom == null) {
+            Toast.makeText(context, "Null class bà rồi", Toast.LENGTH_SHORT).show()
+        } else {
             observeData()
         }
 
     }
 
 
+    private fun getListStudent(token: String) {
 
-    private fun getListStudent(token : String) {
-
-        peopleViewModel.getUserOfClass(token,classroom!!.classId)
+        peopleViewModel.getUserOfClass(token, classroom!!.classId)
         lifecycleScope.launchWhenCreated {
-            peopleViewModel.users.collect{
-                if(it is DataState.Success){
+            peopleViewModel.users.collect {
+                if (it is DataState.Success) {
                     listStudent = (it.data as ArrayList<UserMe>?)!!
                 }
             }
@@ -133,13 +131,19 @@ class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
                             noStudent.visibility = View.INVISIBLE
                             if (studentInClassAdapter == null) {
                                 requireView().rcv_student_in_class.layoutManager =
-                                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
-                                studentInClassAdapter = StudentInClassAdapter(classroom!!
-                                    ,mainViewModel.role.toString()
-                                    ,this@PeopleFragment
-                                    , requireContext())
+                                    LinearLayoutManager(
+                                        requireContext(),
+                                        RecyclerView.VERTICAL,
+                                        false
+                                    )
+                                studentInClassAdapter = StudentInClassAdapter(
+                                    classroom!!,
+                                    mainViewModel.role.toString(),
+                                    this@PeopleFragment,
+                                    requireContext()
+                                )
                                 studentInClassAdapter!!.setData(listStudent)
-                                Log.i("Số lượng học sinh",listStudent.count().toString())
+                                Log.i("Số lượng học sinh", listStudent.count().toString())
                                 requireView().rcv_student_in_class.adapter = studentInClassAdapter
                             } else studentInClassAdapter!!.setData(listStudent)
                         }
@@ -153,9 +157,10 @@ class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
         }
 
     }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onItemClick(position: Int) {
-        if(mainViewModel.role.toString() == "TEACHER"){
+        if (mainViewModel.role.toString() == "TEACHER") {
 
             val student: UserMe = listStudent[position]
             val showStudentInfoLayout: View = LayoutInflater.from(context)
@@ -164,13 +169,14 @@ class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
             peopleViewModel.paystatus.observe(viewLifecycleOwner, {
                 when (it) {
                     is PeopleViewModel.PayEvent.Success -> {
-                        Toast.makeText(context,"Đóng học phí thành công",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Đóng học phí thành công", Toast.LENGTH_SHORT)
+                            .show()
                         showStudentInfoLayout.student_info.visibility = View.VISIBLE
                         showStudentInfoLayout.Pay_progressBar.visibility = View.INVISIBLE
                         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                     }
                     is PeopleViewModel.PayEvent.Error -> {
-                        Toast.makeText(context,"Đóng học phí thất bại",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Đóng học phí thất bại", Toast.LENGTH_SHORT).show()
                         showStudentInfoLayout.student_info.visibility = View.VISIBLE
                         showStudentInfoLayout.Pay_progressBar.visibility = View.INVISIBLE
                         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -213,13 +219,13 @@ class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
             showStudentInfoLayout.student_info_name.text = student.name
             showStudentInfoLayout.student_info_email.text = student.account.email
             showStudentInfoLayout.student_info_dob.text = student.dob
-            if(student.phoneNumber != null)
+            if (student.phoneNumber != null)
                 showStudentInfoLayout.student_info_education_level.text = student.educationLevel
-            if(student.phoneNumber != null)
+            if (student.phoneNumber != null)
                 showStudentInfoLayout.student_info_curent_work_place.text = student.currentWorkPlace
-            if(student.phoneNumber != null)
+            if (student.phoneNumber != null)
                 showStudentInfoLayout.student_info_phone.text = student.phoneNumber
-            if(student.phoneNumber != null)
+            if (student.phoneNumber != null)
                 showStudentInfoLayout.student_info_adress.text = student.address
             when (student.gender.genderID) {
                 1 -> showStudentInfoLayout.student_info_gender.text = getString(R.string.Male)
@@ -242,21 +248,25 @@ class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
             dialog.show()
 
             showStudentInfoLayout.student_info_payment_history.setOnClickListener {
-                var numberPayment  = 0
+                var numberPayment = 0
                 for (i in student.enrollments!!) {
                     if (i.classroom.classId == classroom!!.classId) {
                         numberPayment = i.paymentHistories.count()
                     }
                 }
-                if(numberPayment != 0) {
-                    if(mainViewModel.role == "TEACHER"){
+                if (numberPayment != 0) {
+                    if (mainViewModel.role == "TEACHER") {
                         val showPaymnetInfoLayout: View = LayoutInflater.from(context)
                             .inflate(R.layout.show_payment_history, null)
-                        for (i in student.enrollments!!){
-                            if(i.classroom.classId == classroom!!.classId){
+                        for (i in student.enrollments!!) {
+                            if (i.classroom.classId == classroom!!.classId) {
                                 val paymentHistoryAdapter =
-                                    PayementHistoryAdapter(showPaymnetInfoLayout.context,i.paymentHistories)
-                                showPaymnetInfoLayout.list_payment_history.adapter = paymentHistoryAdapter
+                                    PayementHistoryAdapter(
+                                        showPaymnetInfoLayout.context,
+                                        i.paymentHistories
+                                    )
+                                showPaymnetInfoLayout.list_payment_history.adapter =
+                                    paymentHistoryAdapter
                             }
                         }
                         val builderPaymentHistory = AlertDialog.Builder(requireContext())
@@ -268,7 +278,7 @@ class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
                         }
                     }
                 } else
-                    Toast.makeText(context,"Chưa có lịch sử đóng tiền",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Chưa có lịch sử đóng tiền", Toast.LENGTH_SHORT).show()
             }
 
             showStudentInfoLayout.cancel_button.setOnClickListener {
@@ -277,50 +287,65 @@ class PeopleFragment : Fragment() , StudentInClassAdapter.OnItClickListener {
 
             showStudentInfoLayout.student_info_pay_fee.setOnClickListener {
                 val formatters = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                for(i in student.enrollments!!){
-                    if(i.classroom.classId == classroom!!.classId){
+                for (i in student.enrollments!!) {
+                    if (i.classroom.classId == classroom!!.classId) {
                         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
                         val nextPay = LocalDate.parse(i.nextPaymentAt, formatter)
-                        when(classroom!!.option.paymentOptionId){
+                        when (classroom!!.option.paymentOptionId) {
                             1L -> {
-                                showStudentInfoLayout.student_info_next_payment.text = nextPay.plusWeeks(1L).format(formatters).toString()
-                                i.nextPaymentAt = nextPay.plusWeeks(1L).format(formatters).toString()
+                                showStudentInfoLayout.student_info_next_payment.text =
+                                    nextPay.plusWeeks(1L).format(formatters).toString()
+                                i.nextPaymentAt =
+                                    nextPay.plusWeeks(1L).format(formatters).toString()
                             }
 
                             2L -> {
-                                showStudentInfoLayout.student_info_next_payment.text = nextPay.plusMonths(1L).format(formatters).toString()
-                                i.nextPaymentAt = nextPay.plusMonths(1L).format(formatters).toString()
+                                showStudentInfoLayout.student_info_next_payment.text =
+                                    nextPay.plusMonths(1L).format(formatters).toString()
+                                i.nextPaymentAt =
+                                    nextPay.plusMonths(1L).format(formatters).toString()
                             }
 
                             3L -> {
-                                showStudentInfoLayout.student_info_next_payment.text = nextPay.plusMonths(3L).format(formatters).toString()
-                                i.nextPaymentAt = nextPay.plusMonths(3L).format(formatters).toString()
+                                showStudentInfoLayout.student_info_next_payment.text =
+                                    nextPay.plusMonths(3L).format(formatters).toString()
+                                i.nextPaymentAt =
+                                    nextPay.plusMonths(3L).format(formatters).toString()
                             }
 
                             4L -> {
-                                showStudentInfoLayout.student_info_next_payment.text = nextPay.plusYears(1L).format(formatters).toString()
-                                i.nextPaymentAt = nextPay.plusYears(1L).format(formatters).toString()
+                                showStudentInfoLayout.student_info_next_payment.text =
+                                    nextPay.plusYears(1L).format(formatters).toString()
+                                i.nextPaymentAt =
+                                    nextPay.plusYears(1L).format(formatters).toString()
                             }
 
                             5L -> {
-                                showStudentInfoLayout.student_info_next_payment.text = nextPay.plusYears(20000).format(formatters).toString()
-                                i.nextPaymentAt = nextPay.plusYears(20000).format(formatters).toString()
+                                showStudentInfoLayout.student_info_next_payment.text =
+                                    nextPay.plusYears(20000).format(formatters).toString()
+                                i.nextPaymentAt =
+                                    nextPay.plusYears(20000).format(formatters).toString()
                             }
                         }
-                        peopleViewModel.updateStudentPayment(mainViewModel.token.toString(),id = i.enrollmentId,classroom!!.classId)
+                        peopleViewModel.updateStudentPayment(
+                            mainViewModel.token.toString(),
+                            id = i.enrollmentId,
+                            classroom!!.classId
+                        )
                     }
                 }
             }
         }
     }
 
-    private suspend fun showAttendanceStudent(token: String, sectionId : Long){
+    private suspend fun showAttendanceStudent(token: String, sectionId: Long) {
         val sectionRepo = SectionsRepository()
-        val list : List<UserMe> = sectionRepo.getAttendanceStudents(token = token, sectionId = sectionId)
+        val list: List<UserMe> =
+            sectionRepo.getAttendanceStudents(token = token, sectionId = sectionId)
         val viewdialog =
             LayoutInflater.from(context).inflate(R.layout.detail_classroom_dialog, null)
         val dialog = Dialog(requireContext())
-        val attendancedStudentsAdapter = AttendancedStudentsAdapter(requireContext(),list)
+        val attendancedStudentsAdapter = AttendancedStudentsAdapter(requireContext(), list)
         viewdialog.list_attendanced_students.adapter = attendancedStudentsAdapter
         dialog.cancel_attendance_button.setOnClickListener {
             dialog.dismiss()

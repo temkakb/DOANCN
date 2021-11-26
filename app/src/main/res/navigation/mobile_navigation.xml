@@ -13,7 +13,7 @@
         android:id="@+id/navigation_homework"
         android:name="com.example.doancn.Fragments.MyClass.homework.HomeworkFragment"
         android:label="homework_fragment"
-        tools:layout="@layout/homework_fragment" >
+        tools:layout="@layout/homework_fragment">
         <action
             android:id="@+id/action_navigation_homework_to_submissionFragment"
             app:destination="@id/submissionFragment" />
@@ -30,11 +30,33 @@
         android:id="@+id/navigation_bottom_sheet"
         android:name="com.example.doancn.Fragments.MyClass.more.ItemListDialogFragment"
         android:label="fragment_item_list_dialog_list_dialog"
-        tools:layout="@layout/fragment_item_list_dialog_list_dialog" />
+        tools:layout="@layout/fragment_item_list_dialog_list_dialog">
+        <action
+            android:id="@+id/action_navigation_bottom_sheet_to_updateFragment"
+            app:destination="@id/updateFragment" />
+        <action
+            android:id="@+id/action_navigation_bottom_sheet_to_sectionFragment"
+            app:destination="@id/sectionFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.example.doancn.Fragments.MyClass.more.UpdateFragment"
+        android:label="fragment_update"
+        tools:layout="@layout/fragment_update">
+        <action
+            android:id="@+id/action_updateFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/sectionFragment"
+        android:name="com.example.doancn.Fragments.MyClass.more.SectionFragment"
+        android:label="fragment_section"
+        tools:layout="@layout/fragment_section" />
+    tools:layout="@layout/fragment_item_list_dialog_list_dialog" />
     <fragment
         android:id="@+id/submissionFragment"
         android:name="com.example.doancn.Fragments.MyClass.homework.SubmissionFragment"
-        android:label="SubmissionFragment" >
+        android:label="SubmissionFragment">
         <action
             android:id="@+id/action_submissionFragment_to_navigation_homework"
             app:destination="@id/navigation_homework" />
@@ -42,9 +64,10 @@
     <dialog
         android:id="@+id/bottomSheetHomeWorkFragment"
         android:name="com.example.doancn.Fragments.MyClass.homework.BottomSheetHomeWorkFragment"
-        android:label="BottomSheetHomeWorkFragment" >
+        android:label="BottomSheetHomeWorkFragment">
         <action
             android:id="@+id/action_bottomSheetHomeWorkFragment_to_navigation_homework"
             app:destination="@id/navigation_homework" />
     </dialog>
+
 </navigation>

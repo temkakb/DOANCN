@@ -13,12 +13,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class PeopleViewModel
 @Inject constructor(
-    private val classRepository: ClassRepository
+    private val classRepository: ClassRepository,
+    @Named("auth_token")
+    private val token: String?
 ) : ViewModel() {
     private val _users = MutableStateFlow<DataState<List<UserMe>?>>(DataState.Empty)
     val users: StateFlow<DataState<List<UserMe>?>> = _users
@@ -27,20 +30,20 @@ class PeopleViewModel
     val paystatus: LiveData<PayEvent<String>>
         get() = _paystatus
 
-    fun getUserOfClass(token: String, id: Long){
+    fun getUserOfClass(token: String, id: Long) {
         viewModelScope.launch {
             _users.value = DataState.Loading
-            _users.value = classRepository.getUserOfClass(token,id)
+            _users.value = classRepository.getUserOfClass(token, id)
         }
     }
 
-    fun updateStudentPayment(token: String, id: Int,classId: Long){
+    fun updateStudentPayment(token: String, id: Int, classId: Long) {
         viewModelScope.launch {
             val s: Flow<DataState<String>> = classRepository.updateStudentPayment(token, id)
             s.onEach {
                 when (it) {
                     is DataState.Success -> {
-                        _users.value = classRepository.getUserOfClass(token,classId)
+                        _users.value = classRepository.getUserOfClass(token, classId)
                         _paystatus.value = PayEvent.Success(it.data)
                     }
                     is DataState.Error -> {
@@ -55,9 +58,19 @@ class PeopleViewModel
         }
     }
 
+    sealed class GetListStudentEvent<out R>() {
+        data class Success<out T>(val data: T) : GetListStudentEvent<T>()
+        data class Error(val data: String) : GetListStudentEvent<Nothing>()
+        data class Empty<out T>(val data: T) : GetListStudentEvent<T>()
+        object Loading : GetListStudentEvent<Nothing>()
+
+
+    }
+
     sealed class PayEvent<out R>() {
         data class Success<out T>(val data: T) : PayEvent<T>()
         data class Error(val data: String) : PayEvent<Nothing>()
         object Loading : PayEvent<Nothing>()
     }
+
 }

@@ -12,10 +12,10 @@ import com.example.doancn.Adapters.AnnouncementAdapter
 import com.example.doancn.ClassViewModel
 import com.example.doancn.Models.Announcement
 import com.example.doancn.Models.Classroom
-import com.example.doancn.R
 import com.example.doancn.databinding.ClassHomeFragmentBinding
-import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class ClassHomeFragment : Fragment() {
 
     private var _binding: ClassHomeFragmentBinding? = null
@@ -39,38 +39,22 @@ class ClassHomeFragment : Fragment() {
         _binding = ClassHomeFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setupAnnouncementTable()
+        if (arguments?.containsKey("classRoomHome") == true) {
+            val classroom =
+                arguments?.getSerializable("classRoomHome") as Classroom
+            Log.d("classroom", classroom.toString())
+            classViewModel.selectItem(classroom)
+        }
 
         return root
     }
-
 
     private fun setupAnnouncementTable() {
         vp2 = binding.vp2Announcement
         vp2.adapter = AnnouncementAdapter(requireContext(), Announcement.listOfAnnouncement())
         vp2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        classViewModel.classroom.observe(viewLifecycleOwner, {
-            setUpShift(it)
-        })
 
     }
 
 
-    private fun setUpShift(classroom: Classroom) {
-        val group = binding.toggleButtonGroup
-        Log.d("ClassHomeFragment", "classroom: $classroom")
-        for (shift in classroom.shifts) {
-
-            val button = layoutInflater.inflate(
-                R.layout.single_button_layout,
-                group,
-                false
-            ) as MaterialButton
-            button.text = shift.dayOfWeek.dowName
-            group.addView(button);
-
-        }
-        group.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
-            // Respond to button selection
-        }
-    }
 }

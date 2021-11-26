@@ -1,55 +1,58 @@
 package com.example.doancn.Fragments.MyClass.more
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getColor
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.doancn.ClassViewModel
+import com.example.doancn.IClassActivity
 import com.example.doancn.R
 import com.example.doancn.databinding.FragmentItemListDialogListDialogBinding
 import com.example.doancn.databinding.FragmentItemListDialogListDialogItemBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-
-
-const val ARG_ITEM_COUNT = "item_count"
-
 
 class ItemListDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentItemListDialogListDialogBinding? = null
 
     private val binding get() = _binding!!
-
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: ItemAdapter
+    private lateinit var iClassActivity: IClassActivity
+    private val classViewModel: ClassViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentItemListDialogListDialogBinding.inflate(inflater, container, false)
+        recyclerView = binding.list
+        adapter = ItemAdapter(BottomSheetItem.getItem())
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
         return binding.root
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        activity?.findViewById<RecyclerView>(R.id.list)?.layoutManager =
-            LinearLayoutManager(context)
-        activity?.findViewById<RecyclerView>(R.id.list)?.adapter =
-            arguments?.getInt(ARG_ITEM_COUNT)?.let { ItemAdapter(it) }
-    }
-
-    private inner class ViewHolder internal constructor(binding: FragmentItemListDialogListDialogItemBinding) :
+    private inner class ViewHolder(binding: FragmentItemListDialogListDialogItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        val text: TextView = binding.text
+        val icon: ImageView = binding.imageView
 
-        internal val text: TextView = binding.text
     }
 
-    private inner class ItemAdapter(private val mItemCount: Int) :
+
+    private inner class ItemAdapter(private val list: List<BottomSheetItem>) :
         RecyclerView.Adapter<ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
+            Log.d("ItemAdapter", "onCreateViewHolder : $list")
             return ViewHolder(
                 FragmentItemListDialogListDialogItemBinding.inflate(
                     LayoutInflater.from(
@@ -60,23 +63,32 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
 
         }
 
+        override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+            iClassActivity = requireActivity() as IClassActivity
+            super.onAttachedToRecyclerView(recyclerView)
+        }
+
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.text.text = position.toString()
+
+            if (classViewModel.role == "TEACHER") {
+                if (list[position].type == 1)
+                    holder.text.setTextColor(getColor(requireContext(), R.color.red))
+                holder.text.text = list[position].name
+                holder.icon.setImageResource(list[position].icon)
+                holder.itemView.setOnClickListener {
+                    iClassActivity.handleBottomSheetItem(list[position])
+                }
+
+            } else {
+                holder.text.isEnabled = false
+                holder.icon.isEnabled = false
+            }
+
         }
 
         override fun getItemCount(): Int {
-            return mItemCount
+            return list.size
         }
-    }
-
-    companion object {
-        fun newInstance(itemCount: Int): ItemListDialogFragment =
-            ItemListDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_ITEM_COUNT, itemCount)
-                }
-            }
-
     }
 
 
@@ -84,5 +96,20 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+}
+
+class BottomSheetItem(val type: Int, val icon: Int, val name: String) {
+    companion object {
+        fun getItem(): List<BottomSheetItem> {
+            return arrayListOf(
+                BottomSheetItem(1, R.drawable.delete, "Hủy lớp học"),
+                BottomSheetItem(2, R.drawable.ic_baseline_update_24, "Cập nhật thông tin"),
+                BottomSheetItem(3, R.drawable.ic_baseline_info_24, "Tình trạng buổi học")
+
+            )
+        }
     }
 }

@@ -123,24 +123,25 @@
             android:progressDrawable="@color/primaryColor"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"/>
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:id="@+id/noStudent"
-                android:visibility="gone"
-                android:text="@string/nostudentinclass"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rcv_student_in_class"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_student_in_class"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/people_item"
-                app:layout_constraintTop_toBottomOf="@+id/process_student"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/noStudent"
+            android:visibility="gone"
+            android:text="@string/nostudentinclass"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rcv_student_in_class" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_student_in_class"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/people_item"
+            app:layout_constraintTop_toBottomOf="@+id/process_student" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

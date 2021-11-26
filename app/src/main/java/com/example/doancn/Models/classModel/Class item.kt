@@ -40,8 +40,8 @@ data class ClassQuest(
 
     @Parcelize
     data class Subject(
-        val name: String,
-        val subjectId: String
+        var name: String,
+        var subjectId: String
     ) : Parcelable
 
     @Parcelize
