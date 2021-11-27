@@ -36,7 +36,7 @@ class SectionFragment : Fragment() {
 
     private fun setUpShift(classroom: Classroom) {
         val group = binding.toggleButtonGroup
-        for (shift in classroom.shifts) {
+        for (shift in classroom.shifts.reversed()) {
 
             val button = layoutInflater.inflate(
                 R.layout.single_button_layout,
