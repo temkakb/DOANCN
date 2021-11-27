@@ -90,9 +90,12 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
                 }
             }
         }
-        initQrCode()
         binding.floatingActionButton.setOnClickListener {
-            classViewModel.createQR(classViewModel.classroom.value!!.classId, this)
+            if (classViewModel.role == "TEACHER") {
+                classViewModel.createQR(this)
+            } else {
+                initQrCode()
+            }
         }
     }
 
@@ -103,13 +106,14 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
             if (result.contents == null) {
                 Toast.makeText(this, "Hủy quét", Toast.LENGTH_LONG).show()
             } else { // diem danh
-                classViewModel.doAttendance(result.contents.toString(), this)
+                classViewModel.doAttendance(result.contents.toString(), context = this)
 
             }
         }
         options = ScanOptions()
         options.setBeepEnabled(false)
         options.setPrompt("quét mã QR để tiến hành điểm danh")
+        barcodeLauncher.launch(options)
     }
 
 
@@ -167,7 +171,6 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
                                 MainActivity::class.java
                             ).apply { this.putExtra("backToListClass", true) })
                         Toast.makeText(this@ClassActivity, "success", Toast.LENGTH_SHORT).show()
-
                     }
                     is Empty -> {
                         Toast.makeText(this@ClassActivity, "empty data", Toast.LENGTH_SHORT).show()

@@ -163,7 +163,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeData() {
-        lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             homeViewModel.user.collect {
                 when (it) {
                     is DataState.Loading -> {
@@ -171,9 +171,9 @@ class HomeFragment : Fragment() {
                     }
                     is DataState.Success -> {
                         requireView().process_home.visibility = View.GONE
-                                Log.d("MainActivity", mainViewModel.role.toString())
-                                if (mainViewModel.role == "STUDENT") {
-                                    Log.d("ROLE", "Học sinh")
+                        Log.d("MainActivity", mainViewModel.role.toString())
+                        if (mainViewModel.role == "STUDENT") {
+                            Log.d("ROLE", "Học sinh")
                                     if( userme?.enrollments == null) {
                                         return@collect
                                     }
@@ -270,11 +270,12 @@ class HomeFragment : Fragment() {
 
     private fun getMyUser(token: String, model: UserViewModel) {
         homeViewModel.getUserMe(token)
-        lifecycleScope.launchWhenCreated {
-            homeViewModel.user.collect{
-                if(it is DataState.Success){
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            homeViewModel.user.collect {
+                if (it is DataState.Success) {
                     userme = it.data
                     model.user = it.data
+
                 }
             }
         }

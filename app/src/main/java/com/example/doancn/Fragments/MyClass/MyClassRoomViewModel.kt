@@ -38,7 +38,7 @@ class MyClassRoomViewModel
     fun getClassList() {
         viewModelScope.launch(Dispatchers.IO) {
             _classList.value = Loading
-            delay(1000)
+            delay(500)
             when (val listClassroom = classRepository.getListClass(token!!)) {
                 is DataState.Success -> {
                     _classList.value = Success(listClassroom.data)
@@ -49,5 +49,9 @@ class MyClassRoomViewModel
                 }
             }
         }
+    }
+
+    fun resetClassState() {
+        _classList.value = Empty(ArrayList())
     }
 }

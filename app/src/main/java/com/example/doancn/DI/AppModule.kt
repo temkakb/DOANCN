@@ -19,7 +19,7 @@ object AppModule {
     @ActivityRetainedScoped
     @Provides
     fun provideQRManager(
-        @Named("auth_token") token: String?
+        @Named("auth_token") token: String?,
     ): QrCodeManager {
         return QrCodeManager(token!!)
     }
