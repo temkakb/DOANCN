@@ -55,7 +55,7 @@ class MyClassRoomFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observeData() {
-        lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.classList.collect { event ->
                 when (event) {
                     is MyClassRoomViewModel.GetClassEvent.Success -> {
@@ -65,7 +65,6 @@ class MyClassRoomFragment : Fragment() {
                         binding.myClass.visibility = View.VISIBLE
                         Log.d("observeData", listItems.toString())
                         adapter.notifyDataSetChanged()
-
                     }
                     is MyClassRoomViewModel.GetClassEvent.Empty -> {
                         listItems.clear();

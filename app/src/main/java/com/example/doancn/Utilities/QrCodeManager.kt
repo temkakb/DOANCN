@@ -29,7 +29,7 @@ class QrCodeManager(var token: String) {
     val encode = BarcodeEncoder()
     var classId: Long = -1
 
-    fun getQrCode(context: Context, classId: Long, token: String) {
+    fun getQrCode(classId: Long, token: String, context: Context) {
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
@@ -77,7 +77,7 @@ class QrCodeManager(var token: String) {
                 dialogalert.setTitle(context.resources.getString(R.string.qrcode_expired_title))
                     .setMessage(context.resources.getString(R.string.qrcode_expired_msg))
                     .setPositiveButton(context.resources.getString(R.string.qrcode_expired_yes)) { dialoginterface, int ->
-                        getQrCode(context, classId = classId, token)
+                        getQrCode(classId = classId, token, context)
                     }
                     .setNegativeButton(context.resources.getString(R.string.qrcode_expired_no)) { dialoginterface, int ->
                         dialoginterface.dismiss()

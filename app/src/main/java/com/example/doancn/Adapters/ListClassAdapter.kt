@@ -2,6 +2,7 @@ package com.example.doancn.Adapters;
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.doancn.IMainActivity
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
+import java.util.*
 
 class ListClassAdapter(var context: Context, var classList: List<Classroom>) :
     RecyclerView.Adapter<ListClassAdapter.MyViewHolder>() {
@@ -53,12 +55,21 @@ class ListClassAdapter(var context: Context, var classList: List<Classroom>) :
             circularProgressDrawable.strokeWidth = 5f
             circularProgressDrawable.centerRadius = 30f
             circularProgressDrawable.start()
+            val bmp = classroom.teacher.image?.let {
+                val imgDecode: ByteArray =
+                    Base64.getDecoder().decode(it)
+                BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
+            } ?: ""
+
             Glide.with(context)
-                .load(classroom.teacher.image)
+                .asBitmap()
+                .load(bmp)
                 .centerCrop()
                 .placeholder(circularProgressDrawable)
                 .error(R.drawable.orther)
                 .into(imageView)
+
+
             className.text = classroom.name
             teacherName.text = classroom.teacher.name
             numberOfAttendances.text = "${classroom.currentAttendanceNumber} đã đăng kí tham gia."

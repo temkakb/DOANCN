@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.doancn.ClassViewModel
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
+import com.example.doancn.Utilities.StringUtils
 import com.example.doancn.databinding.FragmentSectionBinding
 import com.google.android.material.button.MaterialButton
 
@@ -35,19 +36,23 @@ class SectionFragment : Fragment() {
 
     private fun setUpShift(classroom: Classroom) {
         val group = binding.toggleButtonGroup
-        for (shift in classroom.shifts) {
+        for (shift in classroom.shifts.reversed()) {
 
             val button = layoutInflater.inflate(
                 R.layout.single_button_layout,
                 group,
                 false
             ) as MaterialButton
-            button.text = shift.dayOfWeek.dowName
+            button.text = StringUtils.dowFormatter(shift.dayOfWeek.dowName)
+            button.id = shift.shiftId
             group.addView(button);
 
         }
         group.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
-            Log.d("wtfme",checkedId.toString())
+
+            // Respond to button selection
+            Log.d("checked", checkedId.toString())
+
         }
 
 

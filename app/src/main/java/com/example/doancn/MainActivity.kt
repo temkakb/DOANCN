@@ -27,7 +27,6 @@ import com.example.doancn.DI.DataState
 import com.example.doancn.Fragments.CreateClass.CreateClassViewModel
 import com.example.doancn.Fragments.JoinClass.JoinClassViewModel
 import com.example.doancn.Models.Classroom
-import com.example.doancn.Models.HomeWorkX
 import com.example.doancn.Models.UserMe
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.Retrofit.RetrofitManager
@@ -40,7 +39,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import retrofit2.Call
 import retrofit2.Response
 import java.util.*
 import javax.inject.Inject

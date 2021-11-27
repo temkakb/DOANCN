@@ -35,7 +35,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 
 @ExperimentalCoroutinesApi
@@ -348,9 +347,10 @@ class CreateClassFragment : Fragment() {
                 dateStart =
                     Instant.ofEpochMilli(datePicker.selection!!).atZone(ZoneId.systemDefault())
                         .toLocalDate()
-                val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                val formattedString: String = dateStart!!.format(formatter)
-                binding.createCLassDateStart.setText(formattedString)
+//                val date = dateStart
+//                val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+//                val formattedString: String = date!!.format(formatter)
+                binding.createCLassDateStart.setText(dateStart.toString())
             }
 
             datePicker.show(requireFragmentManager(), "date picker")

@@ -85,10 +85,8 @@ class UpdateFragment : Fragment() {
         )
         subject = ClassQuest.Subject(classroom.subject.name, classroom.subject.subjectId.toString())
 
-        dateStart = LocalDate.parse(classroom.startDate)
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formattedString: String = LocalDate.parse(classroom.startDate).format(formatter)
-        binding.createCLassDateStart.setText(formattedString)
+        dateStart = LocalDate.parse(classroom.startDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+        binding.createCLassDateStart.setText(classroom.startDate)
         val dow = resources.getStringArray(R.array.Dow)
         classroom.shifts.forEach {
             when (it.dayOfWeek.dowId) {
