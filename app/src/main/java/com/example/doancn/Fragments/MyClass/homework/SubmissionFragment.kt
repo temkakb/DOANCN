@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -19,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.create_homework_dialog.*
 import kotlinx.android.synthetic.main.submission_dialog.*
 import kotlinx.android.synthetic.main.submission_fragment.view.*
+import kotlinx.android.synthetic.main.submission_item.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
@@ -28,7 +30,7 @@ class SubmissionFragment : Fragment() {
 
     val viewModel: SubmissionViewModel by viewModels()
     private val classviewmodel: ClassViewModel by activityViewModels()
-    private val homeworkViewModel: HomeworkViewModel by activityViewModels()
+    private var homework : HomeWorkX?=null
     private  val number =1000*1000;
     val TEACHER_CREATE_FILE_SUBMISSION = 5
     override fun onCreateView(
@@ -37,15 +39,16 @@ class SubmissionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.submission_fragment, container, false)
+        obverseDataDownload()
         return view;
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val bundle = arguments
-        val homework = bundle?.getSerializable("targetHomework") as HomeWorkX
+       homework = bundle?.getSerializable("targetHomework") as HomeWorkX
         obverseData()
         homework.let {
-            viewModel.getData(classviewmodel.classroom.value!!.classId,it.fileId)
+            viewModel.getData(classviewmodel.classroom.value!!.classId, it!!.fileId)
         }
         super.onViewCreated(view, savedInstanceState)
     }
@@ -64,13 +67,11 @@ class SubmissionFragment : Fragment() {
     override fun onActivityResult(
         requestCode: Int, resultCode: Int, resultData: Intent?
     ) {
-
-
     if(requestCode==TEACHER_CREATE_FILE_SUBMISSION && resultCode== Activity.RESULT_OK){
             resultData?.data?.also { uri ->
                 viewModel.teacherDownloadSubmission(
                     classviewmodel.classroom.value!!.classId,
-                    homeworkViewModel.homeWork.value!!,
+                    homework!!,
                     viewModel.submissionDownLoad.value!!,uri,requireContext())
             }
         }
@@ -97,5 +98,27 @@ class SubmissionFragment : Fragment() {
                 }
             }
         }
+    }
+    private  fun obverseDataDownload(){
+        lifecycleScope.launchWhenCreated {
+            viewModel.downloadStatus.collect {
+                when(it){
+                    is DataState.Loading ->{
+                        viewModel.view.value!!.process_submission_item.visibility=View.VISIBLE
+                    }
+                    is DataState.Success-> {
+                        viewModel.view.value!!.process_submission_item.visibility=View.GONE
+                        Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+                        viewModel.setEmptyDownLoadStatus()
+                    }
+                    is DataState.Error-> {
+                        viewModel.view.value!!.process_submission_item.visibility=View.GONE
+                        Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+                        viewModel.setEmptyDownLoadStatus()
+                    }
+                }
+            }
+        }
+
     }
 }

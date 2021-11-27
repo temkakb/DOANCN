@@ -126,6 +126,7 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_fee.xml" value="0.10989583333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_numberenrollment.xml" value="0.10989583333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_previous_back_tab.xml" value="0.13229166666666667" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_safe_section.xml" value="0.2526041666666667" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_startday.xml" value="0.10989583333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/border_imange.xml" value="0.12760416666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/dotted.xml" value="0.1859375" />
@@ -171,6 +172,7 @@
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_myclass.xml" value="0.11510416666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_parent.xml" value="0.1375" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_profile.xml" value="0.15260416666666668" />
+        <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_section.xml" value="0.373134328358209" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/fragment_setting.xml" value="0.10208333333333333" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/home_work_bottom_sheet_fragment.xml" value="0.3603082851637765" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/layout/homework_fragment.xml" value="0.264" />

@@ -41,7 +41,8 @@ class SubmissionAdapter(context: Context,var listsubmission : List<SubmissionX>,
         }
         view.time.text= "Nộp lúc: "+listsubmission[position].dateCreated
         view.btn_download.setOnClickListener {
-            submissionFragment.viewModel.setSubmissionSelected(listsubmission[position])
+            submissionFragment.viewModel.setSubmissionDownload(listsubmission[position])
+            submissionFragment.viewModel.setView(view)
             submissionFragment.createFile()
         }
         HomeWorkAdapter.setImageViewByType(type,view)

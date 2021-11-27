@@ -2,6 +2,7 @@ package com.example.doancn.Fragments.MyClass.homework
 
 import android.content.Context
 import android.net.Uri
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,6 +49,8 @@ class SubmissionViewModel
     val downloadStatus: StateFlow<DataState<String>> = _downloadStatus
     private val _submissionDownLoad = MutableLiveData<SubmissionX>()
     val submissionDownLoad: LiveData<SubmissionX> get() = _submissionDownLoad
+    private val _view = MutableLiveData<View>()
+    val view: LiveData<View> get() = _view
 
 
     fun getData(id: Long,homeworkId : Long){
@@ -136,7 +139,6 @@ class SubmissionViewModel
                 buffer.flip()
                 client.write(buffer)
                 buffer2.clear()
-                buffer2.clear()
                 try {
                     while (buffer2.hasRemaining()) {
                         client.read(buffer2)
@@ -156,8 +158,9 @@ class SubmissionViewModel
                 out!!.write(file)
                 out.close()
                 _downloadStatus.value = DataState.Success("Tải thành công")
-            }
+            }.start()
         }
+
 
 
     }
@@ -169,7 +172,15 @@ class SubmissionViewModel
     }
 
     fun setSubmissionDownload(submissionX: SubmissionX){
-        _submissionSelected.value=submissionX;
+        _submissionDownLoad.value=submissionX;
     }
+
+    fun setEmptyDownLoadStatus(){
+        _downloadStatus.value=DataState.Empty
+    }
+    fun setView (view: View){
+        _view.value=view
+    }
+
 
 }
