@@ -47,9 +47,9 @@ class BottomSheetHomeWorkFragment : BottomSheetDialogFragment() {
                         requireView().process.visibility=View.VISIBLE
                     }
                     is DataState.Success-> {
-                        viewModel.getData(classviewmodel.classroom.value!!.classId)
                         dismiss()
                         Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+
 
                     }
                     is DataState.Error->

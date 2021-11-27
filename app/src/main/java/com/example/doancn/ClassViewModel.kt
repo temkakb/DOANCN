@@ -1,6 +1,5 @@
 package com.example.doancn
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,9 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.doancn.ClassViewModel.ClassEvent.*
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Models.QrCodeX
 import com.example.doancn.Models.classModel.ClassQuest
+import com.example.doancn.Repository.AttendanceRepository
 import com.example.doancn.Repository.ClassRepository
-import com.example.doancn.Utilities.QrCodeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -24,10 +24,11 @@ import javax.inject.Named
 class ClassViewModel
 @Inject
 constructor(
-    private var qrCodeManager: QrCodeManager,
+
     @Named("auth_token") val token: String?,
     @Named("user_role") val role: String?,
     private val classRepository: ClassRepository,
+    private val attendanceRepository: AttendanceRepository
 ) : ViewModel() {
 
     sealed class ClassEvent<out R>() {
@@ -39,6 +40,10 @@ constructor(
 
     private val mutableSelectedItem = MutableLiveData<ClassQuest.Location>()
     val selectedItem: LiveData<ClassQuest.Location> get() = mutableSelectedItem
+    private val _getQrCodeStatus = MutableStateFlow<DataState<QrCodeX?>>(DataState.Empty)
+    val getQrCodeStatus: StateFlow<DataState<QrCodeX?>> = _getQrCodeStatus
+    private val _attendanceStatus = MutableStateFlow<DataState<String>>(DataState.Empty)
+    val attendanceStatus: StateFlow<DataState<String>> = _attendanceStatus
     fun selectItem(item: ClassQuest.Location) {
         mutableSelectedItem.value = item
     }
@@ -64,13 +69,22 @@ constructor(
         _classroom.value = classroom
     }
 
-    fun createQR(context: Context) {
-        qrCodeManager.getQrCode(classroom.value!!.classId, token!!, context = context)
+    fun createQR() {
+        viewModelScope.launch {
+            _getQrCodeStatus.value=DataState.Loading
+            _getQrCodeStatus.value=attendanceRepository.getQrcodeToken(classroom.value!!.classId, token!!)
+            _getQrCodeStatus.value=DataState.Empty
+        }
     }
 
 
-    fun doAttendance(qr: String, context: Context) {
-        qrCodeManager.doAttendace(classId = classroom.value!!.classId, qr, token!!, context)
+    fun doAttendance(qr: String) {
+        viewModelScope.launch {
+            _attendanceStatus.value=DataState.Loading
+            _attendanceStatus.value=  attendanceRepository.doAttendance(classroom.value!!.classId,qr, token!!)
+            _attendanceStatus.value=DataState.Empty
+        }
+
     }
 
 

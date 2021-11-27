@@ -107,6 +107,8 @@ class HomeworkFragment : Fragment() {
     }
 
 
+
+
     private fun setDisplayByRole(view: View) {
         if (mainViewModel.role.equals("STUDENT")) {
             view.btn_add_homework.visibility = View.GONE

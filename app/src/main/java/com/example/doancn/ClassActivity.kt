@@ -1,9 +1,13 @@
 package com.example.doancn
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -20,17 +24,25 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.doancn.ClassViewModel.ClassEvent.*
+import com.example.doancn.DI.DataState
 import com.example.doancn.Fragments.MyClass.more.BottomSheetItem
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Models.QrCodeX
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.databinding.ActivityClassBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.dialog_qrcode.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import java.util.concurrent.TimeUnit
 
 
 @ExperimentalCoroutinesApi
@@ -43,10 +55,14 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
     private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
     private lateinit var options: ScanOptions
     private lateinit var navController: NavController
+    var multiFormatWriter: MultiFormatWriter = MultiFormatWriter()
+    val encode = BarcodeEncoder()
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        obverseGetQrCode()
+        obverseAttendance()
         val classroom = intent.getSerializableExtra("targetClassroom") as Classroom
         classroom.let {
             Log.d("ClassActivity", "classroom $classroom")
@@ -67,6 +83,7 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
             )
         )
         navView.background = null
+        initQrCode()
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
@@ -92,9 +109,9 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
         }
         binding.floatingActionButton.setOnClickListener {
             if (classViewModel.role == "TEACHER") {
-                classViewModel.createQR(this)
+                classViewModel.createQR()
             } else {
-                initQrCode()
+                barcodeLauncher.launch(options)
             }
         }
     }
@@ -106,15 +123,14 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
             if (result.contents == null) {
                 Toast.makeText(this, "Hủy quét", Toast.LENGTH_LONG).show()
             } else { // diem danh
-                classViewModel.doAttendance(result.contents.toString(), context = this)
-
+                    classViewModel.doAttendance(result.contents.toString())
             }
         }
         options = ScanOptions()
         options.setBeepEnabled(false)
         options.setPrompt("quét mã QR để tiến hành điểm danh")
 
-        barcodeLauncher.launch(options)
+
 
     }
 
@@ -190,7 +206,6 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
                             .show()
                     }
                 }
-
             }
         }
 
@@ -232,6 +247,80 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
 
         }
     }
+    private fun obverseGetQrCode(){
+        lifecycleScope.launchWhenCreated {
+            classViewModel.getQrCodeStatus.collect {
+                when(it){
+                    is DataState.Loading-> {}
+                    is DataState.Success-> {
+                        showDialog(it.data!!)
+
+                    }
+                    is DataState.Error-> {
+                        Toast.makeText(this@ClassActivity,it.data,Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+    private fun obverseAttendance(){
+        lifecycleScope.launchWhenCreated {
+            classViewModel.attendanceStatus.collect {
+                when(it){
+                    is DataState.Loading-> {}
+                    is DataState.Success-> {
+                        Toast.makeText(this@ClassActivity,it.data,Toast.LENGTH_SHORT).show()
+
+                    }
+                    is DataState.Error-> {
+                        Toast.makeText(this@ClassActivity,it.data,Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showDialog(qrcode : QrCodeX) {
+        val dialog = Dialog(this)
+
+        dialog.setContentView(R.layout.dialog_qrcode)
+        dialog.btn_close.setOnClickListener {
+            dialog.dismiss()
+        }
+        val countDownTimer = object : CountDownTimer(qrcode!!.timeleft.toLong() * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                dialog.countdown.text = resources.getString(
+                    R.string.formatted_time,
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60,
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+                )
+            }
+
+            override fun onFinish() {
+                dialog.dismiss()
+                val dialogalert = AlertDialog.Builder(this@ClassActivity)
+                dialogalert.setTitle(resources.getString(R.string.qrcode_expired_title))
+                    .setMessage(resources.getString(R.string.qrcode_expired_msg))
+                    .setPositiveButton(resources.getString(R.string.qrcode_expired_yes)) { dialoginterface, int ->
+
+                    }
+                    .setNegativeButton(resources.getString(R.string.qrcode_expired_no)) { dialoginterface, int ->
+                        dialoginterface.dismiss()
+                    }.show()
+            }
+        }
+        try {
+            val bitMatrix = multiFormatWriter.encode(qrcode!!.qrId, BarcodeFormat.QR_CODE, 700, 700)
+            val bitmap = encode.createBitmap(bitMatrix)
+            dialog.iv_qrcode.setImageBitmap(bitmap)
+
+        } catch (e: WriterException) {
+            e.printStackTrace()
+        }
+        countDownTimer.start()
+        dialog.show()
+    }
+
 }
 
 interface IClassActivity {
