@@ -3,7 +3,6 @@ package com.example.doancn.DI
 import android.content.SharedPreferences
 import com.example.doancn.Models.AccountSignUp
 import com.example.doancn.Models.User
-import com.example.doancn.Utilities.QrCodeManager
 import com.example.doancn.Utilities.TokenManager
 import dagger.Module
 import dagger.Provides
@@ -16,13 +15,6 @@ import javax.inject.Named
 @InstallIn(ActivityRetainedComponent::class)
 object AppModule {
 
-    @ActivityRetainedScoped
-    @Provides
-    fun provideQRManager(
-        @Named("auth_token") token: String?,
-    ): QrCodeManager {
-        return QrCodeManager(token!!)
-    }
 
     @ActivityRetainedScoped
     @Provides

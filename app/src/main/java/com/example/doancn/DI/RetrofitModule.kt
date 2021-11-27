@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
+import com.example.doancn.API.IAttendanceApi
 import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.API.IauthApi
 import com.example.doancn.API.ProfileApi.IParentApi
@@ -91,6 +92,13 @@ object RetrofitModule {
     fun provideEnrollmentApi(retrofit: Retrofit.Builder): IEnrollmentApi {
         return retrofit.build().create(IEnrollmentApi::class.java)
 
+    }
+
+    @Singleton
+    @Provides
+
+    fun provideAttendanceApi(retrofit: Retrofit.Builder): IAttendanceApi {
+        return retrofit.build().create(IAttendanceApi::class.java)
     }
 
 

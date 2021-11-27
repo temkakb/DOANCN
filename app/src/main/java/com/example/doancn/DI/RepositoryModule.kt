@@ -2,6 +2,7 @@ package com.example.doancn.DI
 
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.API.ClassApi.SubjectApi
+import com.example.doancn.API.IAttendanceApi
 import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.API.IauthApi
 import com.example.doancn.API.ProfileApi.IParentApi
@@ -59,6 +60,12 @@ object RepositoryModule {
     @Provides
     fun provideEnrollmentRepository(iEnrollmentApi: IEnrollmentApi): EnrollmentRepository {
         return EnrollmentRepository(iEnrollmentApi)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAttendanceRepository(iAttendanceApi: IAttendanceApi): AttendanceRepository {
+        return AttendanceRepository(iAttendanceApi)
     }
 
 }
