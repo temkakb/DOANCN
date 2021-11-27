@@ -4,6 +4,16 @@ import java.util.regex.Pattern
 
 
 object StringUtils {
+    var map: Map<String, String> = hashMapOf(
+        Pair("MONDAY", "Thứ hai"),
+        Pair("TUESDAY", "Thứ ba"),
+        Pair("WEDNESDAY", "Thứ tư"),
+        Pair("THURSDAY", "Thứ năm"),
+        Pair("FRIDAY", "Thứ sáu"),
+        Pair("SATURDAY", "Thứ bảy"),
+        Pair("SUNDAY", "Chủ nhật"),
+    )
+
     fun checkFormat(string: CharSequence?): Int {
         if (string == null || string.trim().isEmpty()) {
             return 0
@@ -20,6 +30,9 @@ object StringUtils {
 
 
     }
+
+    fun dowFormatter(dow: String) = map[dow]!!
+
 
 }
 

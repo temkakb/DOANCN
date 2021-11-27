@@ -64,12 +64,13 @@ constructor(
         _classroom.value = classroom
     }
 
-    fun createQR(classId: Long, context: Context) {
-        qrCodeManager.getQrCode(context, classId, token!!)
+    fun createQR(context: Context) {
+        qrCodeManager.getQrCode(classroom.value!!.classId, token!!, context = context)
     }
 
+
     fun doAttendance(qr: String, context: Context) {
-        qrCodeManager.doAttendace(classId = 2L, qr, token!!, context)
+        qrCodeManager.doAttendace(classId = classroom.value!!.classId, qr, token!!, context)
     }
 
 
@@ -105,5 +106,10 @@ constructor(
             }
         }
     }
+
+    fun resetDeleteState() {
+        _deleteState.value = Empty
+    }
+    
 
 }
