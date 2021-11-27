@@ -339,11 +339,9 @@ class LoginFragment : Fragment() {
             if (isChecked) {
                 when (checkedId) {
                     R.id.teacher -> {
-                        Log.i("Hello","Hello teacher")
                         role = "TEACHER"
                     }
                     R.id.student -> {
-                        Log.i("Hello","Hello student")
                         role = "STUDENT"
                     }
                 }
