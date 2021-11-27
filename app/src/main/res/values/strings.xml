@@ -48,6 +48,7 @@
     <string name="PAYMENTHISTORY">LỊCH SỬ ĐÓNG TIỀN</string>
     <string name="paymenthistory">Lịch sử đóng tiền</string>
     <string name="paydate">Ngày đóng tiền tiếp theo</string>
+    <string name="paiddate">Ngày đóng tiền</string>
     <string name="pay">Đóng tiền</string>
     <string name="amount">Số tiền</string>
     <string name="total">Tổng:</string>

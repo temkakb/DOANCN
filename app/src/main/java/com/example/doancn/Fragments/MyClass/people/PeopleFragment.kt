@@ -129,6 +129,7 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
                             studentInClassAdapter = null
                         } else {
                             noStudent.visibility = View.INVISIBLE
+                            listStudent = it.data as ArrayList<UserMe>
                             if (studentInClassAdapter == null) {
                                 requireView().rcv_student_in_class.layoutManager =
                                     LinearLayoutManager(
@@ -249,7 +250,7 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
 
             showStudentInfoLayout.student_info_payment_history.setOnClickListener {
                 var numberPayment = 0
-                for (i in student.enrollments!!) {
+                for (i in listStudent[position].enrollments!!) {
                     if (i.classroom.classId == classroom!!.classId) {
                         numberPayment = i.paymentHistories.count()
                     }
@@ -258,7 +259,7 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
                     if (mainViewModel.role == "TEACHER") {
                         val showPaymnetInfoLayout: View = LayoutInflater.from(context)
                             .inflate(R.layout.show_payment_history, null)
-                        for (i in student.enrollments!!) {
+                        for (i in listStudent[position].enrollments!!) {
                             if (i.classroom.classId == classroom!!.classId) {
                                 val paymentHistoryAdapter =
                                     PayementHistoryAdapter(
@@ -336,21 +337,6 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
                 }
             }
         }
-    }
-
-    private suspend fun showAttendanceStudent(token: String, sectionId: Long) {
-        val sectionRepo = SectionsRepository()
-        val list: List<UserMe> =
-            sectionRepo.getAttendanceStudents(token = token, sectionId = sectionId)
-        val viewdialog =
-            LayoutInflater.from(context).inflate(R.layout.detail_classroom_dialog, null)
-        val dialog = Dialog(requireContext())
-        val attendancedStudentsAdapter = AttendancedStudentsAdapter(requireContext(), list)
-        viewdialog.list_attendanced_students.adapter = attendancedStudentsAdapter
-        dialog.cancel_attendance_button.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.show()
     }
 
 }

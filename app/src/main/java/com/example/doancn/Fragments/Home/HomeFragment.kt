@@ -163,7 +163,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenCreated {
             homeViewModel.user.collect {
                 when (it) {
                     is DataState.Loading -> {
@@ -174,21 +174,21 @@ class HomeFragment : Fragment() {
                         Log.d("MainActivity", mainViewModel.role.toString())
                         if (mainViewModel.role == "STUDENT") {
                             Log.d("ROLE", "Học sinh")
-                                    if( userme?.enrollments == null) {
-                                        return@collect
-                                    }
-                                    else{
-                                        setStudentEventAdpater()
-                                    }
-                                } else if (mainViewModel.role == "TEACHER") {
-                                    Log.d("ROLE", "Giáo cmn viên")
-                                    if( userme?.classes == null) {
-                                        return@collect
-                                    }
-                                    else{
-                                        setTeacherEventAdpater()
-                                    }
-                                }
+                            if( userme?.enrollments == null) {
+                                return@collect
+                            }
+                            else{
+                                setStudentEventAdpater()
+                            }
+                        } else if (mainViewModel.role == "TEACHER") {
+                            Log.d("ROLE", "Giáo cmn viên")
+                            if( userme?.classes == null) {
+                                return@collect
+                            }
+                            else{
+                                setTeacherEventAdpater()
+                            }
+                        }
 
                     }
                     is DataState.Error -> {
@@ -212,7 +212,7 @@ class HomeFragment : Fragment() {
         val selectDay = dateformat.format(selected!!.time).toString()
         for (i in userme!!.enrollments!!) {
             if(i.accepted)
-            todayClass.classrooms.add(i.classroom)
+                todayClass.classrooms.add(i.classroom)
         }
         val dailyClass: ArrayList<Classroom> =
             todayClass.ClassroomsForDate(selectedDayOfWeek,selectDay)
@@ -270,12 +270,11 @@ class HomeFragment : Fragment() {
 
     private fun getMyUser(token: String, model: UserViewModel) {
         homeViewModel.getUserMe(token)
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            homeViewModel.user.collect {
-                if (it is DataState.Success) {
+        lifecycleScope.launchWhenCreated {
+            homeViewModel.user.collect{
+                if(it is DataState.Success){
                     userme = it.data
                     model.user = it.data
-
                 }
             }
         }
