@@ -34,6 +34,72 @@
                 android:padding="5dp"
                 app:singleSelection="true" />
         </HorizontalScrollView>
+        <LinearLayout
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+
+                android:layout_height="wrap_content">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="10dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bg_safe_section"
+                    android:layout_marginEnd="5dp"
+                    android:layout_height="10dp"/>
+                <TextView
+                    android:textColor="@color/primaryTextColor"
+                    android:text="@string/safe_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="10dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bg_warning_section"
+                    android:layout_marginEnd="5dp"
+                    android:layout_height="10dp"/>
+                <TextView
+                    android:textColor="@color/primaryTextColor"
+                    android:text="@string/warning_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="10dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bg_dangerous_section"
+                    android:layout_marginEnd="5dp"
+                    android:layout_height="10dp"/>
+                <TextView
+                    android:textColor="@color/primaryTextColor"
+                    android:text="@string/dangerous_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:backgroundTint="@color/black"
+                android:layout_height="1dp"/>
+
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -45,8 +111,9 @@
             android:background="@drawable/md_transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/section_item"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
+            app:layout_constraintTop_toBottomOf="@+id/status">
 
         </androidx.recyclerview.widget.RecyclerView>
 

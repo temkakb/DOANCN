@@ -110,6 +110,7 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
         options = ScanOptions()
         options.setBeepEnabled(false)
         options.setPrompt("quét mã QR để tiến hành điểm danh")
+
     }
 
 

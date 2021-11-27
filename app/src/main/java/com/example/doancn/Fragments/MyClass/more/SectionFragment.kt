@@ -1,6 +1,7 @@
 package com.example.doancn.Fragments.MyClass.more
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,7 @@ class SectionFragment : Fragment() {
 
         }
         group.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
-            // Respond to button selection
+            Log.d("wtfme",checkedId.toString())
         }
 
 

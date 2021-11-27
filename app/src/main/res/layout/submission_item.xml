@@ -111,6 +111,12 @@
                     android:text="tải về"
                     app:icon="@drawable/ic_baseline_arrow_downward_24"
                     android:layout_height="match_parent"/>
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/process_submission_item"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true" />
 
 
             </LinearLayout>
