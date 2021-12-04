@@ -11,6 +11,7 @@ import com.example.doancn.Models.QrCodeX
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.Repository.AttendanceRepository
 import com.example.doancn.Repository.ClassRepository
+import com.example.doancn.Repository.EnrollmentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -28,7 +29,8 @@ constructor(
     @Named("auth_token") val token: String?,
     @Named("user_role") val role: String?,
     private val classRepository: ClassRepository,
-    private val attendanceRepository: AttendanceRepository
+    private val attendanceRepository: AttendanceRepository,
+    private val enrollmentRepository: EnrollmentRepository,
 ) : ViewModel() {
 
     sealed class ClassEvent<out R>() {
@@ -37,6 +39,9 @@ constructor(
         object Empty : ClassEvent<Nothing>()
         object Loading : ClassEvent<Nothing>()
     }
+
+    private val _acceptState = MutableStateFlow<ClassEvent<Boolean>>(Empty)
+    val acceptState: MutableStateFlow<ClassEvent<Boolean>> get() = _acceptState
 
     private val mutableSelectedItem = MutableLiveData<ClassQuest.Location>()
     val selectedItem: LiveData<ClassQuest.Location> get() = mutableSelectedItem
@@ -107,8 +112,7 @@ constructor(
 
     fun updateClassroom(classRoom: ClassQuest) {
         viewModelScope.launch(Dispatchers.IO) {
-            _deleteState.value = Loading
-            delay(1000)
+            _updateState.value = Loading
             when (val state =
                 classRepository.updateClass(classroom.value!!.classId, classRoom, token!!)) {
                 is DataState.Success -> {
@@ -124,6 +128,24 @@ constructor(
     fun resetDeleteState() {
         _deleteState.value = Empty
     }
-    
+
+    fun acceptEnrollment(userId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _acceptState.value = Loading
+            when (val state = enrollmentRepository.acceptEnrollment(classroom.value!!.classId,userId,token!!)) {
+                is DataState.Success -> {
+                    _acceptState.value = Success(state.data)
+                }
+                is DataState.Error -> {
+                    _acceptState.value = Error(state.data)
+                }
+            }
+        }
+    }
+
+    fun resetAcceptState() {
+        _acceptState.value = Empty
+    }
+
 
 }

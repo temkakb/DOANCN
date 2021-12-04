@@ -1,7 +1,6 @@
 package com.example.doancn.Fragments.MyClass.people
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -10,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -19,21 +20,33 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.doancn.Adapters.AttendancedStudentsAdapter
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onDismiss
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
+import com.afollestad.materialdialogs.list.customListAdapter
+import com.afollestad.materialdialogs.list.getListAdapter
+import com.afollestad.materialdialogs.list.getRecyclerView
+import com.bumptech.glide.Glide
 import com.example.doancn.Adapters.PayementHistoryAdapter
 import com.example.doancn.Adapters.StudentInClassAdapter
 import com.example.doancn.Adapters.StudentParentAdapter
 import com.example.doancn.ClassViewModel
+import com.example.doancn.ClassViewModel.ClassEvent
 import com.example.doancn.DI.DataState
+import com.example.doancn.Fragments.MyClass.people.PeopleViewModel.GetEnrollmentEvent.Empty
+import com.example.doancn.IClassActivity
 import com.example.doancn.MainViewModel
 import com.example.doancn.Models.Classroom
 import com.example.doancn.Models.UserMe
 import com.example.doancn.R
-import com.example.doancn.Repository.SectionsRepository
-import com.example.doancn.databinding.PeopleFragmentBinding
+import com.example.doancn.databinding.*
+import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.detail_classroom_dialog.*
 import kotlinx.android.synthetic.main.edit_parent.view.*
+import kotlinx.android.synthetic.main.enrollment_item.*
 import kotlinx.android.synthetic.main.fragment_joinclass.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -62,14 +75,23 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
     private var classroom: Classroom? = null
     private val peopleViewModel: PeopleViewModel by viewModels()
     private var _binding: PeopleFragmentBinding? = null
+
+
     private val binding get() = _binding!!
 
+    private var _itemBinding: EnrollmentListBinding? = null
+    private val dialogBinding get() = _itemBinding!!
+    private lateinit var userMes: ArrayList<UserMe>
+    private lateinit var adapter: ItemAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var dialog: MaterialDialog
     companion object {
         fun newInstance() = PeopleFragment()
     }
 
     private lateinit var viewModel: PeopleViewModel
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,8 +101,75 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
 
         classroom = classViewModel.classroom.value!!
         getListStudent(mainViewModel.token.toString())
+        userMes= (peopleViewModel.enrolments.value as Empty).data!!
+        dialog = MaterialDialog(requireContext())
+            .customView(R.layout.enrollment_list, scrollable = true)
+            .cornerRadius(16f)
+            .title(R.string.tittle_enrollment)
+            .customListAdapter(ItemAdapter(userMes),LinearLayoutManager(requireContext()))
+            .onDismiss {
+                peopleViewModel.resetEnrollmentState()
+            }
+        val customView = dialog.getCustomView()
+        collectData()
+        binding.newStudent.setOnClickListener{
+            peopleViewModel.getEnrollments(classViewModel.classroom.value!!.classId)
+            dialog.show()
 
+        }
+        _itemBinding = EnrollmentListBinding.bind(dialog.getCustomView())
+        setUpTeacher()
         return binding.root
+    }
+
+    private fun setUpTeacher() {
+        binding.teacherName.text = classroom!!.teacher.name
+        val bmp = classroom!!.teacher.image?.let {
+            val imgDecode: ByteArray =
+                Base64.getDecoder().decode(it)
+            BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
+        } ?: ""
+
+        val circularProgressDrawable = CircularProgressDrawable(requireContext())
+        circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.centerRadius = 30f
+        circularProgressDrawable.start()
+        Glide.with(requireContext())
+            .asBitmap()
+            .load(bmp)
+            .centerCrop()
+            .placeholder(circularProgressDrawable)
+            .error(R.drawable.orther)
+            .into(binding.teacherProfileImage)
+    }
+
+    private fun collectData() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            peopleViewModel.enrolments.collect {
+               when(it){
+                   is Empty -> {
+                       dialogBinding.CircularProgressIndicator.visibility = View.VISIBLE
+                       dialogBinding.announcement.visibility  =View.GONE
+                   }
+                   is PeopleViewModel.GetEnrollmentEvent.Error -> {
+                       dialogBinding.announcement.visibility  =View.GONE
+                       dialogBinding.CircularProgressIndicator.visibility = View.GONE
+                   }
+                   is PeopleViewModel.GetEnrollmentEvent.Loading -> {
+                       dialogBinding.CircularProgressIndicator.visibility = View.VISIBLE
+                       dialogBinding.announcement.visibility  =View.GONE
+                       dialog.getRecyclerView().visibility = View.GONE
+                   }
+                   is PeopleViewModel.GetEnrollmentEvent.Success -> {
+                       dialogBinding.CircularProgressIndicator.visibility = View.GONE
+                       userMes = it.data!!
+                       if(userMes.isEmpty()) dialogBinding.announcement.visibility  =View.VISIBLE
+                       dialog.getRecyclerView().visibility = View.VISIBLE
+                      (dialog.getListAdapter() as ItemAdapter).changeDataSet(userMes)
+                   }
+               }
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -337,6 +426,85 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
                 }
             }
         }
+    }
+
+
+
+    private inner class ItemAdapter(private var list: ArrayList<UserMe>) :
+        RecyclerView.Adapter<ViewHolder>() {
+
+        private lateinit var iClassActivity: IClassActivity
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            return ViewHolder(
+                EnrollmentItemBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            )
+
+        }
+        override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+            iClassActivity = requireActivity() as IClassActivity
+            super.onAttachedToRecyclerView(recyclerView)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.text.text = list[position].name
+            val bmp = list[position].image?.let {
+                val imgDecode: ByteArray =
+                    Base64.getDecoder().decode(it)
+                BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
+            } ?: ""
+
+            val circularProgressDrawable = CircularProgressDrawable(requireContext())
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
+            Glide.with(requireContext())
+                .asBitmap()
+                .load(bmp)
+                .centerCrop()
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.orther)
+                .into(holder.image)
+
+            holder.acceptBtn.setOnClickListener{
+                iClassActivity.acceptEnrollment(list[position].userId)
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    classViewModel.acceptState.collect {
+                        when(it){
+                            is ClassEvent.Error -> Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+                            is ClassEvent.Success -> {
+                                list.removeAt(position)
+                                notifyItemRemoved(position)
+                                notifyItemRangeChanged(position, list.size)
+                                classViewModel.resetAcceptState()
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        override fun getItemCount(): Int {
+            return list.size
+        }
+
+        fun changeDataSet(userMe: ArrayList<UserMe>){
+            list = userMe
+            notifyDataSetChanged()
+        }
+    }
+
+    private inner class ViewHolder(binding: EnrollmentItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val text: TextView = binding.name
+        val image: ImageView = binding.profileImage
+        val acceptBtn: MaterialButton = binding.acceptBtn
+
     }
 
 }

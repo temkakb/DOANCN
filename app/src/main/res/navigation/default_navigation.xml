@@ -105,5 +105,11 @@
         <action
             android:id="@+id/action_nav_myClass_to_classActivity"
             app:destination="@id/classActivity" />
+        <action
+            android:id="@+id/action_nav_myClass_to_nav_joinclass"
+            app:destination="@id/nav_joinclass" />
+        <action
+            android:id="@+id/action_nav_myClass_to_nav_createclass"
+            app:destination="@id/nav_createclass" />
     </fragment>
 </navigation>

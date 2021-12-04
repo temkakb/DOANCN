@@ -20,6 +20,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.example.doancn.Models.classModel.ClassQuest
 import com.example.doancn.R
 import com.example.doancn.Utilities.StringUtils
@@ -45,6 +47,7 @@ class CreateClassFragment : Fragment() {
         fun newInstance() = CreateClassFragment()
     }
 
+    private lateinit var navController: NavController
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: Int = 1
 
     private val viewModel: CreateClassViewModel by activityViewModels()
@@ -66,7 +69,7 @@ class CreateClassFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = CreateClassFragmentBinding.inflate(inflater, container, false)
-
+        navController = findNavController()
         viewModel.selectedItem.observe(viewLifecycleOwner, Observer {
             location = it
 
@@ -79,9 +82,12 @@ class CreateClassFragment : Fragment() {
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Thêm mới thành công")
                         .setMessage(it.data)
-                        .setNegativeButton("Ở lại") { dialog, which ->
+                        .setNegativeButton("về trang chủ") { dialog, which ->
+                            navController.navigate(R.id.action_nav_createclass_to_nav_home)
+
                         }
                         .setPositiveButton("Đi đén ds lớp") { dialog, which ->
+                            navController.navigate(R.id.action_nav_createclass_to_myClassRoomFragment)
                         }
                         .show()
                     binding.nestedScrollView.visibility = View.VISIBLE
@@ -285,9 +291,23 @@ class CreateClassFragment : Fragment() {
         val locationImage = binding.createclassLocation
         locationImage.setOnClickListener {
             val REQUEST_CODE = 300
-            getLocationPermission()
-            val intent = Intent(requireContext(), MapsActivity::class.java)
-            activity?.startActivityForResult(intent, REQUEST_CODE)
+            if (ContextCompat.checkSelfPermission(
+                    this.requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                == PackageManager.PERMISSION_GRANTED
+            ){
+                val intent = Intent(requireContext(), MapsActivity::class.java)
+                activity?.startActivityForResult(intent, REQUEST_CODE)
+            }
+            else {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+                )
+
+            }
+
 
         }
     }
@@ -397,22 +417,6 @@ class CreateClassFragment : Fragment() {
             }
     }
 
-    private fun getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this.requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
-        )
-            return
-        else {
-            ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-            )
-        }
-
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

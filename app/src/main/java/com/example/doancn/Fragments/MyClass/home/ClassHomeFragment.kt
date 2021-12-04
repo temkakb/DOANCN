@@ -21,13 +21,18 @@ import com.example.doancn.Models.Classroom
 import com.example.doancn.R
 import com.example.doancn.databinding.BannerInfoBinding
 import com.example.doancn.databinding.ClassHomeFragmentBinding
-import kotlinx.android.synthetic.main.class_home_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 import android.content.Intent
 import android.net.Uri
+import androidx.navigation.NavController
 import com.example.doancn.Utilities.StringUtils
 import com.google.android.material.chip.Chip
+import com.google.firebase.database.FirebaseDatabase
+import com.loopj.android.http.AsyncHttpResponseHandler
+
+import com.loopj.android.http.AsyncHttpClient
+import cz.msebera.android.httpclient.Header
 
 
 @ExperimentalCoroutinesApi
@@ -37,7 +42,7 @@ class ClassHomeFragment : Fragment() {
     private val classViewModel: ClassViewModel by activityViewModels()
     private val binding get() = _binding!!
     private lateinit var vp2: ViewPager2
-
+    private lateinit var navController: NavController
     companion object {
         fun newInstance() = ClassHomeFragment()
     }
@@ -53,7 +58,7 @@ class ClassHomeFragment : Fragment() {
     ): View? {
         _binding = ClassHomeFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        setupAnnouncementTable()
+        //setupAnnouncementTable()
         if (arguments?.containsKey("classRoomHome") == true) {
             val classroom =
                 arguments?.getSerializable("classRoomHome") as Classroom
@@ -106,7 +111,26 @@ class ClassHomeFragment : Fragment() {
                 viewBinding.address.setText(classroom.location.address)
                 viewBinding.paymentOption.setText(resources.getStringArray(R.array.option)[classroom.option.paymentOptionId.toInt()-1])
                 viewBinding.fee.setText(classroom.fee.toString())
+                //setThumbnails()
 
+                viewBinding.map.setOnClickListener{
+                    val destinationLatitude = classroom.location.coordinateX
+                    val destinationLongitude = classroom.location.coordinateY
+                    val address = classroom.location.address
+//                    Log.d("location",destinationLatitude.toString())
+//                    Log.d("location",destinationLongitude.toString())
+//                    val gmmIntentUri = Uri.parse("google.navigation:q=$destinationLatitude,$destinationLongitude&mode=d")
+//                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+//                    mapIntent.setPackage("com.google.android.apps.maps")
+//                    startActivity(mapIntent)
+
+                    val gmmIntentUri =
+                        Uri.parse("geo:0,0?q=${destinationLatitude},${destinationLongitude}(${address})")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    startActivity(mapIntent)
+
+                }
                 for(shift in classroom.shifts.reversed()){
 
                     val chip = layoutInflater.inflate(
@@ -137,12 +161,44 @@ class ClassHomeFragment : Fragment() {
 
     }
 
-    private fun setupAnnouncementTable() {
-        vp2 = binding.vp2Announcement
-        vp2.adapter = AnnouncementAdapter(requireContext(), Announcement.listOfAnnouncement())
-        vp2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+//    private fun setupAnnouncementTable() {
+//        vp2 = binding.vp2Announcement
+//        vp2.adapter = AnnouncementAdapter(requireContext(), Announcement.listOfAnnouncement())
+//        vp2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+//
+//    }
 
+
+    fun setThumbnails() {
+        val client = AsyncHttpClient()
+        client["https://maps.googleapis.com/maps/api/staticmap?center=40.714728,-73.998672&zoom=14&size=600x300&key=AIzaSyCy-bRrRM94EOS0HxczPaxjoEOvJ3Z-UDQ", object : AsyncHttpResponseHandler() {
+            override fun onStart() {
+                // called before request is started
+            }
+
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<Header?>?,
+                response: ByteArray?
+            ) {
+                Log.d("hihi",response.toString())
+
+            }
+
+            override fun onFailure(
+                statusCode: Int,
+                headers: Array<Header?>?,
+                errorResponse: ByteArray?,
+                e: Throwable?
+            ) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                Log.d("onfaillure","failed")
+            }
+
+            override fun onRetry(retryNo: Int) {
+                // called when request is retried
+            }
+        }]
     }
-
 
 }

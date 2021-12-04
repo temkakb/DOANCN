@@ -183,6 +183,10 @@
     <string name="downloading">Đang tải</string>
     <string name="download">tải về</string>
     <string name="shifts">Buổi học trong tuần</string>
+    <string name="accept">Chấp nhận</string>
+    <string name="denied">Từ chối</string>
+    <string name="tittle_enrollment">Danh sách yêu cầu tham gia</string>
+    <string name="dumb_text">test</string>
 
 
 </resources>
