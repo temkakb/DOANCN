@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "344367661183",
+    "firebase_url": "https://my-dacn-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "my-dacn",
+    "storage_bucket": "my-dacn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344367661183:android:54b4343f8a159c073abf4a",
+        "android_client_info": {
+          "package_name": "com.example.doancn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344367661183-rgf80tat9hheqo99tulac3j6flqvqbfu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.doancn",
+            "certificate_hash": "d22113dd9ad4b82435bc4db3c6abf190e1c76d8a"
+          }
+        },
+        {
+          "client_id": "344367661183-ufoidu6n318u4dva0vfc3t50qd11hhpu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbQS2ABEWaR_dHd3prdkSJRWACJIwDVeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344367661183-ufoidu6n318u4dva0vfc3t50qd11hhpu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

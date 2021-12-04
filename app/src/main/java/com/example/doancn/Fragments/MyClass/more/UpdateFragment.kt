@@ -66,6 +66,7 @@ class UpdateFragment : Fragment() {
     private val createClassViewModel: CreateClassViewModel by activityViewModels()
     private var startAt: Double = 0.0
     private var duration: Double = 0.0
+    private  var currentNumber:Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subjects = resources.getStringArray(R.array.Subjects)
@@ -84,7 +85,7 @@ class UpdateFragment : Fragment() {
             false
         )
         subject = ClassQuest.Subject(classroom.subject.name, classroom.subject.subjectId.toString())
-
+        currentNumber = classroom.currentAttendanceNumber
         dateStart = LocalDate.parse(classroom.startDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
         binding.createCLassDateStart.setText(classroom.startDate)
         val dow = resources.getStringArray(R.array.Dow)
@@ -154,7 +155,7 @@ class UpdateFragment : Fragment() {
                 val classRoom = ClassQuest(
                     name = binding.createCLassName.text.toString(),
                     about = "",
-                    currentAttendanceNumber = 0,
+                    currentAttendanceNumber = currentNumber ,
                     fee = binding.createCLassFee.text.toString().toDouble(),
                     location = location!!,
                     paymentOption = paymentOption!!,
@@ -209,8 +210,9 @@ class UpdateFragment : Fragment() {
                             message(text = "Cập nhật thành công")
                             positiveButton(R.string.backToClass) { _ ->
                                 Log.d("event_data", event.data.toString())
+                                navController.popBackStack()
                                 navController.navigate(
-                                    R.id.action_updateFragment_to_navigation_home,
+                                    R.id.action_navigation_home_self,
                                     Bundle().apply {
                                         putSerializable("classRoomHome", event.data)
                                     })
@@ -247,9 +249,20 @@ class UpdateFragment : Fragment() {
         val locationImage = binding.createclassLocation
         locationImage.setOnClickListener {
             val REQUEST_CODE = 300
-            if (getLocationPermission()) {
+            if (ContextCompat.checkSelfPermission(
+                    this.requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 val intent = Intent(requireContext(), MapsActivity::class.java)
                 activity?.startActivityForResult(intent, REQUEST_CODE)
+            } else {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+                )
+
             }
 
 

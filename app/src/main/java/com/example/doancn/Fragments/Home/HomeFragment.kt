@@ -163,7 +163,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeData() {
-        lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             homeViewModel.user.collect {
                 when (it) {
                     is DataState.Loading -> {
@@ -270,7 +270,7 @@ class HomeFragment : Fragment() {
 
     private fun getMyUser(token: String, model: UserViewModel) {
         homeViewModel.getUserMe(token)
-        lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             homeViewModel.user.collect{
                 if(it is DataState.Success){
                     userme = it.data

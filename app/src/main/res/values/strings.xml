@@ -38,7 +38,7 @@
     <string name="addparent">Thêm phụ huynh</string>
     <string name="changeinfo">Thay đổi \nthông tin</string>
     <string name="parent">Phụ huynh</string>
-    <string name="changepass">Đổi \nmật khẩu</string>
+    <string name="changepass">Đổi mật khẩu</string>
     <string name="Email">Email</string>
     <string name="dob">Ngày sinh</string>
     <string name="crwp">Nơi học tập hiện tại</string>
@@ -64,6 +64,7 @@
     <string name="subject">Môn học</string>
     <string name="fee">Phí</string>
     <string name="address">Địa chỉ</string>
+    <string name="info">Thông tin lớp học</string>
     <string name="about">Giới thiệu</string>
     <string name="about2">Mô tả lớp học</string>
     <string name="enrollmentnow">Đăng ký Ngay</string>
@@ -181,6 +182,11 @@
     <string name="pls_wait">Xin chờ</string>
     <string name="downloading">Đang tải</string>
     <string name="download">tải về</string>
+    <string name="shifts">Buổi học trong tuần</string>
+    <string name="accept">Chấp nhận</string>
+    <string name="denied">Từ chối</string>
+    <string name="tittle_enrollment">Danh sách yêu cầu tham gia</string>
+    <string name="dumb_text">test</string>
 
 
 </resources>

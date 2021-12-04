@@ -77,7 +77,6 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-
     fun provideAuthApi(retrofit: Retrofit.Builder): IauthApi {
         return retrofit.build().create(IauthApi::class.java)
     }

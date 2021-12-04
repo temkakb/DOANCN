@@ -157,7 +157,7 @@ class ClassRepository @Inject constructor(
             if (response.isSuccessful) {
                 DataState.Success(response.body()!!)
             } else {
-                DataState.Error(response.errorBody().toString())
+                DataState.Error(response.errorBody()!!.string().toString())
             }
         } catch (e: java.lang.Exception) {
             DataState.Error(e.message.toString())
