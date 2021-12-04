@@ -86,7 +86,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("108237023578-7m8i6c36u0n10donvfo4h4185qi46fb0.apps.googleusercontent.com")
+            .requestIdToken("286503875864-qrg8vlfr13gq2begqbn544d73q02li4v.apps.googleusercontent.com")
             .requestEmail()
             .build()
 
