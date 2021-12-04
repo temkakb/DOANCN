@@ -111,6 +111,10 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
                 peopleViewModel.resetEnrollmentState()
                 getListStudent(mainViewModel.token.toString())
             }
+        if(mainViewModel.role == "STUDENT"){
+            binding.newStudent.visibility = View.GONE
+        }else
+            binding.newStudent.visibility = View.VISIBLE
         val customView = dialog.getCustomView()
         collectData()
         binding.newStudent.setOnClickListener{

@@ -58,7 +58,10 @@ class MyClassRoomFragment : Fragment() {
             }
         }else{
             binding.navigateBtn.text = "Tham gia lớp học"
-            findNavController().navigate(R.id.action_nav_myClass_to_nav_joinclass)
+            binding.navigateBtn.setOnClickListener{
+                findNavController().navigate(R.id.action_nav_myClass_to_nav_joinclass)
+            }
+
         }
         return binding.root
     }
