@@ -118,6 +118,27 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/menu/mymenu.xml" value="0.2" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/menu/nav_menu.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/DOANCN/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.11388888888888889" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/drawable/announcement_shape.xml" value="0.128125" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/drawable/circle.xml" value="0.1953125" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/drawable/grey_shape.xml" value="0.128125" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/drawable/ic_baseline_person_add_24.xml" value="0.1984375" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/drawable/round_coner.xml" value="0.128125" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/banner_info.xml" value="0.22" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/chip.xml" value="0.10371376811594203" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/class_home_fragment.xml" value="0.1" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/class_items.xml" value="0.11197916666666667" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/class_list_item.xml" value="0.11197916666666667" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/create_class_fragment.xml" value="0.16" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/enrollment_item.xml" value="0.25" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/enrollment_list.xml" value="0.12907608695652173" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/fragment_section.xml" value="0.18" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/fragment_update.xml" value="0.10960144927536232" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/my_class_room_fragment.xml" value="0.17" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/people_fragment.xml" value="0.33" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/layout/show_student_info.xml" value="0.2" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/android project/client/DOANCN/app/src/main/res/menu/mymenu.xml" value="0.1375" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_button.xml" value="0.12291666666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_button_enroll.xml" value="0.13541666666666666" />
         <entry key="..\:/projects/DOANCN/app/src/main/res/drawable/bg_button_enrolled.xml" value="0.11822916666666666" />

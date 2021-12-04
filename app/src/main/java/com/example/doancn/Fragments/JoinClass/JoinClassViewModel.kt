@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Classroom
 import com.example.doancn.Repository.EnrollmentRepository
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +46,9 @@ class JoinClassViewModel
             _enrollstatus.value = enrollmentRepository.doEnroll(classroom.classId, token!!)
             when (_enrollstatus.value) {
                 is DataState.Error -> classroom.enrolled = false
-                is DataState.Success -> classroom.enrolled = true
+                is DataState.Success -> {
+                    classroom.enrolled = true
+                }
             }
         }
 

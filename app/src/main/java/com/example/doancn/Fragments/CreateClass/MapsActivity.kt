@@ -2,6 +2,7 @@ package com.example.doancn.Fragments.CreateClass
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -106,9 +107,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         getDeviceLocation()
         googleMap.setOnCameraIdleListener {
-            binding.confirmBtn.isEnabled = true
-            binding.confirmBtn.isClickable = true
+
             val center: LatLng = googleMap.cameraPosition.target
+            val geocoder = Geocoder(this)
+
+            if (geocoder.getFromLocation(center.latitude,center.longitude,1).isNotEmpty()){
+                binding.confirmBtn.isEnabled = true
+                binding.confirmBtn.isClickable = true
+            }
             Log.d("Camera move", center.toString())
             binding.confirmBtn.setOnClickListener {
                 val intent = Intent()

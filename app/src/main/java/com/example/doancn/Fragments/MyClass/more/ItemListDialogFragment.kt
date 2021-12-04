@@ -69,20 +69,14 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-            if (classViewModel.role == "TEACHER") {
-                if (list[position].type == 1)
-                    holder.text.setTextColor(getColor(requireContext(), R.color.red))
-                holder.text.text = list[position].name
-                holder.icon.setImageResource(list[position].icon)
-                holder.itemView.setOnClickListener {
-                    iClassActivity.handleBottomSheetItem(list[position])
-                }
-
-            } else {
-                holder.text.isEnabled = false
-                holder.icon.isEnabled = false
+            if (list[position].type == 1)
+                holder.text.setTextColor(getColor(requireContext(), R.color.red))
+            holder.text.text = list[position].name
+            holder.icon.setImageResource(list[position].icon)
+            holder.itemView.setOnClickListener {
+                iClassActivity.handleBottomSheetItem(list[position])
             }
+            holder.itemView.isEnabled = classViewModel.role == "TEACHER"
 
         }
 

@@ -3,6 +3,8 @@ package com.example.doancn.Repository
 import com.example.doancn.API.IEnrollmentApi
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.Classroom
+import com.example.doancn.Models.UserMe
+import java.lang.Exception
 import javax.inject.Inject
 
 class EnrollmentRepository
@@ -53,5 +55,30 @@ class EnrollmentRepository
 
         } else
             return DataState.Error(response.errorBody()!!.string().toString())
+    }
+
+    suspend fun getEnrollment(classId:Long,token: String): DataState<ArrayList<UserMe>> {
+        return try {
+            val response = enrollmentapi.getListEnrollment(classId,token)
+            if(response.isSuccessful){
+                DataState.Success(response.body()!!)
+            }else
+                 DataState.Error(response.errorBody()!!.string().toString())
+
+        }catch (e:Exception){
+            DataState.Error(e.message.toString())
+        }
+    }
+    suspend fun acceptEnrollment(classId: Long, userId: Int, token: String): DataState<Boolean>{
+        return try {
+            val response = enrollmentapi.acceptEnrollment(classId,userId,token)
+            if(response.isSuccessful){
+                DataState.Success(true)
+            }else
+                DataState.Error(response.errorBody()!!.string().toString())
+
+        }catch (e:Exception){
+            DataState.Error(e.message.toString())
+        }
     }
 }

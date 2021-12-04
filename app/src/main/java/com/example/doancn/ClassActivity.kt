@@ -3,7 +3,6 @@ package com.example.doancn
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
@@ -176,7 +175,12 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
             }
         }
     }
-    
+
+    override fun acceptEnrollment(userId: Int) {
+        classViewModel.acceptEnrollment(userId)
+    }
+
+
     @SuppressLint("NotifyDataSetChanged")
     private fun observeDeleteState() {
         lifecycleScope.launchWhenCreated {
@@ -325,5 +329,6 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
 
 interface IClassActivity {
     fun handleBottomSheetItem(item: BottomSheetItem)
+    fun acceptEnrollment(userId: Int)
 }
 
