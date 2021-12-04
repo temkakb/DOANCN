@@ -2,18 +2,22 @@ package com.example.doancn.Adapters
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
 import com.example.doancn.Fragments.JoinClass.JoinClassViewModel
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
 import kotlinx.android.synthetic.main.class_items.view.*
 import kotlinx.android.synthetic.main.detail_classroom_dialog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
 
 // noi that vong thau troi xanh
 // clean code : #2
@@ -28,7 +32,7 @@ class EnrolmentArrayAdapter(
     context,
     R.layout.class_items, listclass
 ) {
-
+    val circularProgressDrawable = CircularProgressDrawable(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = LayoutInflater
@@ -48,6 +52,19 @@ class EnrolmentArrayAdapter(
         view.classname.text = listclass[position].name
         view.fee.text = fee
         view.startday.text = startday
+        val bmp = listclass[position].teacher.image?.let {
+            val imgDecode: ByteArray =
+                Base64.getDecoder().decode(it)
+            BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
+        } ?: ""
+
+        Glide.with(context)
+            .asBitmap()
+            .load(bmp)
+            .centerCrop()
+            .placeholder(circularProgressDrawable)
+            .error(R.drawable.orther)
+            .into(view.avatarteacher)
         if (listclass[position].enrolled)
             switchtoenrolled(view.btn_enroll)
         else
@@ -91,13 +108,26 @@ class EnrolmentArrayAdapter(
                 LayoutInflater.from(context).inflate(R.layout.detail_classroom_dialog, null)
             val dialog = Dialog(context)
             dialog.setContentView(viewdialog)
-            dialog.about.text = c.about
-            dialog.shortdescription.text = c.shortDescription
+            dialog.about.text = c.shortDescription
+            dialog.shortdescription.text = c.about
             dialog.address.text = c.location.address
             dialog.teacher.text = c.teacher.name
             dialog.classname.text = c.name
             dialog.startday.text = c.startDate
             dialog.numberattendance.text = c.currentAttendanceNumber.toString()
+            val bmp = c.teacher.image?.let {
+                val imgDecode: ByteArray =
+                    Base64.getDecoder().decode(it)
+                BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
+            } ?: ""
+
+            Glide.with(context)
+                .asBitmap()
+                .load(bmp)
+                .centerCrop()
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.orther)
+                .into(dialog.avatarteacher)
             val fee: String
             if (c.option.paymentOptionId.toInt() == 6) {
                 fee = "Miễn phí"
