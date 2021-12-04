@@ -109,6 +109,7 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
             .customListAdapter(ItemAdapter(userMes),LinearLayoutManager(requireContext()))
             .onDismiss {
                 peopleViewModel.resetEnrollmentState()
+                getListStudent(mainViewModel.token.toString())
             }
         val customView = dialog.getCustomView()
         collectData()
@@ -481,6 +482,8 @@ class PeopleFragment : Fragment(), StudentInClassAdapter.OnItClickListener {
                                 notifyItemRemoved(position)
                                 notifyItemRangeChanged(position, list.size)
                                 classViewModel.resetAcceptState()
+
+
                             }
                         }
                     }
