@@ -201,7 +201,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/imgChangePass"
                             android:layout_centerHorizontal="true"
-                            android:text="     @string/changepass"
+                            android:paddingTop="10dp"
+                            android:text="@string/changepass"
                             android:textColor="@color/white"
                             android:textSize="15sp" />
 

@@ -24,6 +24,7 @@
             android:title="Tham gia lớp học"/>
 
         <item
+            android:visible="false"
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="Cài đặt"/>
@@ -47,7 +48,9 @@
 
         </item>
 
-        <item android:title="Cộng đồng">
+        <item
+            android:visible="false"
+            android:title="Cộng đồng">
 
             <menu>
                 <item
