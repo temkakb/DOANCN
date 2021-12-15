@@ -25,6 +25,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.navigation.NavController
 import com.example.doancn.Utilities.StringUtils
 import com.google.android.material.chip.Chip
@@ -104,8 +105,12 @@ class ClassHomeFragment : Fragment() {
                 viewBinding.teacherPhoneNumber.text = "Phone :${classroom.teacher.phoneNumber}"
                 viewBinding.teacherPhoneNumber.setOnClickListener{
                     val phone = classroom.teacher.phoneNumber
-                    val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
-                    startActivity(intent)
+                    if(phone.equals("chưa xác định",true)){
+                        Toast.makeText(requireContext(),"Giáo viên chưa cập nhật số điện thoại",Toast.LENGTH_SHORT).show()
+                    }else {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+                        startActivity(intent)
+                    }
                 }
                 viewBinding.className.setText(classroom.name)
                 viewBinding.address.setText(classroom.location.address)
