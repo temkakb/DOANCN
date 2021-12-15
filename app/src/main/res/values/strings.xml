@@ -187,6 +187,7 @@
     <string name="denied">Từ chối</string>
     <string name="tittle_enrollment">Danh sách yêu cầu tham gia</string>
     <string name="dumb_text">test</string>
+    <string name="NewAnnouncement">Tạo thông báo mới</string>
 
 
 </resources>

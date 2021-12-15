@@ -15,6 +15,14 @@ interface ClassApi {
         @Header("Authorization") authorization: String
     ): Response<ResponseBody>
 
+    @POST("/classes/{id}/announcements")
+    suspend fun createAnnouncement(
+        @Path("id") classId: Long,
+        @Body announcement: Announcement,
+        @Header("Authorization") authorization: String
+    ): Response<Announcement>
+
+
     @GET("/classes/mine")
     suspend fun getMyClass(@Header("Authorization") authorization: String): Response<List<Classroom>>
 

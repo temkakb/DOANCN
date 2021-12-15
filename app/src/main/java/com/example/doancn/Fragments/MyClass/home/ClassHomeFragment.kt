@@ -16,7 +16,6 @@ import com.afollestad.materialdialogs.customview.getCustomView
 import com.bumptech.glide.Glide
 import com.example.doancn.Adapters.AnnouncementAdapter
 import com.example.doancn.ClassViewModel
-import com.example.doancn.Models.Announcement
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
 import com.example.doancn.databinding.BannerInfoBinding
@@ -26,14 +25,23 @@ import java.util.*
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.afollestad.materialdialogs.input.input
+import com.example.doancn.ClassViewModel.ClassEvent
+import com.example.doancn.ClassViewModel.ClassEvent.*
+import com.example.doancn.DI.DataState
+import com.example.doancn.MainActivity
+import com.example.doancn.Models.Announcement
 import com.example.doancn.Utilities.StringUtils
 import com.google.android.material.chip.Chip
-import com.google.firebase.database.FirebaseDatabase
 import com.loopj.android.http.AsyncHttpResponseHandler
 
 import com.loopj.android.http.AsyncHttpClient
 import cz.msebera.android.httpclient.Header
+import kotlinx.coroutines.flow.collect
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 @ExperimentalCoroutinesApi
@@ -44,6 +52,7 @@ class ClassHomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var vp2: ViewPager2
     private lateinit var navController: NavController
+    private lateinit var adapter: AnnouncementAdapter
     companion object {
         fun newInstance() = ClassHomeFragment()
     }
@@ -59,7 +68,7 @@ class ClassHomeFragment : Fragment() {
     ): View? {
         _binding = ClassHomeFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        //setupAnnouncementTable()
+        setupAnnouncementTable()
         if (arguments?.containsKey("classRoomHome") == true) {
             val classroom =
                 arguments?.getSerializable("classRoomHome") as Classroom
@@ -67,7 +76,50 @@ class ClassHomeFragment : Fragment() {
             classViewModel.selectItem(classroom)
         }
         setupBanner()
+        binding.newAnnouncement.setOnClickListener {
+            MaterialDialog(requireContext()).show {
+                title(R.string.NewAnnouncement)
+                input(
+                    allowEmpty = false,
+                    waitForPositiveButton = true,
+                    hint = "Nội dung thông báo"
+                ) { dialog, text ->
+                    // Text submitted with the action button, might be an empty string`
+                    val announcement = Announcement(
+                        text.toString(), LocalDateTime.now().format(
+                            DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+                        ).toString()
+                    )
+                    classViewModel.createAnnouncement(announcement)
+                }
+                positiveButton(R.string.accept)
+            }
+        }
+        collectAnnouncement()
         return root
+    }
+
+    private fun collectAnnouncement() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            classViewModel.newAnnouncementEvent.collect { event ->
+                when (event) {
+                    is Success -> {
+                        adapter.addItem(event.data)
+                        classViewModel.resetNewAnnouncementEvent()
+                        with(vp2) { setCurrentItem(0,true) }
+                    }
+                    is Error -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "error: ${event.data}",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+
+                    }
+                }
+            }
+        }
     }
 
     private fun setupBanner() {
@@ -91,7 +143,7 @@ class ClassHomeFragment : Fragment() {
                     BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
                 } ?: ""
 
-                Log.d("bitmap",bmp.toString())
+                Log.d("bitmap", bmp.toString())
 
                 Glide.with(requireContext())
                     .asBitmap()
@@ -103,22 +155,26 @@ class ClassHomeFragment : Fragment() {
 
                 viewBinding.teacherName.text = "Gv: ${classroom.teacher.name}"
                 viewBinding.teacherPhoneNumber.text = "Phone :${classroom.teacher.phoneNumber}"
-                viewBinding.teacherPhoneNumber.setOnClickListener{
+                viewBinding.teacherPhoneNumber.setOnClickListener {
                     val phone = classroom.teacher.phoneNumber
-                    if(phone.equals("chưa xác định",true)){
-                        Toast.makeText(requireContext(),"Giáo viên chưa cập nhật số điện thoại",Toast.LENGTH_SHORT).show()
-                    }else {
+                    if (phone.equals("chưa xác định", true)) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Giáo viên chưa cập nhật số điện thoại",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
                         val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
                         startActivity(intent)
                     }
                 }
                 viewBinding.className.setText(classroom.name)
                 viewBinding.address.setText(classroom.location.address)
-                viewBinding.paymentOption.setText(resources.getStringArray(R.array.option)[classroom.option.paymentOptionId.toInt()-1])
+                viewBinding.paymentOption.setText(resources.getStringArray(R.array.option)[classroom.option.paymentOptionId.toInt() - 1])
                 viewBinding.fee.setText(classroom.fee.toString())
                 //setThumbnails()
 
-                viewBinding.map.setOnClickListener{
+                viewBinding.map.setOnClickListener {
                     val destinationLatitude = classroom.location.coordinateX
                     val destinationLongitude = classroom.location.coordinateY
                     val address = classroom.location.address
@@ -136,7 +192,7 @@ class ClassHomeFragment : Fragment() {
                     startActivity(mapIntent)
 
                 }
-                for(shift in classroom.shifts.reversed()){
+                for (shift in classroom.shifts.reversed()) {
 
                     val chip = layoutInflater.inflate(
                         R.layout.chip,
@@ -144,7 +200,7 @@ class ClassHomeFragment : Fragment() {
                         false
                     ) as Chip
                     chip.text = StringUtils.dowFormatter(shift.dayOfWeek.dowName)
-                    chip.setPadding(35,35,35,35)
+                    chip.setPadding(35, 35, 35, 35)
                     chip.textSize = 18f
                     chip.layoutDirection = View.LAYOUT_DIRECTION_LOCALE
                     viewBinding.chipGroup.addView(chip)
@@ -166,17 +222,19 @@ class ClassHomeFragment : Fragment() {
 
     }
 
-//    private fun setupAnnouncementTable() {
-//        vp2 = binding.vp2Announcement
-//        vp2.adapter = AnnouncementAdapter(requireContext(), Announcement.listOfAnnouncement())
-//        vp2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-//
-//    }
+    private fun setupAnnouncementTable() {
+        vp2 = binding.vp2Announcement
+        adapter =AnnouncementAdapter(requireContext(), classViewModel.classroom.value!!)
+        vp2.adapter = adapter
+        vp2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+    }
 
 
     fun setThumbnails() {
         val client = AsyncHttpClient()
-        client["https://maps.googleapis.com/maps/api/staticmap?center=40.714728,-73.998672&zoom=14&size=600x300&key=AIzaSyCy-bRrRM94EOS0HxczPaxjoEOvJ3Z-UDQ", object : AsyncHttpResponseHandler() {
+        client["https://maps.googleapis.com/maps/api/staticmap?center=40.714728,-73.998672&zoom=14&size=600x300&key=AIzaSyCy-bRrRM94EOS0HxczPaxjoEOvJ3Z-UDQ", object :
+            AsyncHttpResponseHandler() {
             override fun onStart() {
                 // called before request is started
             }
@@ -186,7 +244,7 @@ class ClassHomeFragment : Fragment() {
                 headers: Array<Header?>?,
                 response: ByteArray?
             ) {
-                Log.d("hihi",response.toString())
+                Log.d("hihi", response.toString())
 
             }
 
@@ -197,7 +255,7 @@ class ClassHomeFragment : Fragment() {
                 e: Throwable?
             ) {
                 // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                Log.d("onfaillure","failed")
+                Log.d("onfaillure", "failed")
             }
 
             override fun onRetry(retryNo: Int) {

@@ -1,6 +1,7 @@
 package com.example.doancn.Repository
 
 
+import android.util.Log
 import com.example.doancn.API.ClassApi.ClassApi
 import com.example.doancn.DI.DataState
 import com.example.doancn.Models.*
@@ -33,6 +34,21 @@ class ClassRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun createAnnouncement(classId: Long, announcement: Announcement, token: String): DataState<Announcement> {
+        return try {
+            val response = classApi.createAnnouncement(classId,announcement,token)
+            val result = response.body()
+            if (response.isSuccessful && result != null) {
+                DataState.Success(result)
+            } else {
+                DataState.Error(response.errorBody().toString())
+            }
+        } catch (e: java.lang.Exception) {
+            DataState.Error(e.message.toString())
+        }
+    }
+
 
     suspend fun getListClass(token: String): DataState<List<Classroom>> {
         return try {

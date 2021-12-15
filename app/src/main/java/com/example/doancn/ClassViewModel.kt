@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doancn.ClassViewModel.ClassEvent.*
 import com.example.doancn.DI.DataState
+import com.example.doancn.Models.Announcement
 import com.example.doancn.Models.Classroom
 import com.example.doancn.Models.QrCodeX
 import com.example.doancn.Models.classModel.ClassQuest
@@ -52,7 +53,11 @@ constructor(
     fun selectItem(item: ClassQuest.Location) {
         mutableSelectedItem.value = item
     }
-
+    private val _newAnnouncementEvent = MutableStateFlow<ClassEvent<Announcement>>(Empty)
+    val newAnnouncementEvent: StateFlow<ClassEvent<Announcement>> = _newAnnouncementEvent
+    fun resetNewAnnouncementEvent(){
+        _newAnnouncementEvent.value = Empty
+    }
 
     private val _deleteState =
         MutableStateFlow<ClassEvent<String>>(Empty)
@@ -124,6 +129,23 @@ constructor(
             }
         }
     }
+
+
+    fun createAnnouncement(announcement: Announcement) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _newAnnouncementEvent.value = Loading
+            when (val state =
+                classRepository.createAnnouncement(classroom.value!!.classId,announcement = announcement, token!!)) {
+                is DataState.Success -> {
+                    _newAnnouncementEvent.value = Success(state.data)
+                }
+                is DataState.Error -> {
+                    _newAnnouncementEvent.value = Error(state.data)
+                }
+            }
+        }
+    }
+
 
     fun resetDeleteState() {
         _deleteState.value = Empty

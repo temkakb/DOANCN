@@ -113,39 +113,47 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<!--            <TextView-->
-<!--                android:id="@+id/textView5"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:fontFamily="@font/open_sans_bold"-->
-<!--                android:text="Thông báo"-->
-<!--                android:textAlignment="textStart"-->
-<!--                android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textDirection="firstStrongLtr"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textStyle="bold"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/banner" />-->
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="Thông báo"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/black"
+                android:textDirection="firstStrongLtr"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/banner" />
 
-<!--            <androidx.viewpager2.widget.ViewPager2-->
-<!--                android:id="@+id/vp2_announcement"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="250dp"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/textView5">-->
+            <ImageView
+                android:id="@+id/new_announcement"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/ic_baseline_add_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.932"
+                app:layout_constraintStart_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/banner" />
 
-<!--            </androidx.viewpager2.widget.ViewPager2>-->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp2_announcement"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+            </androidx.viewpager2.widget.ViewPager2>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
