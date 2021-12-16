@@ -17,5 +17,6 @@ data class Classroom(
     val location: Location,
     val option: PaymentOption,
     var enrolled: Boolean,
-    val shifts: ArrayList<Shift>
+    val shifts: ArrayList<Shift>,
+    val announcements: ArrayList<Announcement>
 ) : Serializable
