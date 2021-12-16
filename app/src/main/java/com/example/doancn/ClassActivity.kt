@@ -24,6 +24,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.doancn.ClassViewModel.ClassEvent.*
 import com.example.doancn.DI.DataState
+import com.example.doancn.Fragments.JoinClass.JoinClassViewModel
 import com.example.doancn.Fragments.MyClass.more.BottomSheetItem
 import com.example.doancn.Models.Classroom
 import com.example.doancn.Models.QrCodeX
@@ -49,7 +50,7 @@ import java.util.concurrent.TimeUnit
 class ClassActivity : AppCompatActivity(), IClassActivity {
 
     private val classViewModel: ClassViewModel by viewModels()
-
+    private val joinClassViewModel : JoinClassViewModel by viewModels()
     private lateinit var binding: ActivityClassBinding
     private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
     private lateinit var options: ScanOptions
@@ -173,6 +174,40 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
                     R.id.action_navigation_bottom_sheet_to_sectionFragment
                 )
             }
+            9 -> {
+                joinClassViewModel.doDeleteEnrollment(classViewModel.classroom.value!!)
+                lifecycleScope.launchWhenCreated {
+                    joinClassViewModel.enrollstatus.collect { event ->
+                        when (event) {
+                            is DataState.Success -> {
+                                Toast.makeText(
+                                    this@ClassActivity,
+                                    "sucess: ${event.data}",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                startActivity(
+                                    Intent(
+                                        this@ClassActivity,
+                                        MainActivity::class.java
+                                    ).apply { this.putExtra("backToListClass", true) })
+
+                            }
+                            is DataState.Error -> {
+                                Toast.makeText(
+                                    this@ClassActivity,
+                                    "error: ${event.data}",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+
+                            }
+                        }
+                    }
+                }
+
+            }
+
         }
     }
 
@@ -192,10 +227,6 @@ class ClassActivity : AppCompatActivity(), IClassActivity {
                                 this@ClassActivity,
                                 MainActivity::class.java
                             ).apply { this.putExtra("backToListClass", true) })
-                        Toast.makeText(this@ClassActivity, "success", Toast.LENGTH_SHORT).show()
-                    }
-                    is Empty -> {
-                        Toast.makeText(this@ClassActivity, "empty data", Toast.LENGTH_SHORT).show()
                     }
                     is Error -> {
                         Toast.makeText(

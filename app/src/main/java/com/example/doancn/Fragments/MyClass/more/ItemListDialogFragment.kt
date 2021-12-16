@@ -33,7 +33,10 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
     ): View? {
         _binding = FragmentItemListDialogListDialogBinding.inflate(inflater, container, false)
         recyclerView = binding.list
-        adapter = ItemAdapter(BottomSheetItem.getItem())
+        if(classViewModel.role == "TEACHER")
+            adapter = ItemAdapter(BottomSheetItem.getItemTeacher())
+        else
+            adapter = ItemAdapter(BottomSheetItem.getItemStudent())
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         return binding.root
@@ -69,14 +72,13 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            if (list[position].type == 1)
+            if (list[position].type == 1 || list[position].type == 9 )
                 holder.text.setTextColor(getColor(requireContext(), R.color.red))
             holder.text.text = list[position].name
             holder.icon.setImageResource(list[position].icon)
             holder.itemView.setOnClickListener {
                 iClassActivity.handleBottomSheetItem(list[position])
             }
-            holder.itemView.isEnabled = classViewModel.role == "TEACHER"
 
         }
 
@@ -97,11 +99,17 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
 
 class BottomSheetItem(val type: Int, val icon: Int, val name: String) {
     companion object {
-        fun getItem(): List<BottomSheetItem> {
+        fun getItemTeacher(): List<BottomSheetItem> {
             return arrayListOf(
                 BottomSheetItem(1, R.drawable.delete, "Hủy lớp học"),
                 BottomSheetItem(2, R.drawable.ic_baseline_update_24, "Cập nhật thông tin"),
                 BottomSheetItem(3, R.drawable.ic_baseline_info_24, "Tình trạng buổi học")
+
+            )
+        }
+        fun getItemStudent(): List<BottomSheetItem> {
+            return arrayListOf(
+                BottomSheetItem(9, R.drawable.ic_baseline_exit_to_app_24, "Thoát lớp học")
 
             )
         }

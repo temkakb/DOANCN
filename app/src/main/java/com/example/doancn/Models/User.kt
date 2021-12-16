@@ -3,7 +3,7 @@ package com.example.doancn.Models
 import java.io.Serializable
 
 class User() : Serializable {
-    lateinit var phoneNumber: String
+    var phoneNumber: String = "chưa xác định"
     lateinit var name: String
     lateinit var address: String
     lateinit var currentWorkPlace: String

@@ -1,23 +1,58 @@
 package com.example.doancn.Adapters
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
 import com.example.doancn.Models.Announcement
+import com.example.doancn.Models.Classroom
 import com.example.doancn.R
+import com.example.doancn.Utilities.StringUtils
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
-class AnnouncementAdapter(var context: Context, var itemList: List<Announcement>) :
+class AnnouncementAdapter(var context: Context, var classroom: Classroom) :
     RecyclerView.Adapter<AnnouncementAdapter.MyViewHolder>() {
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    private var announcements: List<Announcement> = classroom.announcements.sortedByDescending { it.time }
+
+
+
+
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun setData(announcement: Announcement) {
-            itemView.findViewById<TextView>(R.id.announcement_sender).text = announcement.Name
+            itemView.findViewById<TextView>(R.id.announcement_sender).text = classroom.teacher.name
             itemView.findViewById<TextView>(R.id.announcement_content).text = announcement.content
-            itemView.findViewById<ImageView>(R.id.announcement_circleImageView)
-                .setImageResource(R.drawable.ic_baseline_person_24)
+            val time = LocalDateTime.parse(announcement.time,
+                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+            itemView.findViewById<TextView>(R.id.time).text = "${StringUtils.dowFormatter(time.dayOfWeek.name)}, ${time.hour}h:${time.minute}"
+            val circularProgressDrawable = CircularProgressDrawable(context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
+            val bmp = classroom!!.teacher.image?.let {
+                val imgDecode: ByteArray =
+                    Base64.getDecoder().decode(it)
+                BitmapFactory.decodeByteArray(imgDecode, 0, imgDecode.size)
+            } ?: ""
+            Glide.with(context)
+                .asBitmap()
+                .load(bmp)
+                .centerCrop()
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.orther)
+                .into(itemView.findViewById<ImageView>(R.id.announcement_circleImageView))
+
+
         }
 
     }
@@ -29,10 +64,20 @@ class AnnouncementAdapter(var context: Context, var itemList: List<Announcement>
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.setData(itemList[position])
+
+        holder.setData(announcements[position])
     }
 
+    fun addItem(announcement: Announcement){
+        val arrayList =  ArrayList<Announcement>()
+        arrayList.addAll(announcements);
+        arrayList.add(announcement)
+        announcements = arrayList.sortedByDescending { it.time }
+        notifyDataSetChanged()
+        }
+
+
     override fun getItemCount(): Int {
-        return itemList.size
+        return classroom.announcements.size
     }
 }
