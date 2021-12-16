@@ -1,20 +1,25 @@
 package com.example.doancn.Fragments.LoginSignUp
 
-import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.doancn.R
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class UserFillInfoFragment3 : Fragment() {
+    private var dateStart: LocalDate? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,24 +30,29 @@ class UserFillInfoFragment3 : Fragment() {
         GlobalScope.launch(Dispatchers.Default) {
             val input = view.findViewById(R.id.dateborn) as TextInputEditText
             input.setOnClickListener {
-                datepicker(context, view)
+                val input = view.findViewById(R.id.dateborn) as TextInputEditText
+                val constraintsBuilder =
+                    CalendarConstraints.Builder()
+                        .setValidator(DateValidatorPointBackward.now())
+                val datePicker =
+                    MaterialDatePicker.Builder.datePicker()
+                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                        .setCalendarConstraints(constraintsBuilder.build())
+                        .setTitleText("Chọn ngày bắt đầu")
+                        .build()
+                datePicker.addOnPositiveButtonClickListener {
+                    dateStart =
+                        Instant.ofEpochMilli(datePicker.selection!!).atZone(ZoneId.systemDefault())
+                            .toLocalDate()
+//                val date = dateStart
+                val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                val formattedString: String = formatter.format(dateStart)
+                    input.setText(formattedString)
+                }
+
+                datePicker.show(requireFragmentManager(), "date picker")
             }
         }
         return view
     }
-}
-fun datepicker(context: Context?, view: View) {
-    val c = Calendar.getInstance()
-    val year = c.get(Calendar.YEAR)
-    val month = c.get(Calendar.MONTH)
-    val day = c.get(Calendar.DAY_OF_MONTH)
-    val input = view.findViewById(R.id.dateborn) as TextInputEditText
-    DatePickerDialog(
-        context!!,
-        android.R.style.Theme_DeviceDefault_Dialog_Alert,
-        { mview, myear, mmonth, mday ->
-            val settext = "${if (mday<10) {"0"+mday}else{mday} }" + "/" + "${if (mmonth<10) {"0"+mmonth}else{mmonth} }" + "/" + "$myear"
-            input.setText(settext)
-        },year, month, day
-    ).show()
 }
