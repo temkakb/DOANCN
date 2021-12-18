@@ -50,6 +50,7 @@ class ClassHomeFragment : Fragment() {
     private lateinit var vp2: ViewPager2
     private lateinit var navController: NavController
     private lateinit var adapter: AnnouncementAdapter
+
     companion object {
         fun newInstance() = ClassHomeFragment()
     }
@@ -73,26 +74,35 @@ class ClassHomeFragment : Fragment() {
             classViewModel.selectItem(classroom)
         }
         setupBanner()
-        binding.newAnnouncement.setOnClickListener {
-            MaterialDialog(requireContext()).show {
-                title(R.string.NewAnnouncement)
-                input(
-                    allowEmpty = false,
-                    waitForPositiveButton = true,
-                    hint = "Nội dung thông báo"
-                ) { dialog, text ->
-                    // Text submitted with the action button, might be an empty string`
-                    val announcement = Announcement(
-                        text.toString(), LocalDateTime.now().format(
-                            DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-                        ).toString()
-                    )
-                    classViewModel.createAnnouncement(announcement)
+        if (classViewModel.classroom.value!!.announcements.isEmpty())
+            binding.noAnnouncement.visibility = View.VISIBLE
+        else
+            binding.noAnnouncement.visibility = View.GONE
+        if (classViewModel.role != "TEACHER")
+            binding.newAnnouncement.visibility = View.INVISIBLE
+        else {
+
+            binding.newAnnouncement.setOnClickListener {
+                MaterialDialog(requireContext()).show {
+                    title(R.string.NewAnnouncement)
+                    input(
+                        allowEmpty = false,
+                        waitForPositiveButton = true,
+                        hint = "Nội dung thông báo"
+                    ) { dialog, text ->
+                        // Text submitted with the action button, might be an empty string`
+                        val announcement = Announcement(
+                            text.toString(), LocalDateTime.now().format(
+                                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+                            ).toString()
+                        )
+                        classViewModel.createAnnouncement(announcement)
+                    }
+                    positiveButton(R.string.accept)
                 }
-                positiveButton(R.string.accept)
             }
+            collectAnnouncement()
         }
-        collectAnnouncement()
         return root
     }
 
@@ -103,7 +113,8 @@ class ClassHomeFragment : Fragment() {
                     is Success -> {
                         adapter.addItem(event.data)
                         classViewModel.resetNewAnnouncementEvent()
-                        with(vp2) { setCurrentItem(0,true) }
+                        with(vp2) { setCurrentItem(0, true) }
+                        binding.noAnnouncement.visibility = View.GONE
                     }
                     is Error -> {
                         Toast.makeText(
@@ -189,7 +200,8 @@ class ClassHomeFragment : Fragment() {
                     startActivity(mapIntent)
 
                 }
-                for (shift in classroom.shifts.reversed()) {
+                for (shift in classroom.shifts.sortedByDescending { it.dayOfWeek.dowId }
+                    .reversed()) {
 
                     val chip = layoutInflater.inflate(
                         R.layout.chip,
@@ -221,7 +233,7 @@ class ClassHomeFragment : Fragment() {
 
     private fun setupAnnouncementTable() {
         vp2 = binding.vp2Announcement
-        adapter =AnnouncementAdapter(requireContext(), classViewModel.classroom.value!!)
+        adapter = AnnouncementAdapter(requireContext(), classViewModel.classroom.value!!)
         vp2.adapter = adapter
         vp2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
