@@ -1,47 +1,44 @@
 package com.example.doancn.Fragments.MyClass.home
 
+import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
+import com.afollestad.materialdialogs.input.input
 import com.bumptech.glide.Glide
 import com.example.doancn.Adapters.AnnouncementAdapter
 import com.example.doancn.ClassViewModel
+import com.example.doancn.ClassViewModel.ClassEvent.Error
+import com.example.doancn.ClassViewModel.ClassEvent.Success
+import com.example.doancn.Models.Announcement
 import com.example.doancn.Models.Classroom
 import com.example.doancn.R
+import com.example.doancn.Utilities.StringUtils
 import com.example.doancn.databinding.BannerInfoBinding
 import com.example.doancn.databinding.ClassHomeFragmentBinding
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.*
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import com.afollestad.materialdialogs.input.input
-import com.example.doancn.ClassViewModel.ClassEvent
-import com.example.doancn.ClassViewModel.ClassEvent.*
-import com.example.doancn.DI.DataState
-import com.example.doancn.MainActivity
-import com.example.doancn.Models.Announcement
-import com.example.doancn.Utilities.StringUtils
 import com.google.android.material.chip.Chip
-import com.loopj.android.http.AsyncHttpResponseHandler
-
 import com.loopj.android.http.AsyncHttpClient
+import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 @ExperimentalCoroutinesApi
@@ -171,7 +168,7 @@ class ClassHomeFragment : Fragment() {
                 viewBinding.className.setText(classroom.name)
                 viewBinding.address.setText(classroom.location.address)
                 viewBinding.paymentOption.setText(resources.getStringArray(R.array.option)[classroom.option.paymentOptionId.toInt() - 1])
-                viewBinding.fee.setText(classroom.fee.toString())
+                viewBinding.fee.setText(String.format("%.2f", classroom.fee))
                 //setThumbnails()
 
                 viewBinding.map.setOnClickListener {
