@@ -22,19 +22,25 @@ import kotlin.collections.ArrayList
 
 class AnnouncementAdapter(var context: Context, var classroom: Classroom) :
     RecyclerView.Adapter<AnnouncementAdapter.MyViewHolder>() {
+    private var num = 0
 
-    private var announcements: List<Announcement> = classroom.announcements.sortedByDescending { it.time }
+    private var announcements: List<Announcement> = classroom.announcements.let { it ->
 
-
+        num = it.size
+        it.sortedByDescending { announcement -> announcement.time }
+    }
 
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun setData(announcement: Announcement) {
             itemView.findViewById<TextView>(R.id.announcement_sender).text = classroom.teacher.name
             itemView.findViewById<TextView>(R.id.announcement_content).text = announcement.content
-            val time = LocalDateTime.parse(announcement.time,
-                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-            itemView.findViewById<TextView>(R.id.time).text = "${StringUtils.dowFormatter(time.dayOfWeek.name)}, ${time.hour}h:${time.minute}"
+            val time = LocalDateTime.parse(
+                announcement.time,
+                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+            )
+            itemView.findViewById<TextView>(R.id.time).text =
+                "${StringUtils.dowFormatter(time.dayOfWeek.name)}, ${time.hour}h:${time.minute}"
             val circularProgressDrawable = CircularProgressDrawable(context)
             circularProgressDrawable.strokeWidth = 5f
             circularProgressDrawable.centerRadius = 30f
@@ -68,16 +74,18 @@ class AnnouncementAdapter(var context: Context, var classroom: Classroom) :
         holder.setData(announcements[position])
     }
 
-    fun addItem(announcement: Announcement){
-        val arrayList =  ArrayList<Announcement>()
+    fun addItem(announcement: Announcement) {
+        val arrayList = ArrayList<Announcement>()
         arrayList.addAll(announcements);
         arrayList.add(announcement)
         announcements = arrayList.sortedByDescending { it.time }
+        num = announcements.size
+        Log.d("announcements", announcements.toString())
         notifyDataSetChanged()
-        }
+    }
 
 
     override fun getItemCount(): Int {
-        return classroom.announcements.size
+        return num
     }
 }

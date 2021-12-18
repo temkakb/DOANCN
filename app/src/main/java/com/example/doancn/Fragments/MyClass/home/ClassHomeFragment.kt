@@ -168,7 +168,7 @@ class ClassHomeFragment : Fragment() {
                 viewBinding.className.setText(classroom.name)
                 viewBinding.address.setText(classroom.location.address)
                 viewBinding.paymentOption.setText(resources.getStringArray(R.array.option)[classroom.option.paymentOptionId.toInt() - 1])
-                viewBinding.fee.setText(classroom.fee.toString())
+                viewBinding.fee.setText(String.format("%.2f", classroom.fee))
                 //setThumbnails()
 
                 viewBinding.map.setOnClickListener {

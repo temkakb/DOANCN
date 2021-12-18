@@ -5,10 +5,10 @@ import java.io.Serializable
 
 data class Classroom(
     val classId: Long,
-    val name: String,
-    val shortDescription: String,
-    val about: String,
-    val fee: Double,
+    val name: String = "",
+    val shortDescription: String = "",
+    val about: String = "",
+    val fee: Double = 0.0,
     val currentAttendanceNumber: Int,
     val startDate: String,
     val dateCreated: String,
@@ -18,5 +18,5 @@ data class Classroom(
     val option: PaymentOption,
     var enrolled: Boolean,
     val shifts: ArrayList<Shift>,
-    val announcements: ArrayList<Announcement>
+    val announcements: ArrayList<Announcement> = ArrayList()
 ) : Serializable
