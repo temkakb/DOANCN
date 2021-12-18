@@ -260,12 +260,12 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             val latitude = data?.getDoubleExtra("latitude", -1.0)
             val longitude = data?.getDoubleExtra("longitude", -1.0)
             Log.d("onActivityResult", "latitude: $latitude, longitude: $longitude")
-            val geocoder = Geocoder(this)
+            val geocoder = Geocoder(this,  Locale.getDefault())
             latitude?.let { longitude?.let { it1 -> geocoder.getFromLocation(it, it1, 1) } }?.apply {
                 if(this.isNotEmpty()){
                     val item = this?.get(0)?.let {
                         ClassQuest.Location(
-                            city = it.locality,
+                            city = if(it.locality==null) it.subAdminArea else it.locality,
                             coordinateX = latitude!!,
                             coordinateY = longitude!!,
                             address = ""

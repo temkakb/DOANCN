@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,7 +44,7 @@ class JoinClassFragment : Fragment() {
     private lateinit var listsubjectname2: Array<String>
     private lateinit var subject: RecyclerView
     private lateinit var layoutmanager: LinearLayoutManager
-    private lateinit var fusedLocation: FusedLocationProviderClient
+    private  var fusedLocation: FusedLocationProviderClient? =null
     private lateinit var noclassroom: TextView
     private lateinit var noclassroomimageview: ImageView
     private var enrolmentArrayAdapter: EnrolmentArrayAdapter? = null
@@ -98,14 +97,21 @@ class JoinClassFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            fusedLocation.lastLocation.addOnSuccessListener { location ->
-                val location: Location = location
+            fusedLocation!!.lastLocation.addOnSuccessListener { location ->
                 val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                val listaddress: List<Address> =
+
+                var listaddress: List<Address> =
                     geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                requireView().city.text =
-                    resources.getString(R.string.baseoncity) + listaddress[0].locality
-                joinClassViewModel.getClassRoomToEnroll(listaddress[0].locality, subjectId)
+                while (listaddress.size==0){
+                    listaddress=
+                    geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                }
+                var city=""
+                if (listaddress.get(0).getLocality() != null)  city=listaddress.get(0).getLocality();
+                else
+                    if (listaddress.get(0).getSubAdminArea() != null)  city=listaddress.get(0).getSubAdminArea()
+                requireView().city.text = resources.getString(R.string.baseoncity) + city
+                joinClassViewModel.getClassRoomToEnroll(city, subjectId)
             }
         } else {
             ActivityCompat.requestPermissions(
