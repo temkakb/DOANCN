@@ -62,6 +62,8 @@ class HomeFragment : Fragment() {
         val main : MainActivity = activity as MainActivity
         val model : UserViewModel = ViewModelProvider(main)[UserViewModel::class.java]
         getMyUser(mainViewModel.token.toString(),model)
+     
+
         return inflater.inflate(R.layout.fragment_home,container,false)
     }
 
@@ -69,6 +71,7 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
     }
 
     @SuppressLint("SimpleDateFormat")

@@ -1,7 +1,6 @@
 package com.example.doancn.Fragments.MyClass.more
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -58,7 +57,7 @@ class SectionFragment : Fragment(), SectionRcAdapter.OnSectionItemClickListener 
 
     private fun setUpShift(classroom: Classroom) {
         val group = binding.toggleButtonGroup
-        for (shift in classroom.shifts.reversed()) {
+        for (shift in classroom.shifts.sortedByDescending { it.dayOfWeek.dowId }.reversed()) {
 
             val button = layoutInflater.inflate(
                 R.layout.single_button_layout,
