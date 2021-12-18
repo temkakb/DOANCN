@@ -2,13 +2,10 @@ package com.example.doancn.Models
 
 import java.io.Serializable
 
-class User() : Serializable {
+class User(
+    var image: String = "", var dob: String = "", var educationLevel: String = "",
+    var currentWorkPlace: String = "", var address: String = "", var name: String = "",
     var phoneNumber: String = "chưa xác định"
-    lateinit var name: String
-    lateinit var address: String
-    lateinit var currentWorkPlace: String
-    lateinit var educationLevel: String
-    lateinit var dob: String
-    var image: String = ""
+) : Serializable {
 
 }
